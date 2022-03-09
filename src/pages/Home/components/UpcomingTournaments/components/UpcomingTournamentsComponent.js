@@ -26,7 +26,10 @@ const UpcomingTournamentsComponent = ({
   setOpen,
 }) => {
   return (
-    <Box className={`block w-full px-4`}>
+    <Box
+      className={`block w-full px-4 overflow-y-auto pb-6`}
+      sx={{ marginTop: "-1rem" }}
+    >
       <SubscribeTournament open={open} setOpen={setOpen} getUser={getUser} />
       {Object.keys(data).length !== 0 ? (
         data.map((tournamentDetails, index) => (
@@ -43,8 +46,12 @@ const UpcomingTournamentsComponent = ({
             >
               <Box sx={{ display: "flex" }}>
                 <Typography
-                  sx={{ width: "66%", flexShrink: 0, fontSize: "0.8rem" }}
-                  className='text-blueGray-500 align-middle text-xs uppercase whitespace-nowrap font-semibold text-left'
+                  sx={{
+                    width: { xs: "90%", md: "66%" },
+                    flexShrink: 0,
+                    fontSize: "0.8rem",
+                  }}
+                  className='text-blueGray-500 align-middle text-xs uppercase font-semibold text-left'
                 >
                   {tournamentDetails.eventName}
                 </Typography>
@@ -63,7 +70,7 @@ const UpcomingTournamentsComponent = ({
               <Typography
                 variant='body2'
                 color='text.secondary'
-                style={{ textAlign: "justify", margin: "25vh 0 1rem 0" }}
+                style={{ textAlign: "justify", margin: "22vh 0 1rem 0" }}
               >
                 {tournamentDetails.venueAddress}
               </Typography>

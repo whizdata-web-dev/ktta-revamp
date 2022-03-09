@@ -1,11 +1,9 @@
-import { Box } from "@mui/material";
+import { Box, Card } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import React from "react";
-import FetchData from "../../../assets/utils/FetchData";
-import { urlConsts } from "../../../assets/utils/RequestData";
 import Draw from "../components/Draw";
 
 const TournamentContainer = ({
@@ -16,13 +14,13 @@ const TournamentContainer = ({
   handleEventNameChange,
 }) => {
   return (
-    <Box>
-      <Box className='py-10 border-b border-blueGray-200 text-center'>
+    <Card sx={{ border: 0, boxShadow: 0, minHeight: "80vh" }}>
+      <Box className='py-5 text-center'>
         <Box className='flex flex-wrap justify-center'>
           <Box className='w-full lg:w-8/12'>
             <Box className='lg-py-6 lg-mt-32 mt-8'>
               <h6
-                className='text-xl font-normal leading-normal mt-0 mb-2 text-slate-500'
+                className='tailwind_h6 text-xl font-normal leading-normal mt-0 mb-2 text-slate-500'
                 style={{ textAlign: "center" }}
               >
                 {result && result.eventName}
@@ -40,7 +38,7 @@ const TournamentContainer = ({
                     labelId='tournament-select-label'
                     id='tournament-select'
                     value={eventName}
-                    label='Tournament'
+                    label='Choose Event'
                     onChange={handleEventNameChange}
                   >
                     {eventList &&
@@ -62,12 +60,12 @@ const TournamentContainer = ({
         </Box>
       ) : (
         <Box sx={{ margin: "2rem 0" }}>
-          <h4 className='text-3xl text-center font-normal leading-normal mt-0 mb-2 text-lightBlue-800'>
+          <h4 className='tailwind_h4 text-3xl text-center font-normal leading-normal mt-0 mb-2 text-lightBlue-800'>
             Please choose an event
           </h4>
         </Box>
       )}
-    </Box>
+    </Card>
   );
 };
 

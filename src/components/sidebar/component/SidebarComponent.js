@@ -7,20 +7,20 @@ import { NavigationItems } from "../model/SidebarModel";
 export default function SidebarComponent({ collapseShow, setCollapseShow }) {
   return (
     <>
-      <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
-        <Box className="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto">
+      <nav className='md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6'>
+        <Box className='md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto'>
           {/* Toggler */}
           <button
-            className="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-            type="button"
+            className='cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent'
+            type='button'
             onClick={() => setCollapseShow("bg-white m-2 py-3 px-6")}
           >
-            <i className="fas fa-bars"></i>
+            <i className='fas fa-bars'></i>
           </button>
           {/* Brand */}
           <Link
-            className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-            to="/"
+            className='md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0'
+            to='/'
           >
             KTTA
           </Link>
@@ -31,33 +31,33 @@ export default function SidebarComponent({ collapseShow, setCollapseShow }) {
             }
           >
             {/* Collapse header */}
-            <Box className="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200">
-              <Box className="flex flex-wrap">
-                <Box className="w-6/12">
+            <Box className='md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200'>
+              <Box className='flex flex-wrap'>
+                <Box className='w-6/12'>
                   <Link
-                    className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-                    to="/"
+                    className='md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0'
+                    to='/'
                   >
                     KTTA
                   </Link>
                 </Box>
-                <Box className="w-6/12 flex justify-end">
+                <Box className='w-6/12 flex justify-end'>
                   <button
-                    type="button"
-                    className="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
+                    type='button'
+                    className='cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent'
                     onClick={() => setCollapseShow("hidden")}
                   >
-                    <i className="fas fa-times"></i>
+                    <i className='fas fa-times'></i>
                   </button>
                 </Box>
               </Box>
             </Box>
 
-            <hr className="my-4 md:min-w-full" />
+            <hr className='tailwind_hr my-4 md:min-w-full' />
 
-            <ul className="md:flex-col md:min-w-full flex flex-col list-none">
+            <ul className='md:flex-col md:min-w-full flex flex-col list-none'>
               {NavigationItems.map((item, index) => (
-                <li className="items-center" key={index}>
+                <li className='items-center' key={index}>
                   <Link
                     className={
                       "text-sm uppercase py-3 font-bold block " +

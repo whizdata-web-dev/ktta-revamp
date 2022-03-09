@@ -10,11 +10,13 @@ import {
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import TrophyLogo from "../../../assets/img/trophy.png";
+import { Link } from "react-router-dom";
 
 const DrawResult = (props) => {
   // constants defined from props
   const { visibility, drawResponse, centralize, matchNo, numberOfSets, round } =
     props;
+  console.log(drawResponse);
   // constant for player I name
   const playerA = drawResponse.players.playerA
     ? drawResponse.players.playerA
@@ -52,11 +54,13 @@ const DrawResult = (props) => {
     >
       <Card
         className='scorecard'
-        variant='outlined'
+        // variant='outlined'
         sx={{
           borderRadius: "inherit",
           // height: { md: "250px", lg: "240px" },
           margin: { xs: "1rem 0", md: 0 },
+          boxShadow: 0,
+          border: "1px solid rgb(241, 245, 249)",
         }}
       >
         <CardContent>
@@ -68,7 +72,7 @@ const DrawResult = (props) => {
                 fontSize: "16px",
               }}
             >
-              <b>{round && round.roundName}</b>
+              <b className='b'>{round && round.roundName}</b>
             </Typography>
             <Typography
               variant='body1'
@@ -80,7 +84,7 @@ const DrawResult = (props) => {
               }}
             >
               {/* showing match number */}
-              <b>Match: {matchNo ? matchNo : ""}</b>
+              <b className='b'>Match: {matchNo ? matchNo : ""}</b>
             </Typography>
           </Box>
           <Divider />
@@ -121,7 +125,15 @@ const DrawResult = (props) => {
                   }}
                 >
                   {/* Checking prps data for Player - 1 Name */}
-                  {playerA != "()" ? playerA : <>&nbsp;</>}
+                  <Link
+                    to={`/players/${
+                      drawResponse.playersID
+                        ? drawResponse.playersID.playerAId
+                        : "playerId"
+                    }`}
+                  >
+                    {playerA != "()" ? playerA : <>&nbsp;</>}
+                  </Link>
                 </Typography>
               </Grid>
               {/* Checking prps data for scores , displaying empty in 
@@ -139,7 +151,7 @@ const DrawResult = (props) => {
                           }}
                           color='text.secondary'
                         >
-                          <b>
+                          <b className='b'>
                             {(String(setScoresA[index]) === "0" &&
                               String(setScoresA[index + 1]) === "0") ||
                             (index === setScoresA.length - 1 &&
@@ -169,9 +181,9 @@ const DrawResult = (props) => {
                 xs={1}
                 sm={1}
                 md={1}
-                sx={{ padding: "0rem 0 0.2rem 0", margin: "-0.1rem 0 0 0" }}
+                sx={{ padding: "0rem 0 0.2rem 0", margin: "-0.25rem 0 0 0" }}
               >
-                <b>SET</b>
+                <b className='b'>SET</b>
               </Grid>
               {[...new Array(numberOfSets)].map((_, i) => {
                 return (
@@ -221,7 +233,15 @@ const DrawResult = (props) => {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  {playerB != "()" ? playerB : <>&nbsp;</>}
+                  <Link
+                    to={`/players/${
+                      drawResponse.playersID
+                        ? drawResponse.playersID.playerBId
+                        : "playerId"
+                    }`}
+                  >
+                    {playerB != "()" ? playerB : <>&nbsp;</>}
+                  </Link>
                 </Typography>
               </Grid>
               {/* Checking prps data for scores , displaying empty in 
@@ -239,7 +259,7 @@ const DrawResult = (props) => {
                           }}
                           color='text.secondary'
                         >
-                          <b>
+                          <b className='b'>
                             {(String(setScoresA[index]) === "0" &&
                               String(setScoresA[index + 1]) === "0") ||
                             (index === setScoresA.length - 1 &&
@@ -273,7 +293,7 @@ const DrawResult = (props) => {
                   }}
                   color='text.secondary'
                 >
-                  <b>
+                  <b className='b'>
                     {drawResponse && drawResponse.status
                       ? drawResponse.status
                       : ""}

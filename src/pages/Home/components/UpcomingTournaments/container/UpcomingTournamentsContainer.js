@@ -60,7 +60,7 @@ export default function UpcomingTournamentsContainer() {
               sx={{ textTransform: "uppercase" }}
               className='relative w-full px-4 max-w-full flex-grow flex-1'
             >
-              <h1 className='font-semibold text-base text-blueGray-700 py-1'>
+              <h1 className='tailwind_h1 font-semibold text-base text-blueGray-700 py-1'>
                 Upcoming Tournaments
               </h1>
             </Box>

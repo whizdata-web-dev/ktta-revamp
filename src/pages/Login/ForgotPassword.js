@@ -156,26 +156,25 @@ export default function ResetPassword(props) {
         }}
         onSubmit={sendOTPClick}
       >
-        <h3 className='login-h1'>Password Reset</h3>
+        <h2 className='login-h1'>Password Reset</h2>
         <TextField
-          id='emailId'
           required
-          variant='filled'
-          className={
-            resetPwdValues.errorClass === "emailError" ? "error" : "textWidth"
-          }
+          type='email'
+          id='emailId'
           label='Email Address'
-          value={resetPwdValues.email}
-          sx={{
-            paddingTop: "1rem",
+          variant='filled'
+          inputProps={{
+            maxLength: 30,
+            style: { backgroundColor: "#fff" },
           }}
+          sx={{
+            width: "100%",
+            margin: "1rem 0",
+            backgroundColor: "#fff",
+          }}
+          value={resetPwdValues.email}
           onChange={(event) => {
-            setresetPwdValues({
-              email: event.target.value,
-              error: "",
-              errorMessage: "",
-              emailError: "",
-            });
+            setresetPwdValues({ ...resetPwdValues, email: event.target.value });
           }}
         />
         <div>
@@ -193,42 +192,53 @@ export default function ResetPassword(props) {
           ) : (
             ""
           )}
-          <Button
-            block
-            type='submit'
-            className={
-              resetPwdValues.error ? resetPwdValues.error : "forgotPwd"
-            }
-            style={{
-              margin: "1rem 8rem",
-              fontWeight: "bolder",
-              padding: "10px 40px",
-              marginBottom: "2px",
-              color: "white",
-              borderRadius: "30px",
-            }}
-          >
-            Next
-          </Button>
-          <Button
-            onClick={cancelFgtPwd}
-            style={{
-              border: "none",
-              background: "white",
-              margin: "0 0.5rem",
-            }}
-            className='signin'
-          >
-            <Typography
+          <Box>
+            <button
+              className='signin login-button'
               style={{
-                fontWeight: "bold",
-                background: "white",
-                textDecorationLine: "underLine",
+                marginTop: "1rem",
+              }}
+              id='signIn'
+            >
+              Next
+            </button>
+          </Box>
+          <Box>
+            <Button
+              variant='text'
+              onClick={cancelFgtPwd}
+              sx={{
+                margin: "1rem 0.5rem",
+                "@media screen and (max-width: 931px)": {
+                  padding: "0 0",
+                  overflow: "auto",
+                  paddingLeft: "-2rem",
+                  margin: "0 0",
+                },
+                "@media screen and (max-width: 301px)": {
+                  overflow: "hidden",
+                  marginLeft: "-1.5rem",
+                },
               }}
             >
-              Sign In
-            </Typography>
-          </Button>
+              <Typography
+                variant='body2'
+                sx={{
+                  fontWeight: "bold",
+                  color: "#616161",
+                  textDecoration: "none",
+                  transition: "0.3s all ease",
+                  "&:hover": {
+                    color: "#333",
+                    transform: "scale(1.01)",
+                    textDecoration: "underLine",
+                  },
+                }}
+              >
+                Sign In
+              </Typography>
+            </Button>
+          </Box>
         </div>
       </form>
     );

@@ -38,7 +38,9 @@ export default function ResultCard({
             color='text.secondary'
             gutterBottom
           >
-            <b>{activeTab === "Round " ? activeTab + round : activeTab}</b>
+            <b className='b'>
+              {activeTab === "Round " ? activeTab + round : activeTab}
+            </b>
             ,&nbsp; Match: {val}
           </Typography>
           <br />
@@ -66,7 +68,7 @@ export default function ResultCard({
                       }}
                       color='text.secondary'
                     >
-                      <b>{i >= 3 ? " " : i * i}</b>
+                      <b className='b'>{i >= 3 ? " " : i * i}</b>
                     </Typography>
                   </Grid>
                 );
@@ -87,7 +89,7 @@ export default function ResultCard({
                 md={1}
                 sx={{ padding: "0rem 0 0.2rem 0", margin: "-0.1rem 0 0 0" }}
               >
-                <b>SET</b>
+                <b className='b'>SET</b>
               </Grid>
               {[...new Array(numberOfSets)].map((_, i) => {
                 return (
@@ -122,7 +124,7 @@ export default function ResultCard({
                       }}
                       color='text.secondary'
                     >
-                      <b>{i >= 3 ? " " : i * i}</b>
+                      <b className='b'>{i >= 3 ? " " : i * i}</b>
                     </Typography>
                   </Grid>
                 );
@@ -153,7 +155,7 @@ export default function ResultCard({
                           sx={{ fontSize: '0.8rem' }}
                           color='text.secondary'
                         >
-                          <b>SET</b>
+                          <b className="b">SET</b>
                         </Typography>
                       </Grid>
                       <Grid item md={1}>

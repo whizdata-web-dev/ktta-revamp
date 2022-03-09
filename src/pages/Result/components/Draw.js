@@ -7,10 +7,11 @@ import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import DrawResult from "./DrawResult";
 import { RequestData, urlConsts } from "../../../assets/utils/RequestData";
-import { Card, CardContent } from "@mui/material";
+import { Card, CardContent, Divider } from "@mui/material";
 import winIcon from "../../../assets/img/loading.gif";
 import { useParams } from "react-router-dom";
 import FetchData from "../../../assets/utils/FetchData";
+import WinnerCard from "./WinnerCard";
 
 // constants variables for tab names and api response data
 //- its rendered only once so not using state
@@ -37,7 +38,8 @@ const Draw = ({ eventName, tournamentId }) => {
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
     setMessage("");
-    setTabValue(newValue);
+    setRoundResult([]);
+    setNextRoundResult([]);
     //setting tabindex value on tab change
     // setting tab filter data to state on change of tab index
     setRoundResult(
@@ -73,7 +75,6 @@ const Draw = ({ eventName, tournamentId }) => {
     await RequestData("POST", "fetchMatchResults", content)
       .then((response) => {
         if (response.result) {
-          console.log(response.result);
           const roundName = response.result.roundDetails;
 
           const tempRoundName =
@@ -83,7 +84,9 @@ const Draw = ({ eventName, tournamentId }) => {
                 ? { ...round, roundName: "Pre Quarter Final" }
                 : round
             );
+          roundNames.pop();
           roundNames.push(tempRoundName);
+          drawResult.pop();
           drawResult.push(response.result.matchRecords);
           setRoundResult(
             filteredResult(
@@ -115,8 +118,8 @@ const Draw = ({ eventName, tournamentId }) => {
   };
 
   useEffect(() => {
+    setTabValue(0);
     getDraws();
-    console.log("resultContainer called", eventName);
     return () => {
       setRoundResult([]);
       setNextRoundResult([]);
@@ -159,35 +162,28 @@ const Draw = ({ eventName, tournamentId }) => {
           </Box>
         ) : (
           <CardContent sx={{ padding: 0 }}>
-            <Grid
-              item
-              sx={{
-                width: "100vw",
-                textAlign: "center",
-              }}
-            >
-              <Box sx={{ display: "flex" }}>
-                <Tabs
-                  value={tabValue}
-                  onChange={handleTabChange}
-                  variant='scrollable'
-                  scrollButtons='auto'
-                  aria-label='scrollable auto tabs example'
-                  sx={{
-                    margin: "0rem auto",
-                  }}
-                >
-                  {roundNames[0] &&
-                    roundNames[0].map((i, index) => {
-                      return <Tab key={index} label={i.roundName} />;
-                    })}
-                </Tabs>
-              </Box>
-            </Grid>
+            <Box sx={{ display: "flex" }}>
+              <Tabs
+                value={tabValue}
+                onChange={handleTabChange}
+                variant='scrollable'
+                scrollButtons='auto'
+                aria-label='scrollable auto tabs example'
+                sx={{
+                  margin: "0rem auto",
+                }}
+              >
+                {roundNames[0] &&
+                  roundNames[0].map((i, index) => {
+                    return <Tab key={index} label={i.roundName} />;
+                  })}
+              </Tabs>
+            </Box>
+            <Divider />
             {message && roundResult.length === 0 ? (
               <Grid item xs={12} sm={12} md={6}>
                 <p>
-                  <b>{message}</b>
+                  <b className='b'>{message}</b>
                 </p>
               </Grid>
             ) : (
@@ -215,8 +211,10 @@ const Draw = ({ eventName, tournamentId }) => {
                   sx={{ display: { xs: "none", sm: "none", md: "block" } }}
                 >
                   {Object.keys(roundResult).length === 1 ? (
-                    // <WinnerCard winnerName={roundResult[0].winner} />
-                    <Box></Box>
+                    <WinnerCard
+                      winnerName={roundResult[0].winner}
+                      eventName={eventName}
+                    />
                   ) : (
                     nextRoundResult &&
                     nextRoundResult.map((data, index) => (

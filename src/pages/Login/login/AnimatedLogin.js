@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import useRazorpay from "react-razorpay";
-// import "./LoginStyles.css";
+import "./LoginStyles.css";
 import Register from "../Register";
 import { useHistory, useLocation } from "react-router-dom";
 import { RequestData, urlConsts } from "../../../assets/utils/RequestData";
@@ -12,7 +12,7 @@ import {
 } from "../../../assets/utils/UserLoginContext";
 
 const AnimatedLogin = () => {
-  const [activeClass, setActiveClass] = useState("container");
+  const [activeClass, setActiveClass] = useState("login_container");
   const location = useLocation();
   const history = useHistory();
   // calling context api methods for setting user and tournament id
@@ -163,8 +163,6 @@ const AnimatedLogin = () => {
           // checking state of Link from Home component
           // Setting tournament id of upcoming tournament to local storage -
           //on Give Entry button click
-          // console.log(location.state.tournamentId);
-
           if (location.state) {
             //setting tournament id to local storage is defined in Login context api
             handleTournamentId.setTournId(location.state.tournamentId);
@@ -195,7 +193,6 @@ const AnimatedLogin = () => {
   const submitLogin = (event) => {
     event.preventDefault(); // denaid for not assigning the default values
     // isnan in case of phone number
-    console.log("Clicked");
     const pattern =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-z]+)+(?:\.[a-zA-Z0-9-]+)*$/;
     //pattern check for Email ID
@@ -340,13 +337,13 @@ const AnimatedLogin = () => {
                       variant='body2'
                       sx={{
                         fontWeight: "bold",
-                        // background: "white",
                         color: "#616161",
-                        textDecorationLine: "underLine",
+                        textDecoration: "none",
                         transition: "0.3s all ease",
                         "&:hover": {
                           color: "#333",
                           transform: "scale(1.01)",
+                          textDecoration: "underLine",
                         },
                       }}
                     >
@@ -365,7 +362,7 @@ const AnimatedLogin = () => {
                 <button
                   className='ghost signin login-button'
                   id='signIn1'
-                  onClick={() => setActiveClass("container")}
+                  onClick={() => setActiveClass("login_container")}
                 >
                   Sign In
                 </button>
@@ -379,7 +376,9 @@ const AnimatedLogin = () => {
                 <button
                   className='ghost signup login-button'
                   id='signUp'
-                  onClick={() => setActiveClass("container right-panel-active")}
+                  onClick={() =>
+                    setActiveClass("login_container right-panel-active")
+                  }
                 >
                   Sign Up
                 </button>

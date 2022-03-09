@@ -8,9 +8,9 @@ export default function ChartComponent({ id, classes, headingClasses }) {
         <Box className={classes[1]}>
           <Box className={classes[2]}>
             <Box className={classes[3]}>
-              <h6 className={headingClasses[0]}>Overview</h6>
+              <h6 className={`tailwind_h6 ${headingClasses[0]}`}>Overview</h6>
               <h2
-                className={`uppercase ${headingClasses[1]}`}
+                className={`tailwind_h2 uppercase ${headingClasses[1]}`}
                 style={{ color: "rgba(148, 163, 184, 1)" }}
               >
                 Analytics

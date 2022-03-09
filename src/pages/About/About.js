@@ -11,6 +11,7 @@ import React from "react";
 import Mission from "../../assets/img/goal.png";
 import Vision from "../../assets/img/mission.jpg";
 import TwitterPost from "../../assets/img/team-1-800x800.jpg";
+import OfficeBearerCard from "../../components/card/component/OfficeBearerCard";
 
 const About = () => {
   return (
@@ -45,7 +46,7 @@ const About = () => {
           }}
         >
           <Typography
-            sx={{ lineHeight: "1.5rem", margin: "1rem", textAlign: "justify" }}
+            sx={{ lineHeight: "2rem", margin: "1rem", textAlign: "justify" }}
             variant='body2'
             color='text.secondary'
           >
@@ -63,7 +64,7 @@ const About = () => {
             champions and have played in international meets.
           </Typography>
           <Typography
-            sx={{ lineHeight: "1.5rem", margin: "1rem", textAlign: "justify" }}
+            sx={{ lineHeight: "2rem", margin: "1rem", textAlign: "justify" }}
             variant='body2'
             color='text.secondary'
           >
@@ -74,7 +75,7 @@ const About = () => {
             contribute to the game of Table Tennis in the years to come.
           </Typography>
           <Typography
-            sx={{ lineHeight: "1.5rem", margin: "1rem", textAlign: "justify" }}
+            sx={{ lineHeight: "2rem", margin: "1rem", textAlign: "justify" }}
             variant='body2'
             color='text.secondary'
           >
@@ -85,7 +86,7 @@ const About = () => {
             in the Public Sector and in the Private Sector.
           </Typography>
           <Typography
-            sx={{ lineHeight: "1.5rem", margin: "1rem", textAlign: "justify" }}
+            sx={{ lineHeight: "2rem", margin: "1rem", textAlign: "justify" }}
             variant='body2'
             color='text.secondary'
           >
@@ -93,7 +94,7 @@ const About = () => {
             Associations in its endeavour to promote the game.
           </Typography>
           <Typography
-            sx={{ lineHeight: "1.5rem", margin: "1rem", textAlign: "justify" }}
+            sx={{ lineHeight: "2rem", margin: "1rem", textAlign: "justify" }}
             variant='body2'
             color='text.secondary'
           >
@@ -113,6 +114,7 @@ const About = () => {
         >
           <Box sx={{ width: { xs: "100%", md: "30%" } }}>
             <CardMedia
+              className='tailwind_img'
               component='img'
               height='50'
               image={Mission}
@@ -121,7 +123,7 @@ const About = () => {
           </Box>
           <Box>
             <Typography
-              sx={{ lineHeight: "1.5rem", margin: "1rem" }}
+              sx={{ lineHeight: "2rem", margin: "1rem" }}
               gutterBottom
               variant='h5'
               component='div'
@@ -130,7 +132,7 @@ const About = () => {
             </Typography>
             <Typography
               sx={{
-                lineHeight: "1.5rem",
+                lineHeight: "2rem",
                 margin: "1rem",
                 textAlign: "justify",
               }}
@@ -154,7 +156,7 @@ const About = () => {
           <Box sx={{ flexGrow: 1 }}>
             <Typography
               sx={{
-                lineHeight: "1.5rem",
+                lineHeight: "2rem",
                 textAlign: "justify",
                 margin: "1rem 1rem 2rem 1rem",
               }}
@@ -291,7 +293,8 @@ const About = () => {
           <Grid container spacing={4}>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => (
               <Grid item xs={12} sm={6} lg={4} xl={3} key={index}>
-                <Card variant='outlined' sx={{ borderRadius: 0, padding: 0 }}>
+                <OfficeBearerCard position='Position' name='Name' />
+                {/* <Card variant='outlined' sx={{ borderRadius: 0, padding: 0 }}>
                   <Grid container>
                     <Grid item xs={12} md={4}>
                       <CardMedia
@@ -315,7 +318,7 @@ const About = () => {
                       </CardActions>
                     </Grid>
                   </Grid>
-                </Card>
+                </Card> */}
               </Grid>
             ))}
           </Grid>

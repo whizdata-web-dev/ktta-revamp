@@ -12,7 +12,7 @@ export default function SocialComponent() {
         <Box className='rounded-t mb-0 px-4 py-3 border-0'>
           <Box className='flex flex-wrap items-center'>
             <Box className='relative w-full px-4 max-w-full flex-grow flex-1'>
-              <h3 className='font-semibold text-base uppercase text-blueGray-700'>
+              <h3 className='tailwind_h3 font-semibold text-base uppercase text-blueGray-700'>
                 Social Media Posts
               </h3>
             </Box>
@@ -30,7 +30,7 @@ export default function SocialComponent() {
                   sx={{ margin: "1rem 0" }}
                 >
                   <button
-                    className='text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
+                    className='tailwind_button text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
                     type='button'
                     style={{ backgroundColor: "#1e40af" }}
                   >
@@ -49,7 +49,7 @@ export default function SocialComponent() {
                   sx={{ margin: "1rem 0" }}
                 >
                   <button
-                    className='text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
+                    className='tailwind_button text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
                     type='button'
                     style={{ backgroundColor: "#00acee" }}
                   >
@@ -68,7 +68,7 @@ export default function SocialComponent() {
                   sx={{ margin: "1rem 0" }}
                 >
                   <button
-                    className='text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
+                    className='tailwind_button text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
                     type='button'
                     style={{
                       background: `#bc2a8d`,

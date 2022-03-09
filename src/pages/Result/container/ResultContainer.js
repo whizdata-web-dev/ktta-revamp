@@ -24,7 +24,6 @@ const ResultContainer = () => {
         .events.sort()
     );
     setResult(resultID.filter((data) => data._id === params.tournamentId)[0]);
-    console.log("resultContainer called", eventName);
     return () => {
       setEventList("");
       setResult([]);

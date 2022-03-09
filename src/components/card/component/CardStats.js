@@ -23,7 +23,7 @@ export default function CardStats({
                 textOverflow: "ellipsis",
               }}
             >
-              <h5 className='text-blueGray-400 uppercase font-bold text-xs'>
+              <h5 className='tailwind_h5 text-blueGray-400 uppercase font-bold text-xs'>
                 {subtitle}
               </h5>
               <span className='font-semibold text-xl text-blueGray-700'>

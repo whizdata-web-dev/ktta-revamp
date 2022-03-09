@@ -74,7 +74,7 @@ const PlayerInfo = () => {
                     <img
                       alt='...'
                       src={ProfileImage}
-                      className='shadow-xl rounded-full h-auto align-middle border-none absolute max-w-150-px'
+                      className='tailwind_img shadow-xl rounded-full h-auto align-middle border-none absolute max-w-150-px'
                     />
                   </Box>
                 </Box>
@@ -92,7 +92,7 @@ const PlayerInfo = () => {
                   marginTop: { xs: "2rem", md: "4rem", lg: "6rem" },
                 }}
               >
-                <h3 className='text-4xl font-semibold leading-normal mb-2 text-blueGray-700'>
+                <h3 className='tailwind_h3 text-4xl font-semibold leading-normal mb-2 text-blueGray-700'>
                   Player Name
                 </h3>
                 <Box className='text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase'>

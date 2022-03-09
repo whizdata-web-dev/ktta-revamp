@@ -26,8 +26,8 @@ const Navbar = () => {
         <Box className='flex justify-between'>
           <Box className='flex space-x-7'>
             <Box>
-              <a href='#' className='flex items-center py-4 px-2'>
-                <img src={Logo} alt='Logo' className='h-8 mr-4' />
+              <a href='#' className='tailwind_a flex items-center py-4 px-2'>
+                <img src={Logo} alt='Logo' className='tailwind_img h-8 mr-4' />
               </a>
             </Box>
             <Box className='hidden md:flex items-center space-x-1'></Box>
@@ -132,7 +132,7 @@ const Navbar = () => {
           </Box>
           <Box className='md:hidden flex items-center'>
             <button
-              className='outline-none mobile-menu-button'
+              className='tailwind_button outline-none mobile-menu-button'
               onClick={() => setOpen(!open)}
             >
               {open ? <ClearIcon /> : <DehazeIcon />}

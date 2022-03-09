@@ -164,23 +164,14 @@ const RegisterForm = ({
                     textAlign: "left",
                     padding: "0 0",
                   }}
-                  // /broken-image.jpg
-                  // avatar={
-                  //   <Avatar
-                  //     src={EditLogo}
-                  //     sx={{
-                  //       height: "4rem",
-                  //       width: "3rem",
-                  //     }}
-                  //   />
-                  // }
                   title={
                     <Typography
                       variant='h4'
                       sx={{
                         fontSize: "2rem",
                         margin: "0.5rem",
-                        textTransform: "uppercase",
+                        // textTransform: "uppercase",
+                        fontWeight: 600,
                       }}
                     >
                       Create Account

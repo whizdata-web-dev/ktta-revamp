@@ -167,7 +167,6 @@ const SubscribeTournament = ({ open, setOpen, getUser }) => {
     await RequestData("POST", "eventSubscription", content)
       // Getting the Response object which holds the data of Previous tournaments
       .then((response) => {
-        console.log(content);
         //Checking weather response data is null
         if (response.result) {
           // Setting success message
@@ -198,7 +197,6 @@ const SubscribeTournament = ({ open, setOpen, getUser }) => {
       .then((response) => {
         // Checking the response before changing the state
         if (response && response.result) {
-          console.log(response.result);
           // setSubscribeTournamentData(response.result.eventFeeSettings);
           // setEventName(response.result.eventFeeSettings.events);
         } else {
