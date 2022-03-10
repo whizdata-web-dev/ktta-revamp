@@ -173,13 +173,14 @@ const About = () => {
         </Box>
         <Box
           sx={{
-            display: { xs: "block", md: "flex" },
+            display: "flex",
+            flexDirection: { xs: "column-reverse", md: "row" },
             background: "#fff",
             padding: { xs: "2px", sm: "4px", md: "8px", lg: "16px" },
             margin: "0",
           }}
         >
-          <Box className='order-first md:order-last' sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1 }}>
             <Typography
               sx={{
                 lineHeight: "2rem",
@@ -282,10 +283,10 @@ const About = () => {
               </li>
             </ul>
           </Box>
-          <Box sx={{ width: { xs: "100%", md: "20%" } }}>
+          <Box sx={{ width: { xs: "100%", md: "30%" } }}>
             <CardMedia
               component='img'
-              height='164'
+              width='60%'
               image={Vision}
               alt='Post Image'
             />
