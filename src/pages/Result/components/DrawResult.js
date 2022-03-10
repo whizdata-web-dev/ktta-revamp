@@ -59,7 +59,7 @@ const DrawResult = (props) => {
           borderRadius: "inherit",
           // height: { md: "250px", lg: "240px" },
           margin: { xs: "1rem 0", md: 0 },
-          boxShadow: 0,
+          boxShadow: 2,
           border: "1px solid rgb(241, 245, 249)",
         }}
       >

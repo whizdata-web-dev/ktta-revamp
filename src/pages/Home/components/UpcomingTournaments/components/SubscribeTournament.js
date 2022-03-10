@@ -54,7 +54,7 @@ function getStyles(name, eventName, theme) {
   };
 }
 
-const SubscribeTournament = ({ open, setOpen, getUser }) => {
+const SubscribeTournament = ({ open, handleClose, getUser }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -274,7 +274,7 @@ const SubscribeTournament = ({ open, setOpen, getUser }) => {
     <Box>
       <Dialog
         fullScreen={fullScreen}
-        open={open}
+        open={open && open === "give"}
         aria-labelledby='responsive-dialog-title'
       >
         <DialogTitle id='responsive-dialog-title'>
@@ -375,7 +375,7 @@ const SubscribeTournament = ({ open, setOpen, getUser }) => {
         </DialogContent>
         {/* <DialogActions> */}
         <Box sx={{ margin: "1rem" }}>
-          <Button autoFocus onClick={() => setOpen(false)}>
+          <Button autoFocus onClick={handleClose}>
             Cancel
           </Button>
           <Button

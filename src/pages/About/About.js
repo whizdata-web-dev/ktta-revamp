@@ -7,13 +7,39 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Mission from "../../assets/img/goal.png";
 import Vision from "../../assets/img/mission.jpg";
 import TwitterPost from "../../assets/img/team-1-800x800.jpg";
 import OfficeBearerCard from "../../components/card/component/OfficeBearerCard";
+import { collection, query, orderBy, getDocs } from "firebase/firestore";
+import { db } from "../../assets/config/fbConfig";
 
 const About = () => {
+  const [loading, setLoading] = useState(false);
+  const [officeBearerList, setOfficeBearerList] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+    async function getData() {
+      const dbQuery = query(
+        collection(db, "officebearers"),
+        orderBy("order", "asc")
+      );
+      const querySnapshot = await getDocs(dbQuery);
+      let list = [];
+      querySnapshot.forEach((doc) => {
+        let document = doc.data();
+        document["id"] = doc.id;
+
+        list.push(document);
+      });
+      setLoading(false);
+      setOfficeBearerList(list);
+    }
+    getData();
+  }, []);
+
   return (
     <Box>
       <Box>
@@ -153,7 +179,7 @@ const About = () => {
             margin: "0",
           }}
         >
-          <Box sx={{ flexGrow: 1 }}>
+          <Box className='order-first md:order-last' sx={{ flexGrow: 1 }}>
             <Typography
               sx={{
                 lineHeight: "2rem",
@@ -291,36 +317,12 @@ const About = () => {
         </header>
         <Box sx={{ padding: "4rem 4rem 2rem 4rem" }}>
           <Grid container spacing={4}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => (
-              <Grid item xs={12} sm={6} lg={4} xl={3} key={index}>
-                <OfficeBearerCard position='Position' name='Name' />
-                {/* <Card variant='outlined' sx={{ borderRadius: 0, padding: 0 }}>
-                  <Grid container>
-                    <Grid item xs={12} md={4}>
-                      <CardMedia
-                        component='img'
-                        image={TwitterPost}
-                        alt='Post Image'
-                        sx={{ margin: { xs: 0, md: "0.5rem" } }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={8}>
-                      <CardContent>
-                        <Typography variant='h5'>Name</Typography>
-                        <Typography variant='body2' color='text.secondary'>
-                          &nbsp;
-                        </Typography>
-                      </CardContent>
-                      <CardActions sx={{ margin: "0 0.5rem" }}>
-                        <Typography variant='body2' color='text.secondary'>
-                          September 14, 2016
-                        </Typography>
-                      </CardActions>
-                    </Grid>
-                  </Grid>
-                </Card> */}
-              </Grid>
-            ))}
+            {!loading &&
+              officeBearerList.map((item, index) => (
+                <Grid item xs={12} sm={6} lg={4} xl={3} key={index}>
+                  <OfficeBearerCard officeBearer={item} />
+                </Grid>
+              ))}
           </Grid>
         </Box>
       </Box>

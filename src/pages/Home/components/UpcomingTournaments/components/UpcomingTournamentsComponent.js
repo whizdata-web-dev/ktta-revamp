@@ -13,6 +13,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Map from "../../../../../components/map/Map";
 import SubscribeTournament from "./SubscribeTournament";
+import EntriesContainer from "../container/EntriesContainer";
 
 const UpcomingTournamentsComponent = ({
   handleGiveEntry,
@@ -23,14 +24,22 @@ const UpcomingTournamentsComponent = ({
   expanded,
   mapWidth,
   open,
-  setOpen,
+  handleClickOpen,
+  handleClose,
 }) => {
   return (
     <Box
       className={`block w-full px-4 overflow-y-auto pb-6`}
       sx={{ marginTop: "-1rem" }}
     >
-      <SubscribeTournament open={open} setOpen={setOpen} getUser={getUser} />
+      <SubscribeTournament
+        open={open}
+        handleClose={handleClose}
+        getUser={getUser}
+      />
+      {open && open !== "give" && (
+        <EntriesContainer open={open} handleClose={handleClose} />
+      )}
       {Object.keys(data).length !== 0 ? (
         data.map((tournamentDetails, index) => (
           <Accordion
@@ -95,16 +104,39 @@ const UpcomingTournamentsComponent = ({
                 </Grid>
               </Grid>
               <Divider variant='middle' sx={{ margin: "0.5rem 0" }} />
-              <Button
+              <Box
                 sx={{
-                  float: "right",
-                  color: "#64748b",
-                  margin: "0 0 0.5rem 0",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  margin: "0 0 -0.5rem 0",
                 }}
-                onClick={() => (getUser ? setOpen(true) : handleGiveEntry())}
               >
-                Give Entry
-              </Button>
+                <Button
+                  sx={{
+                    color: "#64748b",
+                  }}
+                  onClick={() => handleClickOpen("view", tournamentDetails)}
+                >
+                  View Entries
+                </Button>
+                <Button
+                  sx={{
+                    background: "#64748b",
+                    color: "#F1F1F1",
+                    transition: "0.1s all ease",
+                    "&:hover": {
+                      background: "#64748b",
+                      color: "#F1F1F1",
+                      transform: "scale(1.01)",
+                    },
+                  }}
+                  onClick={() =>
+                    getUser ? handleClickOpen("give") : handleGiveEntry()
+                  }
+                >
+                  Give Entry
+                </Button>
+              </Box>
             </AccordionDetails>
           </Accordion>
         ))

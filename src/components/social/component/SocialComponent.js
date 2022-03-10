@@ -30,6 +30,10 @@ export default function SocialComponent() {
                   sx={{ margin: "1rem 0" }}
                 >
                   <button
+                    onClick={() =>
+                      (window.location.href =
+                        "https://www.facebook.com/KarnatakaTT/")
+                    }
                     className='tailwind_button text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
                     type='button'
                     style={{ backgroundColor: "#1e40af" }}
@@ -45,6 +49,10 @@ export default function SocialComponent() {
               </Box>
               <Box>
                 <Box
+                  onClick={() =>
+                    (window.location.href =
+                      "https://twitter.com/karnatakatt?lang=en")
+                  }
                   className='relative w-full max-w-full flex-grow flex-1 text-right'
                   sx={{ margin: "1rem 0" }}
                 >
@@ -64,10 +72,14 @@ export default function SocialComponent() {
               </Box>
               <Box>
                 <Box
-                  className='relative w-full px-4 max-w-full flex-grow flex-1 text-right'
+                  className='relative w-full pl-4 max-w-full flex-grow flex-1 text-right'
                   sx={{ margin: "1rem 0" }}
                 >
                   <button
+                    onClick={() =>
+                      (window.location.href =
+                        "https://www.instagram.com/karnatakatt/?hl=en")
+                    }
                     className='tailwind_button text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150'
                     type='button'
                     style={{

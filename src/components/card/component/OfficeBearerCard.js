@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Box, Typography } from "@mui/material";
-import ProfileImage from "../../../assets/img/male.png";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import BusinessIcon from "@mui/icons-material/Business";
+import EmailIcon from "@mui/icons-material/Email";
 
-export default function OfficeBearerCard({ position, name }) {
+export default function OfficeBearerCard({ officeBearer }) {
   return (
     <>
       <Box
@@ -25,21 +27,21 @@ export default function OfficeBearerCard({ position, name }) {
             sx={{
               display: "flex",
               justifyContent: "center",
-              width: { xs: "100%", md: "100px" },
-              height: "100px",
+              minWidth: { xs: "100%", md: "80px" },
+              height: { xs: "100px", md: "100%" },
               margin: {
                 xs: 0,
-                md: "1rem 1rem 2rem 2rem",
-                lg: "1rem 1rem 1rem 2rem",
+                md: "-1rem 0rem 2rem 1.5rem",
+                lg: "-1rem 0rem 1rem 1.5rem",
               },
             }}
           >
             <img
               alt='...'
-              src={ProfileImage}
+              src={officeBearer.image}
               className='tailwind_img shadow-xl rounded-full border-none absolute'
-              width={"100px"}
-              height={"100px"}
+              width={"90px"}
+              height={"90px"}
             />
           </Box>
           <Box
@@ -50,15 +52,20 @@ export default function OfficeBearerCard({ position, name }) {
           >
             <Box
               sx={{
-                textAlign: { xs: "center", md: "left" },
                 margin: { xs: "0 0 0 -1rem", md: 0 },
+                padding: "0 0.5rem 0 0",
               }}
             >
               <h5 className='tailwind_h5 text-blueGray-400 uppercase font-bold text-xs pl-4'>
-                {position}
+                {officeBearer.designation}
               </h5>
-              <span className='font-semibold text-xl text-blueGray-700 pl-4'>
-                {name}
+              <span
+                className='font-semibold text-xl text-blueGray-700 pl-4'
+                style={{
+                  display: "inline-flex",
+                }}
+              >
+                {officeBearer.name}
               </span>
             </Box>
             <Typography
@@ -66,14 +73,28 @@ export default function OfficeBearerCard({ position, name }) {
               variant='body2'
               color='text.secondary'
             >
-              94481 27447
+              <PhoneIphoneIcon
+                sx={{
+                  fontSize: "1rem",
+                  marginRight: "0.5rem",
+                  marginBottom: "-0.15rem",
+                }}
+              />
+              {officeBearer.phone ? officeBearer.phone : "-"}
             </Typography>
             <Typography
               sx={{ margin: "1rem" }}
               variant='body2'
               color='text.secondary'
             >
-              btta2000@yahoo.com
+              <EmailIcon
+                sx={{
+                  fontSize: "1rem",
+                  marginRight: "0.5rem",
+                  marginBottom: "-0.15rem",
+                }}
+              />
+              {officeBearer.email ? officeBearer.email : "-"}
             </Typography>
             <Box>
               <Typography
@@ -84,81 +105,26 @@ export default function OfficeBearerCard({ position, name }) {
                 variant='body2'
                 color='text.secondary'
               >
-                C/o Monika travels, Ist floor, Prabhakar complex Dam Road,
-                Hospet 583201
+                <BusinessIcon
+                  sx={{
+                    fontSize: "1rem",
+                    marginRight: "0.5rem",
+                    marginBottom: "-0.15rem",
+                  }}
+                />
+                {officeBearer.address ? officeBearer.address : "-"}
               </Typography>
             </Box>
           </Box>
         </Box>
-        {/* <Box className='flex-auto p-4'>
-          <Box className='flex flex-wrap'>
-            <Box className='relative w-auto pl-4 flex-initial'>
-              <Box
-                className={
-                  "text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full "
-                }
-              >
-                <img
-                  alt='...'
-                  src={ProfileImage}
-                  className='tailwind_img mt-4 shadow-xl rounded-full h-auto align-middle border-none absolute max-w-50-px'
-                />
-              </Box>
-            </Box>
-            <Box
-              className='relative w-full pr-3 max-w-full flex-grow flex-1'
-              sx={{ marginTop: { xs: "2rem", sm: "1.25rem", md: "1.5rem" } }}
-            >
-              <h5 className='tailwind_h5 text-blueGray-400 uppercase font-bold text-xs pl-4'>
-                {position}
-              </h5>
-              <span className='font-semibold text-xl text-blueGray-700 pl-4'>
-                {name}
-              </span>
-              <Typography
-                sx={{
-                  margin: "1rem",
-                  textAlign: "justify",
-                }}
-                variant='body2'
-                color='text.secondary'
-              >
-                94481 27447
-              </Typography>
-              <Typography
-                sx={{
-                  margin: "1rem",
-                  textAlign: "justify",
-                }}
-                variant='body2'
-                color='text.secondary'
-              >
-                btta2000@yahoo.com
-              </Typography>
-              <Box>
-                <Typography
-                  sx={{
-                    margin: "1rem",
-                    textAlign: "justify",
-                  }}
-                  variant='body2'
-                  color='text.secondary'
-                >
-                  C/o Monika travels, Ist floor, Prabhakar complex Dam Road,
-                  Hospet 583201
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-        </Box> */}
       </Box>
     </>
   );
 }
 
 OfficeBearerCard.defaultProps = {
-  position: "Traffic",
-  name: "350,897",
+  position: "",
+  name: "",
 };
 
 OfficeBearerCard.propTypes = {

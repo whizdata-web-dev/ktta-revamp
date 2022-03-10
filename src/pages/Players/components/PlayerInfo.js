@@ -5,6 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import ProfileImage from "../../../assets/img/team-1-800x800.jpg";
+import FetchData from "../../../assets/utils/FetchData";
 
 const PlayerInfo = () => {
   const [tournament, setTournament] = React.useState("");
@@ -17,6 +18,12 @@ const PlayerInfo = () => {
   const handleTournamentEventChange = (event) => {
     setTournamentEvent(event.target.value);
   };
+
+  const { data } = FetchData({
+    method: "GET",
+    url: "",
+    payload: {},
+  });
 
   return (
     <main className='profile-page'>

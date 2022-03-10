@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import useRazorpay from "react-razorpay";
 import "./LoginStyles.css";
@@ -29,6 +29,10 @@ const AnimatedLogin = () => {
       errorMessage: "",
     },
   ]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // This is to call razorpay in case of payment renewal
   // This is rendered once payment of player expires.

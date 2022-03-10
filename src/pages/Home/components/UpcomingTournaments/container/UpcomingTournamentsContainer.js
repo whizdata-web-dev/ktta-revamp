@@ -14,11 +14,13 @@ import UpcomingTournamentsComponent from "../components/UpcomingTournamentsCompo
 import { useLoginContext } from "../../../../../assets/utils/UserLoginContext";
 
 export default function UpcomingTournamentsContainer() {
-  const [expanded, setExpanded] = React.useState("panel0");
-  const ref = React.useRef(null);
-  const [mapWidth, setMapWidth] = React.useState(0);
   const { getLoginUser } = useLoginContext();
   const getUser = getLoginUser();
+
+  const ref = React.useRef(null);
+  const [mapWidth, setMapWidth] = React.useState(0);
+
+  const [expanded, setExpanded] = React.useState("panel0");
   const [open, setOpen] = React.useState(false);
 
   const { data, loading, error } = FetchData({
@@ -41,7 +43,16 @@ export default function UpcomingTournamentsContainer() {
   }, [data]);
 
   const handleChange = (panel) => (event, isExpanded) => {
+    console.log(panel);
     setExpanded(isExpanded ? panel : false);
+  };
+
+  const handleClickOpen = (component, id) => {
+    setOpen(component === "view" ? id : component);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const handleGiveEntry = () => {
@@ -75,7 +86,8 @@ export default function UpcomingTournamentsContainer() {
           expanded={expanded}
           mapWidth={mapWidth}
           open={open}
-          setOpen={setOpen}
+          handleClickOpen={handleClickOpen}
+          handleClose={handleClose}
         />
       </Box>
     </>
