@@ -4,6 +4,7 @@ import Logo from "../../assets/img/logo.png";
 import DehazeIcon from "@mui/icons-material/Dehaze";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Link } from "react-router-dom";
+import { useLoginContext } from "../../assets/utils/UserLoginContext";
 
 const theme = {
   home: "#211940",
@@ -16,26 +17,27 @@ const theme = {
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { logOut, getLoginUser } = useLoginContext();
 
   return (
     <nav
-      className='shadow-lg text-white'
+      className="shadow-lg text-white"
       style={{ background: theme[window.location.pathname.split("/")[1]] }}
     >
-      <Box className='max-w-6xl mx-auto px-4'>
-        <Box className='flex justify-between'>
-          <Box className='flex space-x-7'>
+      <Box className="max-w-6xl mx-auto px-4">
+        <Box className="flex justify-between">
+          <Box className="flex space-x-7">
             <Box>
-              <a href='#' className='tailwind_a flex items-center py-4 px-2'>
-                <img src={Logo} alt='Logo' className='tailwind_img h-8 mr-4' />
+              <a href="#" className="tailwind_a flex items-center py-4 px-2">
+                <img src={Logo} alt="Logo" className="tailwind_img h-8 mr-4" />
               </a>
             </Box>
-            <Box className='hidden md:flex items-center space-x-1'></Box>
+            <Box className="hidden md:flex items-center space-x-1"></Box>
           </Box>
-          <Box className='hidden md:flex items-center space-x-3 '>
+          <Box className="hidden md:flex items-center space-x-3 ">
             <Link
-              className='block text-sm px-2 py-4 text-white bg-green-500 font-semibold'
-              to='/home'
+              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
+              to="/home"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -43,7 +45,7 @@ const Navbar = () => {
               }}
             >
               <span
-                className='material-icons'
+                className="material-icons"
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               >
                 cottage
@@ -51,8 +53,8 @@ const Navbar = () => {
               Home
             </Link>
             <Link
-              className='block text-sm px-2 py-4 text-white bg-green-500 font-semibold'
-              to='/about'
+              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
+              to="/about"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -60,14 +62,14 @@ const Navbar = () => {
               }}
             >
               <i
-                className='far fa-address-book'
+                className="far fa-address-book"
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               ></i>
               About
             </Link>
             <Link
-              className='block text-sm px-2 py-4 text-white bg-green-500 font-semibold'
-              to='/players'
+              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
+              to="/players"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -75,7 +77,7 @@ const Navbar = () => {
               }}
             >
               <span
-                className='material-icons'
+                className="material-icons"
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               >
                 groups
@@ -83,8 +85,8 @@ const Navbar = () => {
               Players
             </Link>
             <Link
-              className='block text-sm px-2 py-4 text-white bg-green-500 font-semibold'
-              to='/result'
+              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
+              to="/result"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -92,14 +94,14 @@ const Navbar = () => {
               }}
             >
               <i
-                className='far fa-chart-bar'
+                className="far fa-chart-bar"
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               ></i>
               Result
             </Link>
             <Link
-              className='block text-sm px-2 py-4 text-white bg-green-500 font-semibold'
-              to='/contact'
+              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
+              to="/contact"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -107,32 +109,55 @@ const Navbar = () => {
               }}
             >
               <i
-                className='far fa-copy'
+                className="far fa-copy"
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               ></i>
               Contact Us
             </Link>
-            <Link
-              className='block text-sm px-2 py-4 text-white bg-green-500 font-semibold login'
-              to='/login'
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                margin: "0 0.5rem",
-              }}
-            >
-              <span
-                className='material-icons'
-                style={{ fontSize: "1rem", margin: "0.5vh" }}
+            {!getLoginUser() ? (
+              <Link
+                className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold login"
+                to="/login"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  margin: "0 0.5rem",
+                }}
               >
-                login
-              </span>
-              Login
-            </Link>
+                <span
+                  className="material-icons"
+                  style={{ fontSize: "1rem", margin: "0.5vh" }}
+                >
+                  login
+                </span>
+                Login
+              </Link>
+            ) : (
+              <Link
+                className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold login"
+                to="/"
+                onClick={() => {
+                  logOut();
+                }}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  margin: "0 0.5rem",
+                }}
+              >
+                <span
+                  className="material-icons"
+                  style={{ fontSize: "1rem", margin: "0.5vh" }}
+                >
+                  logout
+                </span>
+                Logout
+              </Link>
+            )}
           </Box>
-          <Box className='md:hidden flex items-center'>
+          <Box className="md:hidden flex items-center">
             <button
-              className='tailwind_button outline-none mobile-menu-button'
+              className="tailwind_button outline-none mobile-menu-button"
               onClick={() => setOpen(!open)}
             >
               {open ? <ClearIcon /> : <DehazeIcon />}
@@ -141,15 +166,15 @@ const Navbar = () => {
         </Box>
       </Box>
       <Box className={`md:hidden ${open ? "" : "hidden"} mobile-menu`}>
-        <ul className=''>
-          <li className='active'>
+        <ul className="">
+          <li className="active">
             <Link
-              className='block text-sm px-2 py-4 text-white bg-green-500 font-semibold'
-              to='/home'
+              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
+              to="/home"
               style={{ display: "inline-flex", alignItems: "center" }}
             >
               <span
-                className='material-icons'
+                className="material-icons"
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               >
                 cottage
@@ -159,12 +184,12 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              className='block text-sm px-2 py-4 text-white bg-green-500 font-semibold'
-              to='/about'
+              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
+              to="/about"
               style={{ display: "inline-flex", alignItems: "center" }}
             >
               <i
-                className='far fa-address-book'
+                className="far fa-address-book"
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               ></i>
               About
@@ -172,12 +197,12 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              className='block text-sm px-2 py-4 text-white bg-green-500 font-semibold'
-              to='/players'
+              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
+              to="/players"
               style={{ display: "inline-flex", alignItems: "center" }}
             >
               <span
-                className='material-icons'
+                className="material-icons"
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               >
                 groups
@@ -187,12 +212,12 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              className='block text-sm px-2 py-4 text-white bg-green-500 font-semibold'
-              to='/result'
+              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
+              to="/result"
               style={{ display: "inline-flex", alignItems: "center" }}
             >
               <i
-                className='far fa-chart-bar'
+                className="far fa-chart-bar"
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               ></i>
               Result
@@ -200,12 +225,12 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              className='block text-sm px-2 py-4 text-white bg-green-500 font-semibold'
-              to='/contact'
+              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
+              to="/contact"
               style={{ display: "inline-flex", alignItems: "center" }}
             >
               <i
-                className='far fa-copy'
+                className="far fa-copy"
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               ></i>
               Contact Us
