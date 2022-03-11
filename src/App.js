@@ -13,6 +13,7 @@ import Result from "./pages/Result/Result";
 import ResultContainer from "./pages/Result/container/ResultContainer";
 import AnimatedLogin from "./pages/Login/login/AnimatedLogin";
 import {AuthContext} from "./assets/utils/UserLoginContext";
+import ScoreSheet from "./assets/utils/ScoreSheet";
 function App() {
   return (
     <AuthContext>
@@ -37,6 +38,7 @@ function App() {
                 path='/result/:tournamentId'
                 component={ResultContainer}
               />
+              <Route path='/table' exact component={ScoreSheet} />
               <Route path='/contact' exact component={Contact} />
               <Route path='/login' exact>
                 <AnimatedLogin />
