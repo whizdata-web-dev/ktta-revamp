@@ -1,15 +1,24 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import ProfileImage from "../../../assets/img/team-1-800x800.jpg";
 import FetchData from "../../../assets/utils/FetchData";
+import { RequestData, urlConsts } from "../../../assets/utils/RequestData";
+import { useParams } from "react-router";
 
 const PlayerInfo = () => {
   const [tournament, setTournament] = React.useState("");
   const [tournamentEvent, setTournamentEvent] = React.useState("");
+
+  const [playerData, setPlayerData] = React.useState({
+    tournamentList: [],
+    eventList: [],
+  });
+
+  const params = useParams();
 
   const handleTournamentChange = (event) => {
     setTournament(event.target.value);
@@ -19,11 +28,41 @@ const PlayerInfo = () => {
     setTournamentEvent(event.target.value);
   };
 
-  const { data } = FetchData({
-    method: "GET",
-    url: "",
-    payload: {},
-  });
+  // const { data } = FetchData({
+  //   method: "POST",
+  //   url: "getListOfTournamentsForStateAndPlayer",
+  //   payload: {
+  //     caller: "KTTA1",
+  //     apiKey: urlConsts.apiKey,
+  //     data: {
+  //       eveType: "1",
+  //       stateId: "8va5A8N3EKAeKtmeB",
+  //       teamId: params.id,
+  //       playerId: params.id,
+  //     },
+  //   },
+  // });
+
+  // console.log(data);
+
+  useEffect(() => {
+    async function getData() {
+      await RequestData("POST", "getListOfTournamentsForStateAndPlayer", {
+        caller: "KTTA1",
+        apiKey: urlConsts.apiKey,
+        data: {
+          eveType: "1",
+          stateId: "8va5A8N3EKAeKtmeB",
+          teamId: params.id,
+          playerId: params.id,
+        },
+      }).then((response) => {
+        console.log(response);
+        setPlayerData({ ...playerData, tournamentList: response.result.data });
+      });
+    }
+    getData();
+  }, []);
 
   return (
     <main className='profile-page'>
@@ -109,7 +148,7 @@ const PlayerInfo = () => {
               </Box>
               <Box className='mt-10 py-10 border-t border-blueGray-200 text-center'>
                 <Box className='flex flex-wrap justify-center'>
-                  <Box className='w-full lg:w-4/12 px-4'>
+                  <Box className='w-full px-4'>
                     <Box className='lg-py-6 px-3 lg-mt-32 mt-8'>
                       <Box>
                         <FormControl fullWidth>
@@ -123,21 +162,23 @@ const PlayerInfo = () => {
                             label='Tournament'
                             onChange={handleTournamentChange}
                           >
-                            {[
-                              "Tournament 1",
-                              "Tournament 2",
-                              "Tournament 3",
-                            ].map((tournamentName, index) => (
-                              <MenuItem value={tournamentName} key={index}>
-                                {tournamentName}
-                              </MenuItem>
-                            ))}
+                            {playerData.tournamentList.length > 0 &&
+                              playerData.tournamentList.map(
+                                (tournamentName, index) => (
+                                  <MenuItem
+                                    value={tournamentName.eventName}
+                                    key={index}
+                                  >
+                                    {tournamentName.eventName}
+                                  </MenuItem>
+                                )
+                              )}
                           </Select>
                         </FormControl>
                       </Box>
                     </Box>
                   </Box>
-                  <Box className='w-full lg:w-4/12 px-4'>
+                  <Box className='w-full px-4'>
                     <Box className='lg-py-6 px-3 lg-mt-32 mt-8'>
                       <Box>
                         <FormControl fullWidth>

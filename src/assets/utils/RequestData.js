@@ -14,7 +14,6 @@ export const urlConsts = {
   getApiKey: "114d59697dfd678982103926f6f0076f",
   apiKey: "dd5e611bf286042db7257ee998e5112b",
   caller: "KTTA1",
-  testCaller: "APTTA",
   sportID: "QvHXDftiwsnc8gyfJ",
   filterData: "z37CQ3th8i73SQogk",
   // Payment Constants used for Razor Pay in registration
