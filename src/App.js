@@ -12,11 +12,13 @@ import PlayerInfo from "./pages/Players/components/PlayerInfo";
 import Result from "./pages/Result/Result";
 import ResultContainer from "./pages/Result/container/ResultContainer";
 import AnimatedLogin from "./pages/Login/login/AnimatedLogin";
+import {AuthContext} from "./assets/utils/UserLoginContext";
 import ScoreSheet from "./assets/utils/ScoreSheet";
 
 function App() {
   return (
-    <>
+    <AuthContext>
+      
       <Navbar />
       <Box className='relative bg-blueGray-100' style={{}}>
         <Box
@@ -49,7 +51,7 @@ function App() {
         </Box>
         <Footer />
       </Box>
-    </>
+    </AuthContext>
   );
 }
 

@@ -78,6 +78,8 @@ const AnimatedLogin = () => {
   };
 
   const handleRespLogin = (response) => {
+    console.log(response);
+
     // multiple condition check using ternary operator
     // checking weather user is invalid or password is incorrect
     //if invalid setting error to error button class defined in Loginstyles.css
@@ -120,13 +122,11 @@ const AnimatedLogin = () => {
         if (response.result) {
           setLoginUser(player); // setting data to context api
           if (location.state) {
-            // Setting tournament id of upcoming tournament to local storage -
-            //on Give Entry button click
-            handleTournamentId.setTournamentId(location.state.tournamentId);
-            window.location.href = "/subscribeTournament";
-          } else {
-            window.location.href = "/";
+            //setting tournament id to local storage is defined in Login context api
+            handleTournamentId.setTournId(location.state.tournamentId);
+            // return <Redirect to="/subscribeTournament" />;
           }
+          history.push("/");
         } else {
           setLoginValue({
             errorMessage: "Response Time Out! Please try again later.",

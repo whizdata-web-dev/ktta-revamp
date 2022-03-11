@@ -308,9 +308,10 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
                 MenuProps={MenuProps}
               >
                 {events.map((event, index) => (
-                  <MenuItem
+                  <MenuItem 
                     key={event}
                     value={event}
+                    disabled={subscribedEvents[index]!="0" ? true : false}
                     style={getStyles(event, eventName, theme)}
                   >
                     <Grid container>

@@ -39,6 +39,7 @@ export default function Contact() {
                 md: "140vh",
                 lg: "122vh",
               },
+              overflowY:"auto"
             }}
           >
             <CardContent>
