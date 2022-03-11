@@ -17,6 +17,7 @@ import ScoreSheet from "./assets/utils/ScoreSheet";
 function App() {
   return (
     <AuthContext>
+      
       <Navbar />
       <Box className='relative bg-blueGray-100' style={{}}>
         <Box
