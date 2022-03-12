@@ -144,7 +144,7 @@ const Draw = ({ eventName, tournamentId }) => {
           <Box
             sx={{
               background: "transparent",
-              // minHeight: { xs: "100vh", lg: "79vh" },
+              marginBottom: "10rem",
             }}
           >
             <Avatar

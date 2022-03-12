@@ -1252,6 +1252,10 @@ a {
   margin-top: -16rem;
 }
 
+.-mt-80 {
+  margin-top: -20rem;
+}
+
 .last\:mr-0:last-child {
   margin-right: 0px;
 }

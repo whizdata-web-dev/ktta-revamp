@@ -19,13 +19,7 @@ export default function Contact() {
   };
 
   return (
-    <Box
-      sx={{
-        margin: { md: "1rem 0" },
-        // backgroundColor: "rgb(225, 225, 225, 0.3)",
-        // minHeight: "80vh",
-      }}
-    >
+    <Box sx={{ margin: { md: "1rem 0" } }}>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={6} lg={8}>
           <Card
@@ -39,7 +33,7 @@ export default function Contact() {
                 md: "140vh",
                 lg: "122vh",
               },
-              overflowY:"auto"
+              overflowY: "auto",
             }}
           >
             <CardContent>

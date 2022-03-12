@@ -16,7 +16,6 @@ const DrawResult = (props) => {
   // constants defined from props
   const { visibility, drawResponse, centralize, matchNo, numberOfSets, round } =
     props;
-  console.log(drawResponse);
   // constant for player I name
   const playerA = drawResponse.players.playerA
     ? drawResponse.players.playerA

@@ -12,6 +12,7 @@ export default function ContactForm({ coordinates }) {
           margin: "1rem 0",
         },
         margin: "1rem",
+        height: "100%",
       }}
       noValidate
       autoComplete='off'

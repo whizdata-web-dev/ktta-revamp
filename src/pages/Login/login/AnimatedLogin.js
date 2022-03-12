@@ -78,8 +78,6 @@ const AnimatedLogin = () => {
   };
 
   const handleRespLogin = (response) => {
-    console.log(response);
-
     // multiple condition check using ternary operator
     // checking weather user is invalid or password is incorrect
     //if invalid setting error to error button class defined in Loginstyles.css

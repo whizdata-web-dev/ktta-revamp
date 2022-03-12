@@ -43,8 +43,6 @@ const PlayerInfo = () => {
   //   },
   // });
 
-  // console.log(data);
-
   useEffect(() => {
     async function getData() {
       await RequestData("POST", "getListOfTournamentsForStateAndPlayer", {
@@ -57,7 +55,6 @@ const PlayerInfo = () => {
           playerId: params.id,
         },
       }).then((response) => {
-        console.log(response);
         setPlayerData({ ...playerData, tournamentList: response.result.data });
       });
     }

@@ -42,49 +42,6 @@ const Result = () => {
           </Box>
         )}
       </Box>
-      {/* <CardContent
-        sx={{
-          maxHeight: { xs: "90vh", sm: "80vh", md: "60vh" },
-          overflowY: "auto",
-        }}
-      >
-        <Grid container spacing={{ xs: 2, md: 3 }} sx={{ textAlign: "center" }}>
-          {loading ? (
-            <Box
-              sx={{
-                width: "100%",
-                justifyContent: "center",
-                textAlign: "center",
-                margin: "6vh auto",
-              }}
-            >
-              <Typography variant='h4'>&nbsp;Loading...</Typography>
-              <LinearProgress
-                sx={{ width: "80%", margin: "4rem auto -2rem auto" }}
-              />
-            </Box>
-          ) : data && data.resultID ? (
-            data.resultID.map((d) => {
-              return (
-                <Grid item xs={12} sm={6} md={6} lg={3} key={d._id}>
-                  <PreviousTournamentCard
-                    tournamentPastData={d}
-                    tournamentEventData={data.eventList}
-                  />
-                </Grid>
-              );
-            })
-          ) : (
-            <Typography
-              variant='h5'
-              color='text.secondary'
-              sx={{ textAlign: "center", margin: "2rem auto" }}
-            >
-              No Data Found
-            </Typography>
-          )}
-        </Grid>
-      </CardContent> */}
     </Box>
   );
 };

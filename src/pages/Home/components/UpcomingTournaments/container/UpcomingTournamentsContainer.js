@@ -43,7 +43,6 @@ export default function UpcomingTournamentsContainer() {
   }, [data]);
 
   const handleChange = (panel) => (event, isExpanded) => {
-    console.log(panel);
     setExpanded(isExpanded ? panel : false);
   };
 

@@ -12,19 +12,18 @@ import PlayerInfo from "./pages/Players/components/PlayerInfo";
 import Result from "./pages/Result/Result";
 import ResultContainer from "./pages/Result/container/ResultContainer";
 import AnimatedLogin from "./pages/Login/login/AnimatedLogin";
-import {AuthContext} from "./assets/utils/UserLoginContext";
+import { AuthContext } from "./assets/utils/UserLoginContext";
 import ScoreSheet from "./assets/utils/ScoreSheet";
 
 function App() {
   return (
     <AuthContext>
-      
       <Navbar />
       <Box className='relative bg-blueGray-100' style={{}}>
         <Box
           className='mx-auto w-full'
           style={{
-            minHeight: "81vh",
+            minHeight: "83vh",
             backgroundRepeat: "no-repeat",
           }}
         >
