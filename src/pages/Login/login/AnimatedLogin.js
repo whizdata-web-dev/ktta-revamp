@@ -233,7 +233,7 @@ const AnimatedLogin = () => {
 
   return (
     <Box className='loginroot'>
-      <Box className='loginbody'>
+      <Box className='loginbody' sx={{ padding: { xs: "2rem 0", md: "2rem" } }}>
         <Box className={activeClass} id='container'>
           <Box className='form-container sign-up-container'>
             <Box className='login-form'>

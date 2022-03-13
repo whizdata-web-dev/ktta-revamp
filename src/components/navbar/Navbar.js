@@ -1,51 +1,117 @@
 import { Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "../../assets/img/logo.png";
 import DehazeIcon from "@mui/icons-material/Dehaze";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Link } from "react-router-dom";
 import { useLoginContext } from "../../assets/utils/UserLoginContext";
+import $ from "jquery";
+import { useHistory, useLocation } from "react-router";
+import "./Navbar.css";
 
 const theme = {
-  home: "#211940",
-  about: "#000",
-  players: "#211940",
-  result: "#211940",
-  contact: "#211940",
-  login: "#211940",
+  home: { background: "#32325D", text: "#495057" },
+  about: { background: "#32325D", text: "#495057" },
+  players: { background: "#121020", text: "#495057" },
+  result: { background: "#f6f5f7", text: "#495057" },
+  contact: { background: "#f6f5f7", text: "#495057" },
+  login: { background: "#f6f5f7", text: "#495057" },
 };
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { logOut, getLoginUser } = useLoginContext();
 
+  let activeTab = localStorage.getItem("active");
+
+  const location = useLocation();
+  const curLocation = location.pathname.split("/")[1];
+
+  function animation() {
+    var tabsNewAnim = $("#navbarSupportedContent");
+    var activeItemNewAnim = tabsNewAnim.find(".active");
+    var activeWidthNewAnimHeight = activeItemNewAnim.innerHeight();
+    var activeWidthNewAnimWidth = activeItemNewAnim.innerWidth();
+    var itemPosNewAnimTop = activeItemNewAnim.position();
+    var itemPosNewAnimLeft = activeItemNewAnim.position();
+    $(".hori-selector").css({
+      top: itemPosNewAnimTop && itemPosNewAnimTop.top + "px",
+      left: itemPosNewAnimLeft && itemPosNewAnimLeft.left + "px",
+      height: activeWidthNewAnimHeight && activeWidthNewAnimHeight + "px",
+      width: activeWidthNewAnimWidth && activeWidthNewAnimWidth + "px",
+      backgroundColor: theme[window.location.pathname.split("/")[1]].background,
+    });
+    $(".hori-selector .left, .hori-selector .right").css({
+      backgroundColor: theme[window.location.pathname.split("/")[1]].background,
+    });
+    $("#navbarSupportedContent").on("click", "a", function (e) {
+      $("#navbarSupportedContent a").removeClass("active");
+      $(this).addClass("active");
+      var activeWidthNewAnimHeight = $(this).innerHeight();
+      var activeWidthNewAnimWidth = $(this).innerWidth();
+      var itemPosNewAnimTop = $(this).position();
+      var itemPosNewAnimLeft = $(this).position();
+      $(".hori-selector").css({
+        top: itemPosNewAnimTop && itemPosNewAnimTop.top + "px",
+        left: itemPosNewAnimLeft && itemPosNewAnimLeft.left + "px",
+        height: activeWidthNewAnimHeight && activeWidthNewAnimHeight + "px",
+        width: activeWidthNewAnimWidth && activeWidthNewAnimWidth + "px",
+        backgroundColor:
+          theme[window.location.pathname.split("/")[1]].background,
+      });
+      $(".hori-selector .left, .hori-selector .right").css({
+        backgroundColor:
+          theme[window.location.pathname.split("/")[1]].background,
+      });
+    });
+  }
+  useEffect(() => {
+    animation();
+    $(window).on("resize", function () {
+      setTimeout(function () {
+        animation();
+      }, 500);
+    });
+  }, [activeTab]);
+
   return (
-    <nav
-      className="shadow-lg text-white"
-      style={{ background: theme[window.location.pathname.split("/")[1]] }}
-    >
-      <Box className="max-w-6xl mx-auto px-4">
-        <Box className="flex justify-between">
-          <Box className="flex space-x-7">
+    <nav className='shadow-lg' style={{ background: "#211940" }}>
+      <Box className='max-w-6xl mx-auto px-4'>
+        <Box className='flex justify-between' sx={{ padding: 0 }}>
+          <Box className='flex space-x-7'>
             <Box>
-              <a href="#" className="tailwind_a flex items-center py-4 px-2">
-                <img src={Logo} alt="Logo" className="tailwind_img h-8 mr-4" />
+              <a href='#' className='tailwind_a flex items-center py-4 px-2'>
+                <img src={Logo} alt='Logo' className='tailwind_img h-8 mr-4' />
               </a>
             </Box>
-            <Box className="hidden md:flex items-center space-x-1"></Box>
+            <Box className='hidden md:flex items-center space-x-1'></Box>
           </Box>
-          <Box className="hidden md:flex items-center space-x-3 ">
+          <Box
+            className='hidden md:flex items-center space-x-3'
+            sx={{ padding: { xs: 0, md: "0 2rem" } }}
+            id='navbarSupportedContent'
+          >
+            <Box className='hori-selector'>
+              <Box className='left'></Box>
+              <Box className='right'></Box>
+            </Box>
             <Link
-              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
-              to="/home"
+              className={`block text-sm px-2 py-4 bg-green-500 font-semibold ${
+                curLocation === "home" ? "nav-item active" : "nav-item"
+              }`}
+              to='/home'
+              onClick={(event) =>
+                localStorage.setItem("active", event.target.innerText)
+              }
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                margin: "0 0.5rem",
+                margin: "0rem 0.5rem -0.5rem 0",
+                color: curLocation === "home" ? "#e0e0e0" : "#e0e0e0",
               }}
             >
               <span
-                className="material-icons"
+                className='material-icons'
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               >
                 cottage
@@ -53,31 +119,43 @@ const Navbar = () => {
               Home
             </Link>
             <Link
-              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
-              to="/about"
+              className={`block text-sm px-2 py-4 bg-green-500 font-semibold ${
+                curLocation === "about" ? "nav-item active" : "nav-item"
+              }`}
+              to='/about'
+              onClick={(event) =>
+                localStorage.setItem("active", event.target.innerText)
+              }
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                margin: "0 0.5rem",
+                margin: "0rem 0.5rem -0.5rem 0",
+                color: curLocation === "about" ? "#e0e0e0" : "#e0e0e0",
               }}
             >
               <i
-                className="far fa-address-book"
+                className='far fa-address-book'
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               ></i>
               About
             </Link>
             <Link
-              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
-              to="/players"
+              className={`block text-sm px-2 py-4 bg-green-500 font-semibold ${
+                curLocation === "players" ? "nav-item active" : "nav-item"
+              }`}
+              to='/players'
+              onClick={(event) =>
+                localStorage.setItem("active", event.target.innerText)
+              }
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                margin: "0 0.5rem",
+                margin: "0rem 0.5rem -0.5rem 0",
+                color: curLocation === "players" ? "#e0e0e0" : "#e0e0e0",
               }}
             >
               <span
-                className="material-icons"
+                className='material-icons'
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               >
                 groups
@@ -85,47 +163,65 @@ const Navbar = () => {
               Players
             </Link>
             <Link
-              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
-              to="/result"
+              className={`block text-sm px-2 py-4 bg-green-500 font-semibold ${
+                curLocation === "result" ? "nav-item active" : "nav-item"
+              }`}
+              to='/result'
+              onClick={(event) =>
+                localStorage.setItem("active", event.target.innerText)
+              }
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                margin: "0 0.5rem",
+                margin: "0rem 0.5rem -0.5rem 0",
+                color: curLocation === "result" ? "#495057" : "#e0e0e0",
               }}
             >
               <i
-                className="far fa-chart-bar"
+                className='far fa-chart-bar'
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               ></i>
               Result
             </Link>
             <Link
-              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
-              to="/contact"
+              className={`block text-sm px-2 py-4 bg-green-500 font-semibold ${
+                curLocation === "contact" ? "nav-item active" : "nav-item"
+              }`}
+              to='/contact'
+              onClick={(event) =>
+                localStorage.setItem("active", event.target.innerText)
+              }
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                margin: "0 0.5rem",
+                margin: "0rem 0.5rem -0.5rem 0",
+                color: curLocation === "contact" ? "#495057" : "#e0e0e0",
               }}
             >
               <i
-                className="far fa-copy"
+                className='far fa-copy'
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               ></i>
               Contact Us
             </Link>
             {!getLoginUser() ? (
               <Link
-                className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold login"
-                to="/login"
+                className={`block text-sm px-2 py-4 bg-green-500 font-semibold login ${
+                  curLocation === "login" ? "nav-item active" : "nav-item"
+                }`}
+                to='/login'
+                onClick={(event) =>
+                  localStorage.setItem("active", event.target.innerText)
+                }
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  margin: "0 0.5rem",
+                  margin: "0rem 0.5rem -0.5rem 0",
+                  color: curLocation === "login" ? "#495057" : "#e0e0e0",
                 }}
               >
                 <span
-                  className="material-icons"
+                  className='material-icons'
                   style={{ fontSize: "1rem", margin: "0.5vh" }}
                 >
                   login
@@ -134,8 +230,8 @@ const Navbar = () => {
               </Link>
             ) : (
               <Link
-                className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold login"
-                to="/"
+                className='block text-sm px-2 py-4 bg-green-500 font-semibold login'
+                to='/'
                 onClick={() => {
                   logOut();
                 }}
@@ -146,7 +242,7 @@ const Navbar = () => {
                 }}
               >
                 <span
-                  className="material-icons"
+                  className='material-icons'
                   style={{ fontSize: "1rem", margin: "0.5vh" }}
                 >
                   logout
@@ -155,9 +251,9 @@ const Navbar = () => {
               </Link>
             )}
           </Box>
-          <Box className="md:hidden flex items-center">
+          <Box className='md:hidden flex items-center'>
             <button
-              className="tailwind_button outline-none mobile-menu-button"
+              className='tailwind_button outline-none mobile-menu-button'
               onClick={() => setOpen(!open)}
             >
               {open ? <ClearIcon /> : <DehazeIcon />}
@@ -166,15 +262,15 @@ const Navbar = () => {
         </Box>
       </Box>
       <Box className={`md:hidden ${open ? "" : "hidden"} mobile-menu`}>
-        <ul className="">
-          <li className="active">
+        <ul className=''>
+          <li className='active'>
             <Link
-              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
-              to="/home"
+              className='block text-sm px-2 py-4 bg-green-500 font-semibold'
+              to='/home'
               style={{ display: "inline-flex", alignItems: "center" }}
             >
               <span
-                className="material-icons"
+                className='material-icons'
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               >
                 cottage
@@ -184,12 +280,12 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
-              to="/about"
+              className='block text-sm px-2 py-4 bg-green-500 font-semibold'
+              to='/about'
               style={{ display: "inline-flex", alignItems: "center" }}
             >
               <i
-                className="far fa-address-book"
+                className='far fa-address-book'
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               ></i>
               About
@@ -197,12 +293,12 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
-              to="/players"
+              className='block text-sm px-2 py-4 bg-green-500 font-semibold'
+              to='/players'
               style={{ display: "inline-flex", alignItems: "center" }}
             >
               <span
-                className="material-icons"
+                className='material-icons'
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               >
                 groups
@@ -212,12 +308,12 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
-              to="/result"
+              className='block text-sm px-2 py-4 bg-green-500 font-semibold'
+              to='/result'
               style={{ display: "inline-flex", alignItems: "center" }}
             >
               <i
-                className="far fa-chart-bar"
+                className='far fa-chart-bar'
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               ></i>
               Result
@@ -225,12 +321,12 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              className="block text-sm px-2 py-4 text-white bg-green-500 font-semibold"
-              to="/contact"
+              className='block text-sm px-2 py-4 bg-green-500 font-semibold'
+              to='/contact'
               style={{ display: "inline-flex", alignItems: "center" }}
             >
               <i
-                className="far fa-copy"
+                className='far fa-copy'
                 style={{ fontSize: "1rem", margin: "0.5vh" }}
               ></i>
               Contact Us

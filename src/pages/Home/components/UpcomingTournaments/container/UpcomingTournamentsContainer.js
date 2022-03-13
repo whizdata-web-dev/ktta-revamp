@@ -17,7 +17,6 @@ export default function UpcomingTournamentsContainer() {
   const { getLoginUser } = useLoginContext();
   const getUser = getLoginUser();
 
-  const ref = React.useRef(null);
   const [mapWidth, setMapWidth] = React.useState(0);
 
   const [expanded, setExpanded] = React.useState("panel0");
@@ -31,11 +30,11 @@ export default function UpcomingTournamentsContainer() {
   const [tournamentData, setTournamentData] = React.useState([]);
 
   React.useEffect(() => {
-    setMapWidth(ref.current ? ref.current.offsetWidth : 0);
-    function handleResize() {
-      setMapWidth(ref.current && ref.current.offsetWidth);
-    }
-    window.addEventListener("resize", handleResize);
+    // setMapWidth(ref.current ? ref.current.offsetWidth : 0);
+    // function handleResize() {
+    //   setMapWidth(ref.current && ref.current.offsetWidth);
+    // }
+    // window.addEventListener("resize", handleResize);
 
     if (Object.keys(data).length !== 0) {
       setTournamentData(data.resultID);
@@ -79,7 +78,6 @@ export default function UpcomingTournamentsContainer() {
         <UpcomingTournamentsComponent
           handleGiveEntry={handleGiveEntry}
           getUser={getUser}
-          ref={ref}
           data={tournamentData}
           handleChange={handleChange}
           expanded={expanded}

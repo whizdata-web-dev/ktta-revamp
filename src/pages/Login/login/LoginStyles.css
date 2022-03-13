@@ -136,8 +136,6 @@
   align-items: center;
   flex-direction: column;
   font-family: "Montserrat", sans-serif;
-  /* height: 100vh; */
-  padding: 2rem;
 }
 .drawCard {
   padding: 1rem 2rem;
@@ -276,7 +274,7 @@ input {
   .login_container {
     position: relative;
     overflow: hidden;
-    width: 60vw;
+    width: 85vw;
     max-width: 100%;
     min-height: 160vh;
   }

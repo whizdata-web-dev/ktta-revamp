@@ -18,7 +18,6 @@ import EntriesContainer from "../container/EntriesContainer";
 const UpcomingTournamentsComponent = ({
   handleGiveEntry,
   getUser,
-  ref,
   data,
   handleChange,
   expanded,
@@ -44,7 +43,7 @@ const UpcomingTournamentsComponent = ({
         data.map((tournamentDetails, index) => (
           <Accordion
             sx={{ background: "#f8fafc", overflow: "hidden" }}
-            expanded={expanded}
+            expanded={expanded === `panel${index}`}
             onChange={handleChange(`panel${index}`)}
             key={index}
           >
@@ -66,7 +65,7 @@ const UpcomingTournamentsComponent = ({
                 </Typography>
               </Box>
             </AccordionSummary>
-            <AccordionDetails ref={ref}>
+            <AccordionDetails>
               <Box sx={{ margin: "0 0 0 -1rem" }}>
                 <Map
                   mapWidth={mapWidth}

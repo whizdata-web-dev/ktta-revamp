@@ -5,6 +5,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import React from "react";
 import Draw from "../components/Draw";
+import ttTable from "../../../assets/img/tt_table.jpg";
 
 const TournamentContainer = ({
   eventList,
@@ -98,20 +99,34 @@ const TournamentContainer = ({
                 </Box>
               </Box>
             </Box>
-            <Box>
-              {eventName ? (
-                <Box>
-                  <Draw eventName={eventName} tournamentId={tournamentId} />
-                </Box>
-              ) : (
-                <Box sx={{ margin: "2rem 0" }}>
-                  <h4 className='tailwind_h4 text-3xl text-center font-normal leading-normal mt-0 mb-2 text-lightBlue-800'>
-                    Please choose an event
-                  </h4>
-                </Box>
-              )}
-            </Box>
           </Box>
+        </Box>
+        <Box
+          sx={{
+            background: "#fff",
+            boxShadow: 2,
+            margin: "0 1rem -2rem 1rem",
+          }}
+        >
+          {eventName ? (
+            <Box>
+              <Draw eventName={eventName} tournamentId={tournamentId} />
+            </Box>
+          ) : (
+            <Box sx={{ padding: "5rem 1rem", textAlign: "center" }}>
+              <Box>
+                <img src={ttTable} alt='...' />
+              </Box>
+              <Box>
+                <h4
+                  className='tailwind_h4 text-3xl text-center font-semibold leading-normal mt-0 mb-2'
+                  style={{ color: "#FFA500" }}
+                >
+                  Please choose an event
+                </h4>
+              </Box>
+            </Box>
+          )}
         </Box>
       </section>
     </main>
