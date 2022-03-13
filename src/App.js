@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import Footer from "./components/footer/Footer";
 import { Switch, Route, Redirect } from "react-router-dom";
@@ -16,6 +16,10 @@ import { AuthContext } from "./assets/utils/UserLoginContext";
 import ScoreSheet from "./assets/utils/ScoreSheet";
 
 function App() {
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   return (
     <AuthContext>
       <Navbar />

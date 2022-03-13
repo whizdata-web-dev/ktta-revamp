@@ -26,6 +26,27 @@ body::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
+.secretoryList::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+.secretoryList::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* Handle */
+.secretoryList::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.secretoryList::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 *:active {
   border: none;
 }

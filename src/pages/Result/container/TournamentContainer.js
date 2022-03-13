@@ -115,7 +115,12 @@ const TournamentContainer = ({
           ) : (
             <Box sx={{ padding: "5rem 1rem", textAlign: "center" }}>
               <Box>
-                <img src={ttTable} alt='...' />
+                <img
+                  src={ttTable}
+                  alt='...'
+                  width='100%'
+                  style={{ maxWidth: "500px" }}
+                />
               </Box>
               <Box>
                 <h4

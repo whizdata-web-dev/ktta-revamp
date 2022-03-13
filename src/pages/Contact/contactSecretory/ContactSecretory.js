@@ -10,7 +10,15 @@ import Typography from "@mui/material/Typography";
 export default function ContactSecretory({ contactData, handleChange }) {
   return (
     <List
-      sx={{ width: "100%", bgcolor: "background.paper", margin: "0 1rem 0 0" }}
+      className='secretoryList'
+      sx={{
+        width: "100%",
+        maxWidth: { xs: "100%", md: "500px" },
+        bgcolor: "background.paper",
+        margin: "0 1rem 0 0",
+        overflowY: "auto",
+        border: "2px solid #f6f5f7",
+      }}
     >
       {contactData.map((item, index) => {
         return (

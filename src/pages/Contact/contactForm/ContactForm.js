@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Divider, Grid, List, TextField } from "@mui/material";
 import ContactMap from "../contactMap/ContactMap";
+import Map from "../contactMap/Map";
 
 export default function ContactForm({ coordinates }) {
   return (
@@ -17,10 +18,17 @@ export default function ContactForm({ coordinates }) {
       noValidate
       autoComplete='off'
     >
-      <List>
+      {/* <List>
         <ContactMap coordinates={coordinates} />
-      </List>
-      <Box style={{ margin: "55vh 0 0 0" }}>
+      </List> */}
+      <div className='flex flex-wrap'>
+        <div className='w-full px-4'>
+          <div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded'>
+            <Map coordinates={coordinates} />
+          </div>
+        </div>
+      </div>
+      <Box>
         <Divider sx={{ margin: "0 0 5vh 0" }} />
         <Grid container>
           <Grid

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Box, Card, CardContent, Grid } from "@mui/material";
 import ContactSecretory from "./contactSecretory/ContactSecretory";
 import ContactForm from "./contactForm/ContactForm";
+import Map from "./contactMap/Map";
 
 import { contactData } from "../../assets/utils/ContactData";
 
@@ -19,51 +20,26 @@ export default function Contact() {
   };
 
   return (
-    <Box sx={{ margin: { md: "1rem 0" } }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={12} md={6} lg={8}>
-          <Card
-            sx={{
-              margin: "1rem 0.5rem 1rem 1rem",
-              border: "1px solid #00c853",
-              borderRadius: "2px",
-              maxHeight: {
-                xs: "70vh",
-                sm: "70vh",
-                md: "140vh",
-                lg: "122vh",
-              },
-              overflowY: "auto",
-            }}
-          >
-            <CardContent>
-              <ContactForm coordinates={coordinates} />
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={4}>
-          <Card
-            variant='outlined'
-            sx={{
-              margin: "1rem 1rem 1rem 0.5rem",
-              maxHeight: {
-                xs: "70vh",
-                sm: "70vh",
-                md: "140vh",
-                lg: "122vh",
-              },
-              overflowY: "auto",
-            }}
-          >
-            <CardContent>
-              <ContactSecretory
-                contactData={contactData}
-                handleChange={handleChange}
-              />
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+    <Box
+      sx={{
+        padding: { md: "2rem 1rem" },
+        background: "#f6f5f7",
+      }}
+    >
+      <Box
+        className='relative w-full rounded h-600-px'
+        sx={{ display: { xs: "block", md: "flex" } }}
+      >
+        <Box className='w-full px-4'>
+          <Box className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded'>
+            <Map coordinates={coordinates} />
+          </Box>
+        </Box>
+        <ContactSecretory
+          contactData={contactData}
+          handleChange={handleChange}
+        />
+      </Box>
     </Box>
   );
 }
