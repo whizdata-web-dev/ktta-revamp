@@ -14,6 +14,7 @@ import ResultContainer from "./pages/Result/container/ResultContainer";
 import AnimatedLogin from "./pages/Login/login/AnimatedLogin";
 import {AuthContext} from "./assets/utils/UserLoginContext";
 import ScoreSheet from "./assets/utils/ScoreSheet";
+
 function App() {
   return (
     <AuthContext>

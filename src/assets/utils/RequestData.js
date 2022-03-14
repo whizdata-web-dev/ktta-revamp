@@ -8,7 +8,7 @@ import axios from "axios";
 
 // Constants - Base URL and Api key
 export const urlConsts = {
-  baseURL: "http://www.iplayon.in/dev/",
+  baseURL: "https://www.iplayon.in/dev/",
   headers: { "Content-Type": "application/json" },
   // getApiKey not used
   getApiKey: "114d59697dfd678982103926f6f0076f",
