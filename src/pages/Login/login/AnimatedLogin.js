@@ -122,6 +122,7 @@ useEffect(() => {
             handleTournamentId.setTournId(location.state.tournamentId);
             // return <Redirect to="/subscribeTournament" />;
           }
+          
           if (response.result._id) {
           history.push("/");
           }
@@ -170,6 +171,7 @@ useEffect(() => {
             //setting tournament id to local storage is defined in Login context api
             handleTournamentId.setTournId(location.state.tournamentId);
           }
+
           if (response.result._id) {
             history.push("/");
           }
