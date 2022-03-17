@@ -156,6 +156,7 @@ const RegisterForm = ({
           maxWidth: { sm: "40vw", md: "25vw", lg: "30vw" },
         }}
       >
+        
         {/* checking OTP code is null */}
         {!verifyCode ? (
           <Grid container spacing={{ xs: 0, md: 0 }}>

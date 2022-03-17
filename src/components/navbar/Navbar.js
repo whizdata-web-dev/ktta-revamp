@@ -40,6 +40,7 @@ const Navbar = () => {
       height: activeWidthNewAnimHeight && activeWidthNewAnimHeight + "px",
       width: activeWidthNewAnimWidth && activeWidthNewAnimWidth + "px",
       //backgroundColor: theme[window.location.pathname.split("/")[1]].background,
+      
     });
     $(".hori-selector .left, .hori-selector .right").css({
       backgroundColor: theme[window.location.pathname.split("/")[1]].background,
