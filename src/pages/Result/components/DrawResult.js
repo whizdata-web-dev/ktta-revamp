@@ -125,7 +125,7 @@ const DrawResult = (props) => {
                 >
                   {/* Checking prps data for Player - 1 Name */}
                   <Link
-                    to={`/players/${
+                    to={`/player/${
                       drawResponse.playersID
                         ? drawResponse.playersID.playerAId
                         : "playerId"
@@ -233,7 +233,7 @@ const DrawResult = (props) => {
                   }}
                 >
                   <Link
-                    to={`/players/${
+                    to={`/player/${
                       drawResponse.playersID
                         ? drawResponse.playersID.playerBId
                         : "playerId"
