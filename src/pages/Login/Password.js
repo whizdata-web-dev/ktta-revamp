@@ -31,22 +31,32 @@ const Password = (props) => {
     },
   ]);
   const [OTP, setOTP] = useState("");
+
+  const playerDetails = {
+    userName: props.regValues.firstName + " " + props.regValues.lastName,
+    password: passwordReg.password,
+    verificationCode: OTP,
+    emailAddress: props.regValues.email,
+    phoneNumber: props.regValues.phoneNumber,
+    dob: props.regValues.dob,
+  };
+
   const handleRegSubmit = (event) => {
     //checking password confirm pwd and OTP is valid
     // if valid setting isAuthenticated state to true
     //so that payment gateway if rendered
     // If any error - error message is displayed to user
     event.preventDefault();
-
+    console.log(passwordReg);
     String(passwordReg.password).length > 5 &&
     passwordReg.password === passwordReg.cPassword &&
     OTP === String(props.regValues.verifyCode)
-      ? setPasswordReg({ isValidUser: true }) // Setting auth status true
+      ? setPasswordReg({ ...passwordReg, isValidUser: true }) // Setting auth status true
       : setPasswordReg({ errorMessage: "Mismatch! Please try again" });
 
     if (OTP === String(props.regValues.verifyCode)) {
       passwordReg.password === passwordReg.cPassword
-        ? setPasswordReg({ isValidUser: true })
+        ? setPasswordReg({ ...passwordReg, isValidUser: true })
         : setPasswordReg({
             ...passwordReg,
             errorMessage: "Password mismatch with confirm password!",
@@ -66,6 +76,7 @@ const Password = (props) => {
 
   // handling user entered values in state
   const handleInputChange = (event) => {
+    console.log(passwordReg);
     setPasswordReg({
       ...passwordReg,
       [event.target.name]: event.target.value,
@@ -88,20 +99,18 @@ const Password = (props) => {
 
   return (
     <Grid
-      sx={{
-        width: "100%",
-      }}
       container
       spacing={0}
-      direction='column'
-      alignItems='center'
-      justifyContent='center'
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+      sx={{ zIndex: 50 }}
     >
       <CardContent>
         {/* checking is authenticated state - otp and password 
           if so payment gateway is rendered */}
         {passwordReg.isValidUser ? (
-          <Payment />
+          <Payment playerDetails={playerDetails} />
         ) : (
           <Grid
             container
@@ -115,8 +124,8 @@ const Password = (props) => {
                 <CardHeader
                   style={{
                     textAlign: "center",
-                    width: "fit-content",
-                    margin: "0 -1rem",
+                    width: "100%",
+                    margin: "0 -2rem",
                   }}
                   // avatar={
                   //   <Avatar
@@ -134,8 +143,12 @@ const Password = (props) => {
                   // }
                   title={
                     <Typography
-                      variant='h5'
-                      sx={{ textTransform: "uppercase" }}
+                      variant="h4"
+                      sx={{
+                        marginLeft: "3rem",
+                        fontSize: "2rem",
+                        fontWeight: 600,
+                      }}
                     >
                       Verify your Account
                     </Typography>
@@ -163,7 +176,7 @@ const Password = (props) => {
                   }}
                 >
                   <OtpInput
-                    id='paymentOTP'
+                    id="paymentOTP"
                     inputStyle={{
                       border: "1px solid transparent",
                       borderRadius: "8px",
@@ -182,23 +195,23 @@ const Password = (props) => {
 
               <Grid item xs={12} sm={12} md={12}>
                 <TextField
-                  type='password'
+                  type="password"
                   required
                   value={passwordReg.password}
-                  label='New Password'
+                  label="New Password"
                   sx={{ margin: "0.5rem 0" }}
-                  name='password'
+                  name="password"
                   onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={12}>
                 <TextField
-                  id='cPassword'
-                  name='cPassword'
-                  type='password'
+                  id="cPassword"
+                  name="cPassword"
+                  type="password"
                   required
                   value={passwordReg.cPassword}
-                  label='Confirm Password'
+                  label="Confirm Password"
                   sx={{ margin: "0.5rem 0" }}
                   onChange={handleInputChange}
                 />
@@ -219,17 +232,17 @@ const Password = (props) => {
                 )}
                 <Box sx={{ margin: "0.5rem 0" }}>
                   <button
-                    className='signup login-button'
-                    id='btnRegSubmit'
-                    type='submit'
+                    className="signup login-button"
+                    id="btnRegSubmit"
+                    type="submit"
                   >
                     Submit
                   </button>
                 </Box>
 
                 <Button
-                  className='signin'
-                  variant='text'
+                  className="signin"
+                  variant="text"
                   onClick={handleBackButton}
                   sx={{ margin: "0.5rem 0" }}
                 >

@@ -15,7 +15,7 @@ export const urlConsts = {
   apiKey: "dd5e611bf286042db7257ee998e5112b",
   caller: "KTTA1",
   sportID: "QvHXDftiwsnc8gyfJ",
-  filterData: "z37CQ3th8i73SQogk",
+  filterData: "z37CQ3th8i73SQogk", // association Id
   // Payment Constants used for Razor Pay in registration
   paymentKeyId: "rzp_test_GPJxCbdU6QPDOf",
   amount: "50000",

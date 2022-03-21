@@ -29,7 +29,6 @@ const AnimatedLogin = () => {
       errorMessage: "",
     },
   ]);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -89,6 +88,7 @@ const AnimatedLogin = () => {
         })
       : response === "Incorrect password"
       ? setLoginValue({
+          ...loginValues,
           error: "pwdError",
           errorMessage: "Incorrect password",
         })
@@ -105,13 +105,14 @@ const AnimatedLogin = () => {
     //parameters passed as object to HTTP method POST
     let content = {
       caller: urlConsts.caller,
-      userId: player._id,
-      associationId: urlConsts.filterData,
-      approvalCode: urlConsts.caller,
-      transactionID: transactionId,
-      transactionAmount: urlConsts.amountLabel,
+      data: {
+        userId: player.userId,
+        associationId: urlConsts.filterData,
+        approvalCode: urlConsts.caller,
+        transactionID: transactionId,
+        transactionAmount: urlConsts.amountLabel,
+      },
     };
-
     // Calling HTTP method by passing Api Type and Api URL and object params
     await RequestData("POST", "renewalUnderAssoc", content)
       // Getting the Response object which holds the data of Previous tournaments
@@ -122,9 +123,10 @@ const AnimatedLogin = () => {
           if (location.state) {
             //setting tournament id to local storage is defined in Login context api
             handleTournamentId.setTournId(location.state.tournamentId);
-            // return <Redirect to="/subscribeTournament" />;
           }
-          history.push("/");
+          if (response.result._id) {
+            history.push("/");
+          }
         } else {
           setLoginValue({
             errorMessage: "Response Time Out! Please try again later.",
@@ -168,9 +170,10 @@ const AnimatedLogin = () => {
           if (location.state) {
             //setting tournament id to local storage is defined in Login context api
             handleTournamentId.setTournId(location.state.tournamentId);
-            // return <Redirect to="/subscribeTournament" />;
           }
-          history.push("/");
+          if (response.result._id) {
+            history.push("/");
+          }
         } else {
           setLoginValue({
             errorMessage: "Something went wrong! Please try again later.",
@@ -232,16 +235,16 @@ const AnimatedLogin = () => {
   };
 
   return (
-    <Box className='loginroot'>
-      <Box className='loginbody' sx={{ padding: { xs: "2rem 0", md: "2rem" } }}>
-        <Box className={activeClass} id='container'>
-          <Box className='form-container sign-up-container'>
-            <Box className='login-form'>
+    <Box className="loginroot">
+      <Box className="loginbody">
+        <Box className={activeClass} id="container">
+          <Box className="form-container sign-up-container">
+            <Box className="login-form">
               <Register />
             </Box>
           </Box>
           <Box
-            className='form-container sign-in-container'
+            className="form-container sign-in-container"
             sx={{
               "@media screen and (max-width: 301px)": {
                 overflow: "auto",
@@ -258,32 +261,32 @@ const AnimatedLogin = () => {
             {loginValues.forgotPwdFlag === true ? (
               <ForgotPassword onChange={cancelFgtPwd} />
             ) : (
-              <form className='login-form' onSubmit={submitLogin}>
-                <h1 className='login-h1'>Sign in</h1>
+              <form className="login-form" onSubmit={submitLogin}>
+                <h1 className="login-h1">Sign in</h1>
                 <TextField
-                  id='emailLogin'
+                  id="emailLogin"
                   required
                   value={loginValues.email}
-                  type='email'
-                  variant='filled'
+                  type="email"
+                  variant="filled"
                   className={
                     loginValues.error === "emailError" ? "error" : "textWidth"
                   }
                   sx={{
                     paddingTop: "1rem",
                   }}
-                  placeholder='Email Address'
-                  name='email'
+                  placeholder="Email Address"
+                  name="email"
                   onChange={handleInputChange}
                 />
                 <TextField
-                  id='password'
+                  id="password"
                   required
-                  type='password'
-                  variant='filled'
+                  type="password"
+                  variant="filled"
                   value={loginValues.password}
-                  placeholder='Password'
-                  name='password'
+                  placeholder="Password"
+                  name="password"
                   className={
                     loginValues.error === "pwdError" ? "error" : "textWidth"
                   }
@@ -307,17 +310,17 @@ const AnimatedLogin = () => {
                   ""
                 )}
                 <button
-                  className='signin login-button'
+                  className="signin login-button"
                   style={{
                     marginTop: "1rem",
                   }}
-                  id='signIn'
+                  id="signIn"
                 >
                   Sign In
                 </button>
                 <Box sx={{ margin: "1rem" }}>
                   <Button
-                    variant='text'
+                    variant="text"
                     onClick={handleForgotPassword}
                     sx={{
                       border: "none",
@@ -336,7 +339,7 @@ const AnimatedLogin = () => {
                     }}
                   >
                     <Typography
-                      variant='body2'
+                      variant="body2"
                       sx={{
                         fontWeight: "bold",
                         color: "#616161",
@@ -356,28 +359,28 @@ const AnimatedLogin = () => {
               </form>
             )}
           </Box>
-          <Box className='overlay-container'>
-            <Box className='overlay'>
-              <Box className='overlay-panel overlay-left'>
-                <h1 className='login-h1'>Welcome Back Player!</h1>
-                <p className='login-p'>Please login to give entries.</p>
+          <Box className="overlay-container">
+            <Box className="overlay">
+              <Box className="overlay-panel overlay-left">
+                <h1 className="login-h1">Welcome Back Player!</h1>
+                <p className="login-p">Please login to give entries.</p>
                 <button
-                  className='ghost signin login-button'
-                  id='signIn1'
+                  className="ghost signin login-button"
+                  id="signIn1"
                   onClick={() => setActiveClass("login_container")}
                 >
                   Sign In
                 </button>
               </Box>
-              <Box className='overlay-panel overlay-right'>
-                <h1 className='login-h1'>Hello, Player!</h1>
-                <p className='login-p'>
+              <Box className="overlay-panel overlay-right">
+                <h1 className="login-h1">Hello, Player!</h1>
+                <p className="login-p">
                   Enter your personal details and start journey in the
                   competitive world of Table Tennis!
                 </p>
                 <button
-                  className='ghost signup login-button'
-                  id='signUp'
+                  className="ghost signup login-button"
+                  id="signUp"
                   onClick={() =>
                     setActiveClass("login_container right-panel-active")
                   }

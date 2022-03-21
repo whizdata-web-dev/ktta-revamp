@@ -85,7 +85,11 @@ const RegisterForm = ({
           //checking email is valid
           if (response.result.status === "failure") {
             setErrorClass("errorButton"); // setting error state if user is invalid
-            setErrorMessage("Invalid User");
+            setErrorMessage(
+              response.result.registerStatus
+                ? response.result.registerStatus
+                : "Invalid User"
+            );
           } else {
             // setting verificationcode to state
             setverifyCode(response.result.verificationCode);
@@ -110,13 +114,16 @@ const RegisterForm = ({
   // on submit click validationg email address and age and calling api
   const validateUser = (event) => {
     event.preventDefault();
+    setErrorClass("");
+    setErrorMessage("");
     setDisabled(true);
-    const pattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+    const pattern =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-z]+)+(?:\.[a-zA-Z0-9-]+)*$/;
     if (!pattern.test(email)) {
       // checking valid email address - if fails setting error state
       setErrorClass("emailError");
       setErrorMessage("Invalid Email Address");
-      setDisabled(false);
+       setDisabled(false);
     } else {
       if (checkDOB(dob) === true) {
         // checking age - should be more than 15yrs
@@ -125,7 +132,7 @@ const RegisterForm = ({
       } else {
         setErrorClass("dobError"); // setting error state in case age is below 16yrs
         setErrorMessage("Age should be greater than 5 years");
-        setDisabled(false);
+         setDisabled(false);
       }
     }
   };
@@ -143,9 +150,9 @@ const RegisterForm = ({
     <Grid
       container
       spacing={0}
-      direction='column'
-      alignItems='center'
-      justifyContent='center'
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
       sx={{ zIndex: 50 }}
     >
       <CardContent
@@ -157,7 +164,7 @@ const RegisterForm = ({
         {!verifyCode ? (
           <Grid container spacing={{ xs: 0, md: 0 }}>
             {/* On form submit calling submit method */}
-            <form onSubmit={validateUser} autoComplete='off'>
+            <form onSubmit={validateUser} autoComplete="off">
               <Grid item xs={12} sm={12} md={12}>
                 <CardHeader
                   sx={{
@@ -166,7 +173,7 @@ const RegisterForm = ({
                   }}
                   title={
                     <Typography
-                      variant='h4'
+                      variant="h4"
                       sx={{
                         fontSize: "2rem",
                         margin: "0.5rem",
@@ -182,15 +189,15 @@ const RegisterForm = ({
               <Grid item xs={12} sm={12} md={12}>
                 <TextField
                   required
-                  type='email'
-                  variant='outlined'
+                  type="email"
+                  variant="outlined"
                   value={email}
                   className={
                     errorClass === "emailError" ? "error" : "textWidth"
                   }
                   // checking error for email if error then assigning to error animated
                   //class defined in css
-                  label='Email Address'
+                  label="Email Address"
                   sx={{
                     margin: "0.5rem 0",
                   }}
@@ -200,11 +207,11 @@ const RegisterForm = ({
               <Grid item xs={12} sm={12} md={12}>
                 <TextField
                   required
-                  type='text'
-                  variant='outlined'
+                  type="text"
+                  variant="outlined"
                   value={firstName}
-                  label='First Name'
-                  className='textWidth'
+                  label="First Name"
+                  className="textWidth"
                   sx={{
                     margin: "0.5rem 0",
                   }}
@@ -215,29 +222,23 @@ const RegisterForm = ({
               </Grid>
               <Grid item xs={12} sm={12} md={12}>
                 <TextField
-                  type='text'
+                  type="text"
                   value={lastName}
-                  variant='outlined'
-                  label='Last Name'
+                  variant="outlined"
+                  label="Last Name"
                   onChange={(event) => {
                     setLastName(event.target.value);
                   }}
                   sx={{ margin: "0.5rem 0" }}
-                  className='textWidth'
+                  className="textWidth"
                 />
               </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                sx={{ display: { xs: "none", md: "block" } }}
-              >
+              <Grid item xs={12} sm={12} md={12} sx={12}>
                 <TextField
                   required
-                  id='dob'
-                  label='Date of Birth'
-                  type='date'
+                  id="dob"
+                  label="Date of Birth"
+                  type="date"
                   value={dob}
                   sx={{ width: "100%", margin: "0.5rem 0" }}
                   InputLabelProps={{
@@ -250,15 +251,18 @@ const RegisterForm = ({
               <Grid item xs={12} sm={12} md={12}>
                 <TextField
                   required
-                  id='phone'
-                  maxLength='10'
-                  pattern='^\d{10}$'
-                  type='tel'
+                  id="phone"
+                  maxLength="10"
+                  pattern="^\d{10}$"
+                  InputProps={{
+                    inputProps: { maxLength: "10" },
+                  }}
+                  type="tel"
                   value={phoneNumber}
-                  variant='outlined'
-                  label='Mobile Number'
+                  variant="outlined"
+                  label="Mobile Number"
                   sx={{ margin: "0.5rem 0" }}
-                  className='textWidth'
+                  className="textWidth"
                   onChange={(event) => {
                     setPhoneNumber(event.target.value);
                   }}
@@ -286,7 +290,7 @@ const RegisterForm = ({
                 >
                   <Box sx={{ flex: "1" }} />
                   <button
-                    disabled={disabled}
+                    // disabled={disabled}
                     style={{
                       borderRadius: "20px",
                       margin: "1.5rem 0",
@@ -296,8 +300,8 @@ const RegisterForm = ({
                       texttransform: "uppercase",
                       transition: "transform 80ms ease-in",
                     }}
-                    className='signup login-button'
-                    type='submit'
+                    className="signup login-button"
+                    type="submit"
                   >
                     Next
                   </button>

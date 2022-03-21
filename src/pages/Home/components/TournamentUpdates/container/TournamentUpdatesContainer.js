@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FetchData from "../../../../../assets/utils/FetchData";
 import TournamentUpdatesComponent from "../components/TournamentUpdatesComponent";
+import { urlConsts } from "../../../../../assets/utils/RequestData";
 
 const TournamentUpdatesContainer = () => {
   const {
@@ -9,7 +10,7 @@ const TournamentUpdatesContainer = () => {
     error,
   } = FetchData({
     method: "GET",
-    url: `PastTournamentsOnApiKey?caller=KTTA1&apiKey=dd5e611bf286042db7257ee998e5112b&userId=qoJ7c8Mr27ZnGZH5a`,
+    url: `PastTournamentsOnApiKey?caller=${urlConsts.caller}&apiKey=${urlConsts.apiKey}&userId=${urlConsts.filterData}`,
   });
 
   const [tournamentData, setTournamentData] = useState([]);

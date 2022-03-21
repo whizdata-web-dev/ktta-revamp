@@ -14,12 +14,7 @@ const EntriesContainer = (props) => {
     async function getData() {
       await RequestData(
         "GET",
-        "listOfEntries?caller=APTTA&apiKey=" +
-          urlConsts.getApiKey +
-          "&tournamentId=" +
-          props.open._id +
-          "&eventId=" +
-          eventId
+        `listOfEntries?caller=${urlConsts.caller}&apiKey=${urlConsts.getApiKey}&tournamentId=${props.open._id}&eventId=${eventId}`
       )
         .then((response) => {
           if (response.result) {

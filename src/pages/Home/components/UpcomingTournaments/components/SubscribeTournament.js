@@ -191,7 +191,7 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
   const getSubscribeTournamentList = async () => {
     await RequestData(
       "GET",
-      `eventListUnderTourn?caller=KTTA1&apiKey=dd5e611bf286042db7257ee998e5112b&tournamentId=WeLEm5QACmyGCwLHS&userId=qoJ7c8Mr27ZnGZH5a`
+      `eventListUnderTourn?caller=${urlConsts.caller}&apiKey=${urlConsts.apiKey}&tournamentId=${tournamentId}&userId=${getUser}`
     )
       // `eventListUnderTourn?caller=${urlConsts.caller}&apiKey=${urlConsts.apiKey}&tournamentId=${tournamentId}&userId=${urlConsts.filterData}`
       .then((response) => {

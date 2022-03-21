@@ -322,7 +322,6 @@ input {
   width: 50%;
   opacity: 0;
   z-index: 1;
-  overflow-y: auto;
 }
 @media screen and (max-width: 901px) {
   .sign-up-container {

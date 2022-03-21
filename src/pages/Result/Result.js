@@ -1,12 +1,13 @@
 import { Box, CircularProgress } from "@mui/material";
 import React from "react";
 import FetchData from "../../assets/utils/FetchData";
+import { urlConsts } from "../../assets/utils/RequestData";
 import CardStats from "../../components/card/component/CardStats";
 
 const Result = () => {
   const { data, loading, error } = FetchData({
     method: "GET",
-    url: `PastTournamentsOnApiKey?caller=KTTA1&apiKey=dd5e611bf286042db7257ee998e5112b&userId=MnNwLA6gtLNmafai9`,
+    url: `PastTournamentsOnApiKey?caller=${urlConsts.caller}&apiKey=${urlConsts.apiKey}&userId=${urlConsts.filterData}`,
     pathname: "result",
   });
 

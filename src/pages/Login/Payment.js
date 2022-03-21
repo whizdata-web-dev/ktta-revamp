@@ -4,24 +4,28 @@ Payment gateway using Razorpay
 import React, { useState } from "react";
 import useRazorpay from "react-razorpay";
 import { RequestData, urlConsts } from "../../assets/utils/RequestData";
+import { useHistory } from "react-router-dom";
 
 const Payment = (props) => {
   const [message, setMessage] = useState("");
   const Razorpay = useRazorpay();
   // razor pay for payment while registering
+  const history = useHistory();
 
   React.useEffect(() => {
     handleRegPayment(); // Payment gateway call in useeffect
-  }, [props && props.OTP]); //checking props
+  }, [props && props.playerDetails.verificationCode]); //checking props
 
   const registerPlayer = async (transactionId) => {
     //parameters passed as object to HTTP method POST
     let content = {
       caller: urlConsts.caller,
-      userName: props.userName,
-      password: props.password,
-      verificationCode: props.OTP,
-      emailAddress: props.userId,
+      userName: props.playerDetails && props.playerDetails.userName,
+      verificationCode:
+        props.playerDetails && props.playerDetails.verificationCode,
+      emailAddress: props.playerDetails && props.playerDetails.emailAddress,
+      password: props.playerDetails && props.playerDetails.password,
+
       clubNameId: "",
       regOverride: true,
       transactionID: transactionId, // this is generated on succesfull transaction
@@ -30,8 +34,8 @@ const Payment = (props) => {
       role: "Player",
       academy: "None",
       associationId: urlConsts.filterData,
-      phoneNumber: props.phoneNumber,
-      dob: props.dob,
+      phoneNumber: props.playerDetails && props.playerDetails.phoneNumber,
+      dob: props.playerDetails && props.playerDetails.dob,
     };
     // Calling HTTP method by passing Api Type and Api URL and object params
     await RequestData("POST", "playerRegisterUnderAssoc", content)
@@ -39,6 +43,7 @@ const Payment = (props) => {
       .then((response) => {
         //Checking weather response data is null
         if (response.result) {
+          //<Redirect to="/login" />;
           setMessage(
             "Registration Succesfull! Please Login to subscribe the tournament."
           );
