@@ -90,6 +90,7 @@ const RegisterForm = ({
                 ? response.result.registerStatus
                 : "Invalid User"
             );
+
           } else {
             // setting verificationcode to state
             setverifyCode(response.result.verificationCode);
@@ -123,7 +124,9 @@ const RegisterForm = ({
       // checking valid email address - if fails setting error state
       setErrorClass("emailError");
       setErrorMessage("Invalid Email Address");
+
        setDisabled(false);
+
     } else {
       if (checkDOB(dob) === true) {
         // checking age - should be more than 15yrs
@@ -133,6 +136,7 @@ const RegisterForm = ({
         setErrorClass("dobError"); // setting error state in case age is below 16yrs
         setErrorMessage("Age should be greater than 5 years");
          setDisabled(false);
+
       }
     }
   };
@@ -160,6 +164,7 @@ const RegisterForm = ({
           maxWidth: { sm: "40vw", md: "25vw", lg: "30vw" },
         }}
       >
+        
         {/* checking OTP code is null */}
         {!verifyCode ? (
           <Grid container spacing={{ xs: 0, md: 0 }}>

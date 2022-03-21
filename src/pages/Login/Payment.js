@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import useRazorpay from "react-razorpay";
 import { RequestData, urlConsts } from "../../assets/utils/RequestData";
 import { useHistory } from "react-router-dom";
-
 const Payment = (props) => {
   const [message, setMessage] = useState("");
   const Razorpay = useRazorpay();
@@ -43,7 +42,6 @@ const Payment = (props) => {
       .then((response) => {
         //Checking weather response data is null
         if (response.result) {
-          //<Redirect to="/login" />;
           setMessage(
             "Registration Succesfull! Please Login to subscribe the tournament."
           );

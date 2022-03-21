@@ -33,6 +33,7 @@ const AnimatedLogin = () => {
     window.scrollTo(0, 0);
   }, []);
 
+
   // This is to call razorpay in case of payment renewal
   // This is rendered once payment of player expires.
   // Player details is passed as object
@@ -105,7 +106,7 @@ const AnimatedLogin = () => {
     //parameters passed as object to HTTP method POST
     let content = {
       caller: urlConsts.caller,
-      data: {
+        data : {
         userId: player.userId,
         associationId: urlConsts.filterData,
         approvalCode: urlConsts.caller,
@@ -117,6 +118,7 @@ const AnimatedLogin = () => {
     await RequestData("POST", "renewalUnderAssoc", content)
       // Getting the Response object which holds the data of Previous tournaments
       .then((response) => {
+        console.log(response,content);
         //Checking weather response data is null
         if (response.result) {
           setLoginUser(player); // setting data to context api
@@ -167,6 +169,7 @@ const AnimatedLogin = () => {
           // checking state of Link from Home component
           // Setting tournament id of upcoming tournament to local storage -
           //on Give Entry button click
+         
           if (location.state) {
             //setting tournament id to local storage is defined in Login context api
             handleTournamentId.setTournId(location.state.tournamentId);
@@ -174,6 +177,7 @@ const AnimatedLogin = () => {
           if (response.result._id) {
             history.push("/");
           }
+
         } else {
           setLoginValue({
             errorMessage: "Something went wrong! Please try again later.",
@@ -235,6 +239,7 @@ const AnimatedLogin = () => {
   };
 
   return (
+
     <Box className="loginroot">
       <Box className="loginbody">
         <Box className={activeClass} id="container">
@@ -367,6 +372,7 @@ const AnimatedLogin = () => {
                 <button
                   className="ghost signin login-button"
                   id="signIn1"
+
                   onClick={() => setActiveClass("login_container")}
                 >
                   Sign In

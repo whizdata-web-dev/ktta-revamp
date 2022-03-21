@@ -31,7 +31,6 @@ const Password = (props) => {
     },
   ]);
   const [OTP, setOTP] = useState("");
-
   const playerDetails = {
     userName: props.regValues.firstName + " " + props.regValues.lastName,
     password: passwordReg.password,
