@@ -160,6 +160,7 @@ export const ChartContainerModel = [
             barThickness: 8,
           },
         ],
+        
       },
       options: {
         maintainAspectRatio: false,

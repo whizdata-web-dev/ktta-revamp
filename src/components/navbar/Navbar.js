@@ -9,6 +9,7 @@ import $ from "jquery";
 import { useHistory, useLocation } from "react-router";
 import "./Navbar.css";
 
+
 const theme = {
   home: { background: "#32325D", text: "#495057" },
   about: { background: "#32325D", text: "#495057" },
