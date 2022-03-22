@@ -12,6 +12,7 @@ export const result = [
         },
         
         {
+            
             "year": "2019",
             "male": 1287,
             "female": 909

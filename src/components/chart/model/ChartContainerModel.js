@@ -1,3 +1,5 @@
+import { data } from "jquery";
+import { result } from "./graphData";
 export const ChartContainerModel = [
   {
     id: "line-chart",
@@ -31,7 +33,10 @@ export const ChartContainerModel = [
             label: new Date().getFullYear(),
             backgroundColor: "#4c51bf",
             borderColor: "#4c51bf",
-            data: [65, 78, 66, 44, 56, 67, 75],
+            //  data: [65, 78, 66, 44, 56, 67, 75],
+            data: result.map((data) => {
+              return data.male;
+            }),
             fill: false,
           },
           {
@@ -39,7 +44,10 @@ export const ChartContainerModel = [
             fill: false,
             backgroundColor: "#fff",
             borderColor: "#fff",
-            data: [40, 68, 86, 74, 56, 60, 87],
+            //data: [40, 68, 86, 74, 56, 60, 87],
+            data: result.map((data) => {
+              return data.female;
+            }),
           },
         ],
       },
@@ -147,7 +155,10 @@ export const ChartContainerModel = [
             label: new Date().getFullYear(),
             backgroundColor: "#ed64a6",
             borderColor: "#ed64a6",
-            data: [30, 78, 56, 34, 100, 45, 13],
+            // data: [30, 78, 56, 34, 100, 45, 13],
+            data: result.map((data) => {
+              return data.male;
+            }),
             fill: false,
             barThickness: 8,
           },
@@ -156,11 +167,13 @@ export const ChartContainerModel = [
             fill: false,
             backgroundColor: "#4c51bf",
             borderColor: "#4c51bf",
-            data: [27, 68, 86, 74, 10, 4, 87],
+            // data: [27, 68, 86, 74, 10, 4, 87],
+            data: result.map((data) => {
+              return data.female;
+            }),
             barThickness: 8,
           },
         ],
-        
       },
       options: {
         maintainAspectRatio: false,
