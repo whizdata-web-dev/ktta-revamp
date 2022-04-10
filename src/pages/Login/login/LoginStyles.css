@@ -277,6 +277,7 @@ input {
     width: 85vw;
     max-width: 100%;
     min-height: 160vh;
+    margin-bottom: 5rem;
   }
 }
 
