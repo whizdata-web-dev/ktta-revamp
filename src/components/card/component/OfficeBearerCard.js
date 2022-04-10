@@ -69,7 +69,7 @@ export default function OfficeBearerCard({ officeBearer }) {
               </span>
             </Box>
             <Typography
-              sx={{ margin: "1rem" }}
+              sx={{ margin: "1rem", textAlign: "justify" }}
               variant='body2'
               color='text.secondary'
             >
@@ -83,7 +83,7 @@ export default function OfficeBearerCard({ officeBearer }) {
               {officeBearer.phone ? officeBearer.phone : "-"}
             </Typography>
             <Typography
-              sx={{ margin: "1rem" }}
+              sx={{ margin: "1rem", textAlign: "justify" }}
               variant='body2'
               color='text.secondary'
             >

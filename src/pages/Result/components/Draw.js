@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import DrawResult from "./DrawResult";
 import { RequestData, urlConsts } from "../../../assets/utils/RequestData";
-import { Card, CardContent, Divider } from "@mui/material";
+import { Card, CardContent, Divider, Typography } from "@mui/material";
 import winIcon from "../../../assets/img/loading.gif";
 import { useParams } from "react-router-dom";
 import FetchData from "../../../assets/utils/FetchData";
@@ -75,34 +75,38 @@ const Draw = ({ eventName, tournamentId }) => {
     await RequestData("POST", "fetchMatchResults", content)
       .then((response) => {
         if (response.result) {
-          const roundName = response.result.roundDetails;
+          if (response.result.status === "failure") {
+            setMessage("No records found.");
+          } else {
+            const roundName = response.result.roundDetails;
 
-          const tempRoundName =
-            roundName &&
-            roundName.map((round, index) =>
-              index === roundName.length - 4
-                ? { ...round, roundName: "Pre Quarter Final" }
-                : round
-            );
-          roundNames.pop();
-          roundNames.push(tempRoundName);
-          drawResult.pop();
-          drawResult.push(response.result.matchRecords);
-          setRoundResult(
-            filteredResult(
-              response.result.matchRecords,
-              response.result.roundDetails[0].roundNumber
-            )
-          );
-          tabValue + 1 <= response.result.roundDetails.length &&
-          response.result.matchRecords
-            ? setNextRoundResult(
-                filteredResult(
-                  response.result.matchRecords,
-                  response.result.roundDetails[1].roundNumber
-                )
+            const tempRoundName =
+              roundName &&
+              roundName.map((round, index) =>
+                index === roundName.length - 4
+                  ? { ...round, roundName: "Pre Quarter Final" }
+                  : round
+              );
+            roundNames.pop();
+            roundNames.push(tempRoundName);
+            drawResult.pop();
+            drawResult.push(response.result.matchRecords);
+            setRoundResult(
+              filteredResult(
+                response.result.matchRecords,
+                response.result.roundDetails[0].roundNumber
               )
-            : setNextRoundResult([]);
+            );
+            tabValue + 1 <= response.result.roundDetails.length &&
+            response.result.matchRecords
+              ? setNextRoundResult(
+                  filteredResult(
+                    response.result.matchRecords,
+                    response.result.roundDetails[1].roundNumber
+                  )
+                )
+              : setNextRoundResult([]);
+          }
           setLoading(false);
         } else {
           setMessage("Error! Please try again later");
@@ -160,6 +164,12 @@ const Draw = ({ eventName, tournamentId }) => {
               }}
             />
           </Box>
+        ) : message && roundResult.length === 0 ? (
+          <Box sx={{ textAlign: "center" }}>
+            <Typography variant='body1'>
+              <b className='b'>{message}</b>
+            </Typography>
+          </Box>
         ) : (
           <CardContent sx={{ padding: 0 }}>
             <Box sx={{ display: "flex" }}>
@@ -180,77 +190,67 @@ const Draw = ({ eventName, tournamentId }) => {
               </Tabs>
             </Box>
             <Divider />
-            {message && roundResult.length === 0 ? (
+            <Grid container spacing={{ xs: 0, md: 3 }}>
               <Grid item xs={12} sm={12} md={6}>
-                <p>
-                  <b className='b'>{message}</b>
-                </p>
+                {roundResult.map((data, index) => (
+                  <DrawResult
+                    key={`curRound${index}`}
+                    numberOfSets={7}
+                    drawResponse={data}
+                    index={index + 1}
+                    matchNo={data.matchNumber}
+                    dSize={Object.keys(roundResult).length}
+                    centralize={false}
+                    size={Math.pow(2, 4 - index - 1)}
+                    round={roundNames.length > 0 && roundNames[0][tabValue]}
+                  />
+                ))}
               </Grid>
-            ) : (
-              <Grid container spacing={{ xs: 0, md: 3 }}>
-                <Grid item xs={12} sm={12} md={6}>
-                  {roundResult.map((data, index) => (
-                    <DrawResult
-                      key={`curRound${index}`}
-                      numberOfSets={7}
-                      drawResponse={data}
-                      index={index + 1}
-                      matchNo={data.matchNumber}
-                      dSize={Object.keys(roundResult).length}
-                      centralize={false}
-                      size={Math.pow(2, 4 - index - 1)}
-                      round={roundNames.length > 0 && roundNames[0][tabValue]}
-                    />
-                  ))}
-                </Grid>
-                <Grid
-                  item
-                  xs={0}
-                  sm={0}
-                  md={6}
-                  sx={{ display: { xs: "none", sm: "none", md: "block" } }}
-                >
-                  {Object.keys(roundResult).length === 1 ? (
-                    <WinnerCard
-                      winnerName={roundResult[0].winner}
-                      eventName={eventName}
-                    />
-                  ) : (
-                    nextRoundResult &&
-                    nextRoundResult.map((data, index) => (
-                      <Box key={index}>
-                        <DrawResult
-                          visibility='hidden'
-                          numberOfSets={7}
-                          drawResponse={data}
-                          index={index + 1}
-                          matchNo={data.matchNumber}
-                          dSize={Object.keys(roundResult).length}
-                          centralize={true}
-                          size={Math.pow(2, 4 - index - 2)}
-                          round={
-                            roundNames.length > 0 && roundNames[0][tabValue]
-                          }
-                        />
-                        <DrawResult
-                          visibility='visible'
-                          numberOfSets={7}
-                          drawResponse={data}
-                          index={index + 1}
-                          matchNo={data.matchNumber}
-                          dSize={Object.keys(roundResult).length}
-                          centralize={true}
-                          size={Math.pow(2, 4 - index - 2)}
-                          round={
-                            roundNames.length > 0 && roundNames[0][tabValue + 1]
-                          }
-                        />
-                      </Box>
-                    ))
-                  )}
-                </Grid>
+              <Grid
+                item
+                xs={0}
+                sm={0}
+                md={6}
+                sx={{ display: { xs: "none", sm: "none", md: "block" } }}
+              >
+                {Object.keys(roundResult).length === 1 ? (
+                  <WinnerCard
+                    winnerName={roundResult[0].winner}
+                    eventName={eventName}
+                  />
+                ) : (
+                  nextRoundResult &&
+                  nextRoundResult.map((data, index) => (
+                    <Box key={index}>
+                      <DrawResult
+                        visibility='hidden'
+                        numberOfSets={7}
+                        drawResponse={data}
+                        index={index + 1}
+                        matchNo={data.matchNumber}
+                        dSize={Object.keys(roundResult).length}
+                        centralize={true}
+                        size={Math.pow(2, 4 - index - 2)}
+                        round={roundNames.length > 0 && roundNames[0][tabValue]}
+                      />
+                      <DrawResult
+                        visibility='visible'
+                        numberOfSets={7}
+                        drawResponse={data}
+                        index={index + 1}
+                        matchNo={data.matchNumber}
+                        dSize={Object.keys(roundResult).length}
+                        centralize={true}
+                        size={Math.pow(2, 4 - index - 2)}
+                        round={
+                          roundNames.length > 0 && roundNames[0][tabValue + 1]
+                        }
+                      />
+                    </Box>
+                  ))
+                )}
               </Grid>
-            )}
+            </Grid>
           </CardContent>
         )}
       </Card>

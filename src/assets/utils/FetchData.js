@@ -22,7 +22,6 @@ const FetchData = ({ method, url, payload, pathname }) => {
           })
           .catch((err) => setError(err));
       }
-
       setLoading(true);
       if (localStorage.getItem(pathname)) {
         setData(decryptData(localStorage.getItem(pathname)));

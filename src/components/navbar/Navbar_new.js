@@ -7,6 +7,15 @@ import { Box, Button } from "@mui/material";
 import { useLoginContext } from "../../assets/utils/UserLoginContext";
 import { useHistory, useLocation } from "react-router";
 
+const theme = {
+  home: { background: "#32325D", text: "#fff" },
+  about: { background: "#f6f5f7", text: "#495057" },
+  players: { background: "#121020", text: "#fff" },
+  result: { background: "#f6f5f7", text: "#495057" },
+  contact: { background: "#f6f5f7", text: "#495057" },
+  login: { background: "#f6f5f7", text: "#495057" },
+};
+
 const Navbar = () => {
   //  calling logout function from login context api
   const { logOut, getLoginUser } = useLoginContext();
@@ -27,8 +36,8 @@ const Navbar = () => {
       height: activeWidthNewAnimHeight && activeWidthNewAnimHeight + "px",
       width: activeWidthNewAnimWidth && activeWidthNewAnimWidth + "px",
     });
-    $("#navbarSupportedContent").on("click", "li", function (e) {
-      $("#navbarSupportedContent ul li").removeClass("active");
+    $("#navbarSupportedContent").on("click", "a", function (e) {
+      $("#navbarSupportedContent a").removeClass("active");
       $(this).addClass("active");
       var activeWidthNewAnimHeight = $(this).innerHeight();
       var activeWidthNewAnimWidth = $(this).innerWidth();
@@ -54,7 +63,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className='navbar-root'>
+    <Box className='navbar-root'>
       <nav className='navbar navbar-expand-lg navbar-mainbg'>
         <Box className='navbar-brand navbar-logo'>
           <img src={Logo} alt='' height='50vh' style={{ margin: "-1rem 0" }} />
@@ -77,16 +86,22 @@ const Navbar = () => {
           <i className='fas fa-bars text-white'></i>
         </button>
 
-        <div className='collapse navbar-collapse' id='navbarSupportedContent'>
+        <Box
+          className='collapse navbar-collapse'
+          id='navbarSupportedContent'
+          sx={{ padding: { xs: 0, md: "0 2rem" } }}
+        >
           <ul className='navbar-nav ml-auto'>
-            <div className='hori-selector'>
-              <div className='left'></div>
-              <div className='right'></div>
-            </div>
+            <Box className='hori-selector'>
+              <Box className='left'></Box>
+              <Box className='right'></Box>
+            </Box>
 
             <li
               className={
-                curLocation === "/home" ? "nav-item active" : "nav-item"
+                curLocation === "home" || curLocation === "subscribeTournament"
+                  ? "nav-item active"
+                  : "nav-item"
               }
               onClick={(event) =>
                 localStorage.setItem("active", event.target.innerText)
@@ -221,9 +236,9 @@ const Navbar = () => {
               )}
             </li>
           </ul>
-        </div>
+        </Box>
       </nav>
-    </div>
+    </Box>
   );
 };
 export default Navbar;

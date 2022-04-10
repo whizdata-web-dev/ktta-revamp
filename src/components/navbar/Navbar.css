@@ -14,7 +14,7 @@
   -ms-flex-align: center;
   align-items: center;
   -ms-flex-pack: justify;
-  
+
   justify-content: space-between;
 }
 
@@ -63,6 +63,7 @@
 .navbar-nav .nav-link {
   padding-right: 0;
   padding-left: 0;
+  width: 100%;
 }
 
 .navbar-nav .dropdown-menu {
@@ -500,8 +501,13 @@ i {
   position: relative;
 }
 #navbarSupportedContent ul {
-  padding: 0px;
+  padding: 0px 0 0 20px;
   margin: 0px;
+}
+@media screen and (max-width: 901px) {
+  #navbarSupportedContent ul {
+    padding: 0px;
+  }
 }
 #navbarSupportedContent ul li a i {
   margin-right: 10px;

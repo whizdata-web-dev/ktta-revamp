@@ -21,7 +21,7 @@ const RankingCard = ({ loading, eventData }) => {
       ) : (
         eventData &&
         eventData.map((event, index) => (
-          <Grid item xs={12} md={6} key={index}>
+          <Grid item xs={12} key={index}>
             <Card
               sx={{
                 borderRadius: 0,

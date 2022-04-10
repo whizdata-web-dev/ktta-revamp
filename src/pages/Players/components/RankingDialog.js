@@ -27,9 +27,9 @@ export default function RankingDialog({ eventName, open, handleClose }) {
     <React.Fragment>
       <Dialog
         fullWidth={true}
-        maxWidth='xl'
+        maxWidth='xs'
         open={open}
-        onClose={handleClose}
+        // onClose={handleClose}
         sx={{ margin: "-1.5rem" }}
       >
         <DialogTitle>{eventName.toUpperCase()}</DialogTitle>

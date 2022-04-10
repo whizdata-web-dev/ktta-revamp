@@ -44,7 +44,7 @@ const About = () => {
     <Box>
       <Box>
         <main className='profile-page'>
-          <section className='relative block h-500-px'>
+          <section className='relative block h-350-px'>
             <Box
               className='absolute top-0 w-full h-full bg-center bg-cover'
               sx={{

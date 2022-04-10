@@ -67,13 +67,13 @@ const UpcomingTournamentsComponent = ({
             </AccordionSummary>
             <AccordionDetails>
               <Box sx={{ margin: "0 0 0 -1rem" }}>
-                <Map
+                {/* <Map
                   mapWidth={mapWidth}
                   location={{
                     lat: "12.9708136",
                     lng: "77.5937793",
                   }}
-                />
+                /> */}
               </Box>
               <Typography
                 variant='body2'

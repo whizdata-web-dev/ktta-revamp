@@ -64,7 +64,7 @@ const TournamentContainer = ({
                 className='text-center'
                 sx={{
                   marginLeft: { md: "2rem" },
-                  marginTop: { xs: "-2rem", lg: "4rem" },
+                  marginTop: { xs: "-2rem", md: "4rem" },
                 }}
               >
                 <h3 className='tailwind_h3 text-4xl font-semibold leading-normal mb-2 text-blueGray-700'>
