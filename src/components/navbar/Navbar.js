@@ -13,6 +13,7 @@ const theme = {
   home: { background: "#32325D", text: "#495057" },
   about: { background: "#32325D", text: "#495057" },
   players: { background: "#121020", text: "#495057" },
+  player: { background: "#f6f5f7", text: "#495057" },
   result: { background: "#f6f5f7", text: "#495057" },
   contact: { background: "#f6f5f7", text: "#495057" },
   login: { background: "#f6f5f7", text: "#495057" },
@@ -26,6 +27,7 @@ const Navbar = () => {
 
   const location = useLocation();
   const curLocation = location.pathname.split("/")[1];
+  console.log(curLocation);
 
   function animation() {
     var tabsNewAnim = $("#navbarSupportedContent");
@@ -450,7 +452,7 @@ const Navbar = () => {
                 </li>
                 <li
                   className={
-                    curLocation === "result" || curLocation === "tournament"
+                    curLocation === "result" || curLocation === "player"
                       ? "nav-item active"
                       : "nav-item"
                   }
