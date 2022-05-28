@@ -45,6 +45,9 @@ const Payment = (props) => {
           setMessage(
             "Registration Succesfull! Please Login to subscribe the tournament."
           );
+          setTimeout(() => {
+            window.location.reload();
+          }, 4000);
         } else {
           setMessage("Something went wrong! Please try again later.");
         }

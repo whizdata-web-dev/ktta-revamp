@@ -80,6 +80,7 @@ const RegisterForm = ({
     )
       // Getting the Response object which holds the data of registration
       .then((response) => {
+
         //Checking weather response data is null
         if (response.result) {
           //checking email is valid
@@ -90,7 +91,6 @@ const RegisterForm = ({
                 ? response.result.registerStatus
                 : "Invalid User"
             );
-
           } else {
             // setting verificationcode to state
             setverifyCode(response.result.verificationCode);
@@ -115,8 +115,7 @@ const RegisterForm = ({
   // on submit click validationg email address and age and calling api
   const validateUser = (event) => {
     event.preventDefault();
-    setErrorClass("");
-    setErrorMessage("");
+  
     setDisabled(true);
     const pattern =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-z]+)+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -124,9 +123,7 @@ const RegisterForm = ({
       // checking valid email address - if fails setting error state
       setErrorClass("emailError");
       setErrorMessage("Invalid Email Address");
-
-       setDisabled(false);
-
+      setDisabled(false);
     } else {
       if (checkDOB(dob) === true) {
         // checking age - should be more than 15yrs
@@ -135,8 +132,7 @@ const RegisterForm = ({
       } else {
         setErrorClass("dobError"); // setting error state in case age is below 16yrs
         setErrorMessage("Age should be greater than 5 years");
-         setDisabled(false);
-
+        setDisabled(false);
       }
     }
   };
@@ -164,7 +160,6 @@ const RegisterForm = ({
           maxWidth: { sm: "40vw", md: "25vw", lg: "30vw" },
         }}
       >
-        
         {/* checking OTP code is null */}
         {!verifyCode ? (
           <Grid container spacing={{ xs: 0, md: 0 }}>
@@ -178,9 +173,9 @@ const RegisterForm = ({
                   }}
                   title={
                     <Typography
-                      variant="h4"
+                      variant="h2"
                       sx={{
-                        fontSize: "2rem",
+                        fontSize: "1.5rem",
                         margin: "0.5rem",
                         // textTransform: "uppercase",
                         fontWeight: 600,
@@ -295,7 +290,7 @@ const RegisterForm = ({
                 >
                   <Box sx={{ flex: "1" }} />
                   <button
-                    // disabled={disabled}
+                    disabled={disabled}
                     style={{
                       borderRadius: "20px",
                       margin: "1.5rem 0",
