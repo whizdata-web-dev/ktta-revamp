@@ -60,8 +60,16 @@ const About = () => {
           <section className='relative pt-16 bg-blueGray-200'>
             <Box className='container mx-auto px-4'>
               <Box
-                className='relative flex flex-col min-w-0 break-words bg-white w-full shadow-xl -mt-80'
-                sx={{ marginBottom: "-8rem", zIndex: 2, paddingBottom: "2rem" }}
+                className='relative flex flex-col min-w-0 break-words bg-white w-full shadow-xl'
+                sx={{
+                  marginBottom: "-8rem",
+                  zIndex: 2,
+                  paddingBottom: "2rem",
+                  marginTop: {
+                    xs: "-32rem !important",
+                    md: "-24rem !important",
+                  },
+                }}
               >
                 <Box className='px-4'>
                   <Box

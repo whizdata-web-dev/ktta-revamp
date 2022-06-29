@@ -23,7 +23,10 @@ function App() {
   return (
     <AuthContext>
       <Navbar />
-      <Box className='relative bg-blueGray-100' style={{}}>
+      <Box
+        className='relative bg-blueGray-100'
+        sx={{ marginTop: { xs: "3.5rem", md: "0" } }}
+      >
         <Box
           className='mx-auto w-full'
           style={{

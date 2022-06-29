@@ -24,7 +24,7 @@ function CircularProgressWithLabel(props) {
           justifyContent: "center",
         }}
       >
-        <Typography variant='caption' component='div' sx={{ color: "#fafafa" }}>
+        <Typography variant='caption' component='div' sx={{ color: "#777" }}>
           {props.points}
         </Typography>
       </Box>

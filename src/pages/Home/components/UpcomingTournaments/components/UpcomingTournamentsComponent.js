@@ -29,7 +29,7 @@ const UpcomingTournamentsComponent = ({
   return (
     <Box
       className={`block w-full px-4 overflow-y-auto pb-6`}
-      sx={{ marginTop: "-1rem" }}
+      // sx={{ marginTop: "-1rem" }}
     >
       <SubscribeTournament
         open={open}
@@ -42,7 +42,12 @@ const UpcomingTournamentsComponent = ({
       {Object.keys(data).length !== 0 ? (
         data.map((tournamentDetails, index) => (
           <Accordion
-            sx={{ background: "#f8fafc", overflow: "hidden" }}
+            sx={{
+              background: "#f8fafc",
+              overflow: "hidden",
+              marginTop:
+                index === 0 && expanded === `panel${index}` ? "-1rem" : "0rem",
+            }}
             expanded={expanded === `panel${index}`}
             onChange={handleChange(`panel${index}`)}
             key={index}
@@ -55,7 +60,7 @@ const UpcomingTournamentsComponent = ({
               <Box sx={{ display: "flex" }}>
                 <Typography
                   sx={{
-                    width: { xs: "90%", md: "66%" },
+                    // width: { xs: "90%", md: "66%" },
                     flexShrink: 0,
                     fontSize: "0.8rem",
                   }}
@@ -113,6 +118,7 @@ const UpcomingTournamentsComponent = ({
                 <Button
                   sx={{
                     color: "#64748b",
+                    visibility: "hidden",
                   }}
                   onClick={() => handleClickOpen("view", tournamentDetails)}
                 >
