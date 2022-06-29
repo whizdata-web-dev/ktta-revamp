@@ -12,7 +12,7 @@ import FetchData from "../../../../../assets/utils/FetchData";
 import { urlConsts } from "../../../../../assets/utils/RequestData";
 import UpcomingTournamentsComponent from "../components/UpcomingTournamentsComponent";
 import { useLoginContext } from "../../../../../assets/utils/UserLoginContext";
-
+import { handleTournamentId } from "../../../../../assets/utils/UserLoginContext";
 export default function UpcomingTournamentsContainer() {
   const { getLoginUser } = useLoginContext();
   const getUser = getLoginUser();
@@ -47,6 +47,9 @@ export default function UpcomingTournamentsContainer() {
 
   const handleClickOpen = (component, id) => {
     setOpen(component === "view" ? id : component);
+    if (component === "give") {
+      handleTournamentId.setTournId(id && id._id);
+    }
   };
 
   const handleClose = () => {
@@ -60,16 +63,16 @@ export default function UpcomingTournamentsContainer() {
   return (
     <>
       <Box
-        className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded'
+        className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
         style={{ height: 454 }}
       >
-        <Box className='rounded-t mb-0 px-4 py-3 border-0'>
-          <Box className='flex flex-wrap items-center'>
+        <Box className="rounded-t mb-0 px-4 py-3 border-0">
+          <Box className="flex flex-wrap items-center">
             <Box
               sx={{ textTransform: "uppercase" }}
-              className='relative w-full px-4 max-w-full flex-grow flex-1'
+              className="relative w-full px-4 max-w-full flex-grow flex-1"
             >
-              <h1 className='tailwind_h1 font-semibold text-base text-blueGray-700 py-1'>
+              <h1 className="tailwind_h1 font-semibold text-base text-blueGray-700 py-1">
                 Upcoming Tournaments
               </h1>
             </Box>

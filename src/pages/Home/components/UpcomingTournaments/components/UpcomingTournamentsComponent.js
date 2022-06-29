@@ -54,8 +54,8 @@ const UpcomingTournamentsComponent = ({
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel1bh-content'
-              id='panel1bh-header'
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
             >
               <Box sx={{ display: "flex" }}>
                 <Typography
@@ -64,7 +64,7 @@ const UpcomingTournamentsComponent = ({
                     flexShrink: 0,
                     fontSize: "0.8rem",
                   }}
-                  className='text-blueGray-500 align-middle text-xs uppercase font-semibold text-left'
+                  className="text-blueGray-500 align-middle text-xs uppercase font-semibold text-left"
                 >
                   {tournamentDetails.eventName}
                 </Typography>
@@ -72,17 +72,17 @@ const UpcomingTournamentsComponent = ({
             </AccordionSummary>
             <AccordionDetails>
               <Box sx={{ margin: "0 0 0 -1rem" }}>
-                <Map
+                {/* <Map
                   mapWidth={mapWidth}
                   location={{
                     lat: "12.9708136",
                     lng: "77.5937793",
                   }}
-                />
+                /> */}
               </Box>
               <Typography
-                variant='body2'
-                color='text.secondary'
+                variant="body2"
+                color="text.secondary"
                 style={{ textAlign: "justify", margin: "22vh 0 1rem 0" }}
               >
                 {tournamentDetails.venueAddress}
@@ -90,8 +90,8 @@ const UpcomingTournamentsComponent = ({
               <Grid container>
                 <Grid xs={6} item>
                   <Typography
-                    variant='body2'
-                    color='text.secondary'
+                    variant="body2"
+                    color="text.secondary"
                     style={{ textAlign: "left" }}
                   >
                     {tournamentDetails.eventStartDate}
@@ -99,15 +99,15 @@ const UpcomingTournamentsComponent = ({
                 </Grid>
                 <Grid xs={6} item>
                   <Typography
-                    variant='body2'
-                    color='text.secondary'
+                    variant="body2"
+                    color="text.secondary"
                     style={{ textAlign: "right" }}
                   >
                     {tournamentDetails.eventEndDate}
                   </Typography>
                 </Grid>
               </Grid>
-              <Divider variant='middle' sx={{ margin: "0.5rem 0" }} />
+              <Divider variant="middle" sx={{ margin: "0.5rem 0" }} />
               <Box
                 sx={{
                   display: "flex",
@@ -136,7 +136,9 @@ const UpcomingTournamentsComponent = ({
                     },
                   }}
                   onClick={() =>
-                    getUser ? handleClickOpen("give") : handleGiveEntry()
+                    getUser
+                      ? handleClickOpen("give", tournamentDetails)
+                      : handleGiveEntry()
                   }
                 >
                   Give Entry

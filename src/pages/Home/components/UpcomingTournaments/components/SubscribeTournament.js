@@ -54,7 +54,11 @@ function getStyles(name, eventName, theme) {
   };
 }
 
-const SubscribeTournament = ({ open, handleClose, getUser }) => {
+const SubscribeTournament = ({
+  open,
+  handleClose,
+  getUser,
+}) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -153,7 +157,7 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
     let content = {
       caller: urlConsts.caller,
       data: {
-        userId: getUser,
+        userId: getUser.userId,
         tournamentId: tournamentId,
         subscribeID: subData,
         unSubscribeID: unSubData,
@@ -172,6 +176,7 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
           // Setting success message
           alert("Subscription Sucessfull");
           //redirection to home component
+          history.push("/");
         } else {
           response.result.message
             ? setMessage(response.result.message)
@@ -191,7 +196,7 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
   const getSubscribeTournamentList = async () => {
     await RequestData(
       "GET",
-      `eventListUnderTourn?caller=${urlConsts.caller}&apiKey=${urlConsts.apiKey}&tournamentId=${tournamentId}&userId=${getUser}`
+      `eventListUnderTourn?caller=KTTA1&apiKey=dd5e611bf286042db7257ee998e5112b&tournamentId=WeLEm5QACmyGCwLHS&userId=qoJ7c8Mr27ZnGZH5a`
     )
       // `eventListUnderTourn?caller=${urlConsts.caller}&apiKey=${urlConsts.apiKey}&tournamentId=${tournamentId}&userId=${urlConsts.filterData}`
       .then((response) => {
@@ -254,10 +259,14 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
   };
 
   useEffect(() => {
+    let checks = [];
     const eventsSubscribed = subscribedEvents
       .map((d, index) => {
         if (d != 0) {
+          checks[index] = true;
           return events[index];
+        } else {
+          checks[index] = false;
         }
       })
       .filter((doc) => doc !== undefined);
@@ -268,6 +277,7 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
         0
       )
     );
+    setChecked(checks);
   }, [getUser && getUser._id]);
 
   return (
@@ -275,27 +285,27 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
       <Dialog
         fullScreen={fullScreen}
         open={open && open === "give"}
-        aria-labelledby='responsive-dialog-title'
+        aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id='responsive-dialog-title'>
+        <DialogTitle id="responsive-dialog-title">
           Choose your events
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
             <FormControl sx={{ m: 1, width: 300 }}>
-              <InputLabel id='demo-multiple-chip-label'>
+              <InputLabel id="demo-multiple-chip-label">
                 Select Events
               </InputLabel>
               <Select
-                labelId='demo-multiple-chip-label'
-                id='demo-multiple-chip'
+                labelId="demo-multiple-chip-label"
+                id="demo-multiple-chip"
                 multiple
                 value={eventName}
                 onChange={handleChange}
                 input={
                   <OutlinedInput
-                    id='select-multiple-chip'
-                    label='Select Events'
+                    id="select-multiple-chip"
+                    label="Select Events"
                   />
                 }
                 renderValue={(selected) => (
@@ -308,10 +318,10 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
                 MenuProps={MenuProps}
               >
                 {events.map((event, index) => (
-                  <MenuItem 
+                  <MenuItem
                     key={event}
                     value={event}
-                    disabled={subscribedEvents[index]!="0" ? true : false}
+                    disabled={subscribedEvents[index] != "0" ? true : false}
                     style={getStyles(event, eventName, theme)}
                   >
                     <Grid container>
@@ -327,10 +337,10 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    <Typography variant='h5'>Event Name</Typography>
+                    <Typography variant="h5">Event Name</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant='h5'>Fee</Typography>
+                    <Typography variant="h5">Fee</Typography>
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -381,7 +391,7 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
           </Button>
           <Button
             autoFocus
-            variant='contained'
+            variant="contained"
             disabled={!totalAmount}
             onClick={handlePayment} //handling payment onclick by rendering razor pay
             sx={{ float: "right" }}
