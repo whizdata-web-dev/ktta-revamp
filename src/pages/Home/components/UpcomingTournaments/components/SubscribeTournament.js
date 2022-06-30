@@ -67,8 +67,6 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
   const [eventFees, setEventFees] = useState([]);
   const [subscribedEvents, setSubscribedEvents] = useState([]);
 
-
-
   // constant state for error / success message
   const [message, setMessage] = useState("");
   // Constant state used to get total amount based on check uncheck
@@ -77,7 +75,7 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
   const [eventName, setEventName] = useState([]);
 
   const history = useHistory();
-  const [disableFlag,setDisableFlag] = useState(false);
+  const [disableFlag, setDisableFlag] = useState(false);
   const [checked, setChecked] = useState([]);
   let subData = [],
     unSubData = [];
@@ -139,7 +137,7 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
       target: { value },
     } = event;
     setMessage("");
-      setDisableFlag(value.length === 3);
+    setDisableFlag(value.length === 3);
     if (value && value.length <= 3) {
       setEventName(typeof value === "string" ? value.split(",") : value);
       let amountList = 0;
@@ -153,7 +151,6 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
       // setUnChecked(ev);
     } else {
       setMessage("Cannot select more than 3 events!");
-
     }
     setDisableFlag(eventName.includes(event) ? false : disableFlag);
   };
@@ -212,7 +209,7 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
   // using Axios GET method
 
   const getSubscribeTournamentList = async () => {
-        console.log(tournamentId);
+    console.log(tournamentId);
 
     await RequestData(
       "GET",
@@ -358,7 +355,7 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
                     //   //subscribedEvents[index] != "0" &&
                     //   disableFlag === false ? true : false
                     // }
-                    
+
                     style={getStyles(event, eventName, theme)}
                   >
                     <Grid container>
