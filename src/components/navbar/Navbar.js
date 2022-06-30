@@ -248,6 +248,7 @@ const Navbar = () => {
                   }}
                 >
                   <span
+                  
                     className='material-icons'
                     style={{ fontSize: "1rem", margin: "0.5vh" }}
                   >

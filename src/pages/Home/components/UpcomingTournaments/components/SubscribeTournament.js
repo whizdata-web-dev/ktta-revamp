@@ -358,6 +358,7 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
                     //   //subscribedEvents[index] != "0" &&
                     //   disableFlag === false ? true : false
                     // }
+                    
                     style={getStyles(event, eventName, theme)}
                   >
                     <Grid container>
