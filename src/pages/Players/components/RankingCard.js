@@ -20,7 +20,7 @@ const RankingCard = ({ loading, eventData }) => {
       {loading ? (
         <Box sx={{ width: "100%", textAlign: "center" }}>
           <CircularProgress
-            sx={{ color: "#FF7777", margin: "2rem auto -1rem auto" }}
+            sx={{ color: "#FF7777", margin: "2rem auto 0rem auto" }}
           />
         </Box>
       ) : (

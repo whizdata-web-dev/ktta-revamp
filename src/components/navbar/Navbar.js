@@ -58,7 +58,7 @@ const Navbar = () => {
         );
       });
     }, 1000);
-  }, []);
+  }, [window.location.pathname]);
 
   return (
     <Box className={`navbar-root ${navbarStyle}`}>

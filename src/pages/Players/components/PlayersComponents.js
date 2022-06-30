@@ -68,7 +68,7 @@ const PlayersComponents = () => {
             >
               <Box className='px-6 mt-8 mb-8'>
                 <Box>
-                  <Grid container>
+                  <Grid container sx={{justifyContent: 'center'}}>
                     {eventName && (
                       <RankingDialog
                         eventName={eventName}
@@ -77,7 +77,7 @@ const PlayersComponents = () => {
                         handleClose={handleClose}
                       />
                     )}
-                    {[2018, 2019, 2020, 2021].map((value) => (
+                    {[2021].map((value) => (
                       <Grid item xs={12} sm={6} md={6} xl={4} key={value}>
                         <Card
                           sx={{

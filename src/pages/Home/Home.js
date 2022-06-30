@@ -35,13 +35,13 @@ const Home = () => {
           </Box>
         </Box>
       </Box>
-      <Box className='px-4 md:px-10 mx-auto w-full'>
+      {/* <Box className='px-4 md:px-10 mx-auto w-full'>
         <Box className='flex flex-wrap mt-4'>
           <Box className='w-full xl:w-12 mb-0 xl:mb-0 px-4'>
             <SocialContainer />
           </Box>
         </Box>
-      </Box>
+      </Box> */}
     </>
   );
 };
