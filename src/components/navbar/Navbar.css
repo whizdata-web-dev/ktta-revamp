@@ -620,6 +620,11 @@ i {
     left: -25px;
   }
 }
+@media (max-width: 1000px) {
+  .navbar_padding {
+    margin-left: -2rem !important;
+  }
+}
 
 .collapse:not(.show) {
   display: none;
@@ -637,4 +642,8 @@ i {
 
 .dummyColor {
   color: #252546;
+}
+
+.navbar_padding {
+  padding: 0 2rem !important;
 }

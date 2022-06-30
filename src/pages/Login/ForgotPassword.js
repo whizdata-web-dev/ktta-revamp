@@ -45,7 +45,11 @@ export default function ResetPassword(props) {
 
   const confirmClick = (event) => {
     event.preventDefault();
+<<<<<<< HEAD
     if ((OTP) === String(resetPwdValues.verificationCode)) {
+=======
+    if (parseInt(OTP) === String(resetPwdValues.verificationCode)) {
+>>>>>>> e4d41cce76114dd85eb7fd33e15173faedabe1c3
       resetPwdValues.password === resetPwdValues.confirmPassword
         ? getPasswordResetValidation()
         : setresetPwdValues({
