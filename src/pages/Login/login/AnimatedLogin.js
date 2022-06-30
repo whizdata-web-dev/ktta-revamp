@@ -393,6 +393,7 @@ const AnimatedLogin = () => {
                 >
                   Sign Up
                 </button>
+                
               </Box>
             </Box>
           </Box>

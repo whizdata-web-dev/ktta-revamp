@@ -217,6 +217,7 @@ export default function ResetPassword(props) {
               Next
             </button>
           </Box>
+          
           <Box>
             <Button
               variant="text"
