@@ -45,7 +45,7 @@ export default function ResetPassword(props) {
 
   const confirmClick = (event) => {
     event.preventDefault();
-    if (OTP === String(resetPwdValues.verificationCode)) {
+    if ((OTP) === String(resetPwdValues.verificationCode)) {
       resetPwdValues.password === resetPwdValues.confirmPassword
         ? getPasswordResetValidation()
         : setresetPwdValues({
@@ -428,8 +428,8 @@ export default function ResetPassword(props) {
           style={{
             color: "green",
             fontSize: "26px",
-            fontweight:"700",
-            fontStyle:"italic",
+            fontweight: "700",
+            fontStyle: "italic",
             marginBottom: "1px",
           }}
         >
