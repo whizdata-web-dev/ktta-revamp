@@ -117,6 +117,7 @@ const AnimatedLogin = () => {
     await RequestData("POST", "renewalUnderAssoc", content)
       // Getting the Response object which holds the data of Previous tournaments
       .then((response) => {
+        console.log(response, content);
         //Checking weather response data is null
         if (response.result) {
           setLoginUser(player); // setting data to context api
@@ -209,6 +210,7 @@ const AnimatedLogin = () => {
           error: "emailError",
           errorMessage: "Invalid Email Address!",
         })
+        
       : // checking if password length is less than 5
       // then button animation and error message is displayed to user.
       String(loginValues.password).length <= 5
@@ -246,20 +248,11 @@ const AnimatedLogin = () => {
         >
           <Box className="form-container sign-up-container">
             <Box className="login-form">
-    <Box className='loginroot' sx={{ padding: "2rem 0" }}>
-      <Box className='loginbody'>
-        <Box
-          className={activeClass}
-          id='container'
-          sx={{ maxWidth: { xs: "400px", md: "100%" } }}
-        >
-          <Box className='form-container sign-up-container'>
-            <Box className='login-form'>
               <Register />
             </Box>
           </Box>
           <Box
-            className='form-container sign-in-container'
+            className="form-container sign-in-container"
             sx={{
               "@media screen and (max-width: 301px)": {
                 overflow: "auto",
@@ -276,32 +269,32 @@ const AnimatedLogin = () => {
             {loginValues.forgotPwdFlag === true ? (
               <ForgotPassword onChange={cancelFgtPwd} />
             ) : (
-              <form className='login-form' onSubmit={submitLogin}>
-                <h1 className='login-h1'>Sign in</h1>
+              <form className="login-form" onSubmit={submitLogin}>
+                <h1 className="login-h1">Sign in</h1>
                 <TextField
-                  id='emailLogin'
+                  id="emailLogin"
                   required
                   value={loginValues.email}
-                  type='email'
-                  variant='filled'
+                  type="email"
+                  variant="filled"
                   className={
                     loginValues.error === "emailError" ? "error" : "textWidth"
                   }
                   sx={{
                     paddingTop: "1rem",
                   }}
-                  placeholder='Email Address'
-                  name='email'
+                  placeholder="Email Address"
+                  name="email"
                   onChange={handleInputChange}
                 />
                 <TextField
-                  id='password'
+                  id="password"
                   required
-                  type='password'
-                  variant='filled'
+                  type="password"
+                  variant="filled"
                   value={loginValues.password}
-                  placeholder='Password'
-                  name='password'
+                  placeholder="Password"
+                  name="password"
                   className={
                     loginValues.error === "pwdError" ? "error" : "textWidth"
                   }
@@ -325,17 +318,17 @@ const AnimatedLogin = () => {
                   ""
                 )}
                 <button
-                  className='signin login-button'
+                  className="signin login-button"
                   style={{
                     marginTop: "1rem",
                   }}
-                  id='signIn'
+                  id="signIn"
                 >
                   Sign In
                 </button>
                 <Box sx={{ margin: "1rem" }}>
                   <Button
-                    variant='text'
+                    variant="text"
                     onClick={handleForgotPassword}
                     sx={{
                       border: "none",
@@ -354,7 +347,7 @@ const AnimatedLogin = () => {
                     }}
                   >
                     <Typography
-                      variant='body2'
+                      variant="body2"
                       sx={{
                         fontWeight: "bold",
                         color: "#616161",
@@ -374,37 +367,34 @@ const AnimatedLogin = () => {
               </form>
             )}
           </Box>
-          <Box className='overlay-container'>
-            <Box className='overlay'>
-              <Box className='overlay-panel overlay-left'>
-                <h1 className='login-h1'>Welcome Back Player!</h1>
-                <p className='login-p'>Please login to give entries.</p>
+          <Box className="overlay-container">
+            <Box className="overlay">
+              <Box className="overlay-panel overlay-left">
+                <h1 className="login-h1">Welcome Back Player!</h1>
+                <p className="login-p">Please login to give entries.</p>
                 <button
                   className="ghost signin login-button"
                   id="signIn1"
-                  className='ghost signin login-button'
-                  id='signIn1'
                   onClick={() => setActiveClass("login_container")}
                 >
                   Sign In
                 </button>
               </Box>
-              <Box className='overlay-panel overlay-right'>
-                <h1 className='login-h1'>Hello, Player!</h1>
-                <p className='login-p'>
+              <Box className="overlay-panel overlay-right">
+                <h1 className="login-h1">Hello, Player!</h1>
+                <p className="login-p">
                   Enter your personal details and start journey in the
                   competitive world of Table Tennis!
                 </p>
                 <button
-                  className='ghost signup login-button'
-                  id='signUp'
+                  className="ghost signup login-button"
+                  id="signUp"
                   onClick={() =>
                     setActiveClass("login_container right-panel-active")
                   }
                 >
                   Sign Up
                 </button>
-
               </Box>
             </Box>
           </Box>
