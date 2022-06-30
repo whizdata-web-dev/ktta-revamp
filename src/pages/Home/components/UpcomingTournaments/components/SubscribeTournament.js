@@ -54,11 +54,7 @@ function getStyles(name, eventName, theme) {
   };
 }
 
-const SubscribeTournament = ({
-  open,
-  handleClose,
-  getUser,
-}) => {
+const SubscribeTournament = ({ open, handleClose, getUser }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -67,6 +63,12 @@ const SubscribeTournament = ({
     events: [],
     eventFees: [],
   });
+  const [events, setEvents] = useState([]);
+  const [eventFees, setEventFees] = useState([]);
+  const [subscribedEvents, setSubscribedEvents] = useState([]);
+
+
+
   // constant state for error / success message
   const [message, setMessage] = useState("");
   // Constant state used to get total amount based on check uncheck
@@ -75,7 +77,10 @@ const SubscribeTournament = ({
   const [eventName, setEventName] = useState([]);
 
   const history = useHistory();
+  const [disableFlag,setDisableFlag] = useState(false);
   const [checked, setChecked] = useState([]);
+  let subData = [],
+    unSubData = [];
   const tournamentId = handleTournamentId.getTournId()
     ? handleTournamentId.getTournId()
     : "";
@@ -83,70 +88,82 @@ const SubscribeTournament = ({
 
   //razor pay for payment
   // api response for testing
-  const events = [
-    "HBU11",
-    "HGU11",
-    "BU13",
-    "GU13",
-    "BU15",
-    "GU15",
-    "BU17",
-    "GU17",
-    "BU19",
-    "GU19",
-    "Men",
-    "Women",
-    "NMS",
-  ];
-  const eventFees = [
-    "200",
-    "200",
-    "200",
-    "200",
-    "200",
-    "200",
-    "300",
-    "300",
-    "300",
-    "300",
-    "300",
-    "300",
-    "300",
-  ];
-  const subscribedEvents = [
-    "0",
-    "200",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "300",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-  ];
+  // const events = [
+  //   "HBU11",
+  //   "HGU11",
+  //   "BU13",
+  //   "GU13",
+  //   "BU15",
+  //   "GU15",
+  //   "BU17",
+  //   "GU17",
+  //   "BU19",
+  //   "GU19",
+  //   "Men",
+  //   "Women",
+  //   "NMS",
+  // ];
+  // const eventFees = [
+  //   "200",
+  //   "200",
+  //   "200",
+  //   "200",
+  //   "200",
+  //   "200",
+  //   "300",
+  //   "300",
+  //   "300",
+  //   "300",
+  //   "300",
+  //   "300",
+  //   "300",
+  // ];
+  // const subscribedEvents = [
+  //   "0",
+  //   "200",
+  //   "0",
+  //   "0",
+  //   "0",
+  //   "0",
+  //   "0",
+  //   "300",
+  //   "0",
+  //   "0",
+  //   "0",
+  //   "0",
+  //   "0",
+  // ];
 
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setEventName(typeof value === "string" ? value.split(",") : value);
-    let amountList = 0;
-    value.forEach((val, index) => {
-      amountList += parseInt(eventFees[events.indexOf(val)]);
-    });
-    setTotalAmount(amountList);
+    setMessage("");
+      setDisableFlag(value.length === 3);
+    if (value && value.length <= 3) {
+      setEventName(typeof value === "string" ? value.split(",") : value);
+      let amountList = 0;
+      value.forEach((val, index) => {
+        amountList += parseInt(eventFees[events.indexOf(val)]);
+      });
+      console.log(events.filter((val) => !value.includes(val)));
+      setTotalAmount(amountList);
+      // let ev = events.filter((val) => !value.includes(val));
+      // console.log(ev);
+      // setUnChecked(ev);
+    } else {
+      setMessage("Cannot select more than 3 events!");
+
+    }
+    setDisableFlag(eventName.includes(event) ? false : disableFlag);
   };
 
   // This is to call renewal player api if player payment is expired
   //Transaction id with amount is passed from payment gateway after payment is successfull
   const paySubscribtion = async (transactionId) => {
     // variables to pass subscribed and unsubscribed data to api
-    let subData = [],
-      unSubData = [];
+
+    setMessage("");
     events &&
       events.map((eventName, index) => {
         checked[index] === true
@@ -167,6 +184,7 @@ const SubscribeTournament = ({
         oldSubscribeID: [],
       },
     };
+    console.log(content);
     // Calling HTTP method by passing Api Type and Api URL and object params
     await RequestData("POST", "eventSubscription", content)
       // Getting the Response object which holds the data of Previous tournaments
@@ -194,22 +212,26 @@ const SubscribeTournament = ({
   // using Axios GET method
 
   const getSubscribeTournamentList = async () => {
+        console.log(tournamentId);
+
     await RequestData(
       "GET",
-      `eventListUnderTourn?caller=KTTA1&apiKey=dd5e611bf286042db7257ee998e5112b&tournamentId=WeLEm5QACmyGCwLHS&userId=qoJ7c8Mr27ZnGZH5a`
+      `eventListUnderTourn?caller=${urlConsts.caller}&apiKey=${urlConsts.apiKey}&tournamentId=${tournamentId}&userId=${getUser.userId}`
     )
       // `eventListUnderTourn?caller=${urlConsts.caller}&apiKey=${urlConsts.apiKey}&tournamentId=${tournamentId}&userId=${urlConsts.filterData}`
       .then((response) => {
         // Checking the response before changing the state
         if (response && response.result) {
-          // setSubscribeTournamentData(response.result.eventFeeSettings);
-          // setEventName(response.result.eventFeeSettings.events);
+          console.log(response);
+          setEventFees(response.result.eventFeeSettings.eventFees);
+          setEvents(response.result.eventFeeSettings.events);
         } else {
           // error message in case of no response
           setMessage("Something went wrong! Please try again later.");
         }
       })
       .catch((error) => {
+        console.log(error);
         // error in api call
         error.result && error.result.message
           ? setMessage(error.result.message)
@@ -278,7 +300,9 @@ const SubscribeTournament = ({
       )
     );
     setChecked(checks);
-  }, [getUser && getUser._id]);
+    console.log(tournamentId);
+    getSubscribeTournamentList();
+  }, [getUser && getUser._id && tournamentId]);
 
   return (
     <Box>
@@ -289,7 +313,16 @@ const SubscribeTournament = ({
       >
         <DialogTitle id="responsive-dialog-title">
           Choose your events
+          <Typography
+            sx={{
+              color: "orangeRed",
+            }}
+          >
+            {message}
+          </Typography>
+          {/* : (<></>)} */}
         </DialogTitle>
+
         <DialogContent>
           <DialogContentText>
             <FormControl sx={{ m: 1, width: 300 }}>
@@ -321,7 +354,10 @@ const SubscribeTournament = ({
                   <MenuItem
                     key={event}
                     value={event}
-                    disabled={subscribedEvents[index] != "0" ? true : false}
+                    // disabled={
+                    //   //subscribedEvents[index] != "0" &&
+                    //   disableFlag === false ? true : false
+                    // }
                     style={getStyles(event, eventName, theme)}
                   >
                     <Grid container>

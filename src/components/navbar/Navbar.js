@@ -236,7 +236,7 @@ const Navbar = () => {
                   Login
                 </Link>
               ) : (
-                <button
+                <Link
                   className='nav-link'
                   onClick={() => {
                     logOut();
@@ -254,7 +254,7 @@ const Navbar = () => {
                     logout
                   </span>
                   Logout
-                </button>
+                </Link>
               )}
             </li>
           </ul>
