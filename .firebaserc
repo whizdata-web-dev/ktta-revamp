@@ -1,5 +1,23 @@
 {
   "projects": {
     "default": "karnatakatta"
+  },
+  "targets": {
+    "andhrapradeshtta": {
+      "hosting": {
+        "build_site_development": [
+          "ktta-test"
+        ],
+        "build_site_production": [
+          "karnatakatta"
+        ],
+        "build_admin_development": [
+          "karnatakatta-admin-test"
+        ],
+        "build_admin_production": [
+          "karnatakatta-admin"
+        ]
+      }
+    }
   }
 }
