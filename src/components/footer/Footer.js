@@ -1,22 +1,31 @@
 import { Box } from "@mui/material";
 import React from "react";
+import './footer.css'
 
 export default function FooterAdmin() {
   return (
     <>
-      <footer className='block'>
+      <Box
+        className='block'
+        sx={{
+          borderTop: "10px solid #0c0c0c",
+          boxShadow: "-10px 10px #141414, 10px 10px #141414",
+          background: "#141414",
+          marginTop: '-2rem'
+        }}
+      >
         <Box className='container mx-auto px-4'>
-          <hr className='tailwind_hr border-b-1 border-blueGray-200' />
+          {/* <hr className='tailwind_hr border-b-1 border-blueGray-200' /> */}
           <Box className='flex flex-wrap items-center md:justify-between justify-center'>
             <Box className='w-full md:w-4/12 px-4'>
-              <Box className='text-sm text-blueGray-500 font-semibold py-1 text-center md:text-left'>
+              <Box className='text-sm text-white font-semibold py-1 text-center md:text-left'>
                 Copyright © {new Date().getFullYear()}&nbsp;
-                <a
-                  href='https://www.whizdata.in/#/'
-                  className='tailwind_a text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1'
-                >
-                  WHIZDATA
-                </a>
+                {/* <a
+                  // href='https://www.whizdata.in/#/'
+                  className='tailwind_a text-white hover:text-blueGray-700 text-sm font-semibold py-1'
+                > */}
+                  Karnataka Table Tennis Association. Powered by WHIZDATA
+                {/* </a> */}
               </Box>
             </Box>
             <Box className='w-full md:w-8/12 px-4'>
@@ -24,7 +33,7 @@ export default function FooterAdmin() {
                 <li>
                   <a
                     href='https://www.whizdata.in/#/'
-                    className='tailwind_a text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3'
+                    className='tailwind_a text-white footer_links text-sm font-semibold block py-1 px-3'
                   >
                     WHIZDATA
                   </a>
@@ -32,7 +41,7 @@ export default function FooterAdmin() {
                 <li>
                   <a
                     href='https://www.whizdata.in/#/aboutus'
-                    className='tailwind_a text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3'
+                    className='tailwind_a text-white footer_links text-sm font-semibold block py-1 px-3'
                   >
                     About Us
                   </a>
@@ -41,7 +50,7 @@ export default function FooterAdmin() {
             </Box>
           </Box>
         </Box>
-      </footer>
+      </Box>
     </>
   );
 }

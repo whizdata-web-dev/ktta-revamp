@@ -10,3 +10,18 @@ export const decryptData = (data) => {
   const bytes = CryptoJS.AES.decrypt(data, secretKey);
   return JSON.parse(JSON.parse(bytes.toString(CryptoJS.enc.Utf8)));
 };
+
+export const updateObject = (oldObject, updatedProperties) => {
+  const newObject = {
+    ...oldObject,
+    updatedProperties,
+  };
+  return newObject;
+};
+
+export const removeTestData = (data) => {
+  return data.filter(
+    (event) => !event.eventName.toLowerCase().includes("test")
+  );
+};
+

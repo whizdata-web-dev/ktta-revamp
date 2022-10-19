@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from "react";
 import FetchData from "../../../../../assets/utils/FetchData";
 import TournamentUpdatesComponent from "../components/TournamentUpdatesComponent";
-import { urlConsts } from "../../../../../assets/utils/RequestData";
+import { removeTestData } from "../../../../../assets/utils/functions";
 
 const TournamentUpdatesContainer = () => {
-  const {
-    data,
-    loading = true,
-    error,
-  } = FetchData({
+  const { data } = FetchData({
     method: "GET",
-    url: `PastTournamentsOnApiKey?caller=${urlConsts.caller}&apiKey=${urlConsts.apiKey}&userId=${urlConsts.filterData}`,
+    url: `PastTournamentsOnApiKey?caller=${process.env.REACT_APP_CALLER}&apiKey=${process.env.REACT_APP_API_KEY}&userId=${process.env.REACT_APP_USER_ID}`,
+    pathname: "result",
   });
 
   const [tournamentData, setTournamentData] = useState([]);
 
   useEffect(() => {
     if (Object.keys(data).length !== 0) {
-      let tournamentList = data.resultID.slice(0, 4);
+      let tournamentList = removeTestData(data.resultID).slice(0, 2);
       setTournamentData(tournamentList);
     }
   }, [data]);

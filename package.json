@@ -30,18 +30,23 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-otp-input": "^2.4.0",
-    "react-razorpay": "^1.1.4",
+    "react-razorpay": "^1.1.5",
     "react-redux": "^7.2.6",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "5.0.0",
+    "react-virtualized": "^9.22.3",
     "tailwindcss": "2.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "clean_build": "node clean_build.js && npm run build",
+    "clean_packages": "node clean_packages.js && npm install --legacy-peer-deps",
+    "clean_start": "npm install --legacy-peer-deps && npm start",
+    "clean_deploy": "npm run clean_build && firebase deploy"
   },
   "eslintConfig": {
     "extends": "react-app"

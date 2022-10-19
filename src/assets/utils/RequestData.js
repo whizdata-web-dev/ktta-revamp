@@ -10,29 +10,29 @@ import axios from "axios";
 export const urlConsts = {
   baseURL: "https://www.iplayon.in/dev/",
   headers: { "Content-Type": "application/json" },
-  // getApiKey not used
-  getApiKey: "114d59697dfd678982103926f6f0076f",
   apiKey: "dd5e611bf286042db7257ee998e5112b",
   caller: "KTTA1",
   sportID: "QvHXDftiwsnc8gyfJ",
   filterData: "z37CQ3th8i73SQogk", // association Id
+  associationId: "z37CQ3th8i73SQogk", // association Id
   // Payment Constants used for Razor Pay in registration
   paymentKeyId: "rzp_test_GPJxCbdU6QPDOf",
   amount: "50000",
   amountLabel: "500",
 };
+
 // This Function is used to call Api's with Response using Axios
 export const RequestData = async (httpMethodType, apiURL, content) => {
   if (httpMethodType === "POST") {
     // Constant apikey for POST method
-    Object.assign(content, { apiKey: urlConsts.apiKey });
+    Object.assign(content, { apiKey: process.env.REACT_APP_API_KEY });
   }
   // Api call
   return axios({
     //Assigning header and method type
     headers: urlConsts.headers,
     method: httpMethodType,
-    url: urlConsts.baseURL + apiURL,
+    url: process.env.REACT_APP_BASE_URL + apiURL,
 
     // assigning data for POST method
     data: httpMethodType === "GET" ? undefined : content,

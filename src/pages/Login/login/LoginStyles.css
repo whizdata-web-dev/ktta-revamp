@@ -2,6 +2,8 @@
 
 .loginroot {
   box-sizing: border-box;
+  margin-top: 0px;
+  padding: 2rem 0;
 }
 
 .btnShake {
@@ -50,6 +52,7 @@
   width: 100%;
 }
 .error {
+  width: 100%;
   animation: shake 0.2s;
   animation-iteration-count: 4;
   border-bottom: 1px solid orangered;
@@ -276,7 +279,7 @@ input {
     overflow: hidden;
     width: 85vw;
     max-width: 100%;
-    min-height: 160vh;
+    min-height: 1280px;
   }
 }
 
@@ -394,12 +397,7 @@ input {
   }
 }
 .forgotPwd {
-  background: linear-gradient(
-    to left,
-    rgba(63, 94, 251, 1) 0%,
-    rgba(118, 87, 209, 1) 44%,
-    rgba(252, 70, 107, 1) 100%
-  );
+  background-color: rgba(63, 94, 251, 1) !important;
   border: 1px solid #f5f2f2;
   border-radius: 20px;
   color: #eee;
