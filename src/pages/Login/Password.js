@@ -3,7 +3,6 @@
  */
 import React, { useState } from "react";
 import OtpInput from "react-otp-input";
-import { useHistory } from "react-router-dom";
 import Payment from "./Payment";
 // import "./login/LoginStyles.css";
 import {
@@ -17,8 +16,6 @@ import {
 } from "@mui/material";
 
 const Password = (props) => {
-  const history = useHistory();
-
   // stated for OTP password confirm and phone number
   const [passwordReg, setPasswordReg] = useState([
     {
@@ -31,6 +28,20 @@ const Password = (props) => {
     },
   ]);
   const [OTP, setOTP] = useState("");
+  const [checkList, setCheckList] = useState({
+    otp: false,
+    password: false,
+  });
+  const playerDetails = {
+    userName: props.regValues.firstName + " " + props.regValues.lastName,
+    password: passwordReg.password,
+    verificationCode: OTP,
+    emailAddress: props.regValues.email,
+    phoneNumber: props.regValues.phoneNumber,
+    dob: props.regValues.dob,
+    gender: props.regValues.gender,
+  };
+
   const handleRegSubmit = (event) => {
     //checking password confirm pwd and OTP is valid
     // if valid setting isAuthenticated state to true
@@ -38,30 +49,79 @@ const Password = (props) => {
     // If any error - error message is displayed to user
     event.preventDefault();
 
-    String(passwordReg.password).length > 5 &&
-    passwordReg.password === passwordReg.cPassword &&
-    OTP === String(props.regValues.verifyCode)
-      ? setPasswordReg({ isValidUser: true }) // Setting auth status true
-      : setPasswordReg({ errorMessage: "Mismatch! Please try again" });
+    let checkValues = {
+      password: false,
+      otp: false,
+    };
 
-    if (OTP === String(props.regValues.verifyCode)) {
-      passwordReg.password === passwordReg.cPassword
-        ? setPasswordReg({ isValidUser: true })
-        : setPasswordReg({
-            ...passwordReg,
-            errorMessage: "Password mismatch with confirm password!",
-          });
+    console.log("password type: ", checkValues);
+    if (
+      String(passwordReg.password).length > 5 &&
+      passwordReg.password.localeCompare(passwordReg.cPassword) === 0
+    ) {
+      console.log("true");
+      checkValues.password = true;
+    } else if (String(passwordReg.password).length < 6) {
+      setPasswordReg({
+        ...passwordReg,
+        errorMessage: "Password must have at least 6 characters",
+      });
+      checkValues.password = false;
     } else {
-      String(OTP).length < 4
-        ? setPasswordReg({
-            ...passwordReg,
-            errorMessage: "4 digit OTP required!",
-          })
-        : setPasswordReg({
-            ...passwordReg,
-            errorMessage: "OTP mismatch!",
-          });
+      setPasswordReg({
+        ...passwordReg,
+        errorMessage: "Password mismatch with confirm password!",
+      });
+      checkValues.password = false;
     }
+
+    if (
+      String(OTP).length === 4 &&
+      OTP === String(props.regValues.verifyCode)
+    ) {
+      checkValues.otp = true;
+    } else if (String(OTP).length < 4) {
+      setPasswordReg({
+        ...passwordReg,
+        errorMessage: "4 digit OTP required!",
+      });
+      checkValues.otp = false;
+    } else {
+      setPasswordReg({
+        ...passwordReg,
+        errorMessage: "Invalid OTP!",
+      });
+      checkValues.otp = false;
+    }
+
+    if (checkValues.password && checkValues.otp) {
+      setPasswordReg({ ...passwordReg, isValidUser: true });
+    }
+
+    // String(passwordReg.password).length > 5 &&
+    // passwordReg.password === passwordReg.cPassword &&
+    // OTP === String(props.regValues.verifyCode)
+    //   ? setPasswordReg({ ...passwordReg, isValidUser: true }) // Setting auth status true
+    //   : setPasswordReg({ errorMessage: "Mismatch! Please try again" });
+
+    // if (OTP === String(props.regValues.verifyCode)) {
+    //   passwordReg.password === passwordReg.cPassword
+    //     ? setPasswordReg({ ...passwordReg, isValidUser: true })
+    //     : setPasswordReg({
+    //         ...passwordReg,
+    //         errorMessage: "Password mismatch with confirm password!",
+    //       });
+    // } else {
+    //   String(OTP).length < 4
+    //     ? setPasswordReg({
+    //         ...passwordReg,
+    //         errorMessage: "4 digit OTP required!",
+    //       })
+    //     : setPasswordReg({
+    //         ...passwordReg,
+    //         errorMessage: "OTP mismatch!",
+    //       });
+    // }
   };
 
   // handling user entered values in state
@@ -88,20 +148,18 @@ const Password = (props) => {
 
   return (
     <Grid
-      sx={{
-        width: "100%",
-      }}
       container
       spacing={0}
       direction='column'
       alignItems='center'
       justifyContent='center'
+      sx={{ zIndex: 50 }}
     >
       <CardContent>
         {/* checking is authenticated state - otp and password 
           if so payment gateway is rendered */}
         {passwordReg.isValidUser ? (
-          <Payment />
+          <Payment playerDetails={playerDetails} />
         ) : (
           <Grid
             container
@@ -115,8 +173,8 @@ const Password = (props) => {
                 <CardHeader
                   style={{
                     textAlign: "center",
-                    width: "fit-content",
-                    margin: "0 -1rem",
+                    width: "100%",
+                    margin: "0 -2rem",
                   }}
                   // avatar={
                   //   <Avatar
@@ -134,8 +192,12 @@ const Password = (props) => {
                   // }
                   title={
                     <Typography
-                      variant='h5'
-                      sx={{ textTransform: "uppercase" }}
+                      variant='h4'
+                      sx={{
+                        marginLeft: "3rem",
+                        fontSize: "2rem",
+                        fontWeight: 600,
+                      }}
                     >
                       Verify your Account
                     </Typography>

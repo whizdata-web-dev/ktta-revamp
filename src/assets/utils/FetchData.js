@@ -43,7 +43,8 @@ const FetchData = ({ method, url, payload, pathname }) => {
       setLoading(true);
       getData();
     }
-  }, []);
+  }, []); // eslint-disable-line
+  
   return { data, loading, error };
 };
 

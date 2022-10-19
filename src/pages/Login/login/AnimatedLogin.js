@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Dialog, TextField, Typography } from "@mui/material";
 import useRazorpay from "react-razorpay";
 import "./LoginStyles.css";
 import Register from "../Register";
 import { useHistory, useLocation } from "react-router-dom";
-import { RequestData, urlConsts } from "../../../assets/utils/RequestData";
+import { RequestData } from "../../../assets/utils/RequestData";
 import ForgotPassword from "../ForgotPassword";
 import {
   useLoginContext,
   handleTournamentId,
 } from "../../../assets/utils/UserLoginContext";
+import LoadingComponent from "../../../assets/utils/LoadingComponent";
 
 const AnimatedLogin = () => {
-  const [activeClass, setActiveClass] = useState("login_container");
   const location = useLocation();
   const history = useHistory();
   // calling context api methods for setting user and tournament id
-  const { setLoginUser } = useLoginContext();
+  const { getLoginUser, setLoginUser } = useLoginContext();
+  const getUser = getLoginUser();
   // Declaring Razor pay for payment
   const Razorpay = useRazorpay();
+  const [activeClass, setActiveClass] = useState("login_container");
   //declaring states for input fields with error message
   const [loginValues, setLoginValue] = useState([
     {
@@ -29,20 +31,29 @@ const AnimatedLogin = () => {
       errorMessage: "",
     },
   ]);
+  const [waiting, setWaiting] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    // if (getUser) window.location.href = "https://www.aptabletennis.org/home";
+    if (getUser) {
+      history.push("/");
+      document.getElementById("home").click();
+    }
+  }, []); // eslint-disable-line
 
   // This is to call razorpay in case of payment renewal
   // This is rendered once payment of player expires.
   // Player details is passed as object
   const renewPayment = async (player) => {
     const options = {
-      key: urlConsts.paymentKeyId, // payment key declared in HTTP method
-      amount: urlConsts.amount, //Constant amount declared in HTTP method
+      key: process.env.REACT_APP_RAZORPAY_PAYMENT_KEY_ID, // payment key declared in HTTP method
+      amount: process.env.REACT_APP_DEFAULT_AMOUNT, //Constant amount declared in HTTP method
       currency: "INR",
-      name: urlConsts.caller, // caller id declared in HTTP method
+      name: process.env.REACT_APP_CALLER, // caller id declared in HTTP method
       description: "Test Transaction",
       image: "https://example.com/your_logo",
       handler: (response) => {
@@ -72,7 +83,6 @@ const AnimatedLogin = () => {
       setLoginValue({
         errorMessage: response.error.description,
       });
-      history.push("/");
     });
     rzp1.open();
   };
@@ -82,6 +92,7 @@ const AnimatedLogin = () => {
     // checking weather user is invalid or password is incorrect
     //if invalid setting error to error button class defined in Loginstyles.css
     // error message is displayed to end user
+    setWaiting(false);
     response === "Invalid user"
       ? setLoginValue({
           error: "errorButton",
@@ -89,6 +100,7 @@ const AnimatedLogin = () => {
         })
       : response === "Incorrect password"
       ? setLoginValue({
+          ...loginValues,
           error: "pwdError",
           errorMessage: "Incorrect password",
         })
@@ -104,14 +116,15 @@ const AnimatedLogin = () => {
   const renewPlayer = async (player, transactionId) => {
     //parameters passed as object to HTTP method POST
     let content = {
-      caller: urlConsts.caller,
-      userId: player._id,
-      associationId: urlConsts.filterData,
-      approvalCode: urlConsts.caller,
-      transactionID: transactionId,
-      transactionAmount: urlConsts.amountLabel,
+      caller: process.env.REACT_APP_CALLER,
+      data: {
+        userId: player.userId,
+        associationId: process.env.REACT_APP_ASSOCIATION_ID,
+        approvalCode: process.env.REACT_APP_CALLER,
+        transactionID: transactionId,
+        transactionAmount: process.env.REACT_APP_DEFAULT_AMOUNT_LABEL,
+      },
     };
-
     // Calling HTTP method by passing Api Type and Api URL and object params
     await RequestData("POST", "renewalUnderAssoc", content)
       // Getting the Response object which holds the data of Previous tournaments
@@ -122,9 +135,11 @@ const AnimatedLogin = () => {
           if (location.state) {
             //setting tournament id to local storage is defined in Login context api
             handleTournamentId.setTournId(location.state.tournamentId);
-            // return <Redirect to="/subscribeTournament" />;
           }
-          history.push("/");
+          if (response.result._id) {
+            history.push("/");
+            document.getElementById("home").click();
+          }
         } else {
           setLoginValue({
             errorMessage: "Response Time Out! Please try again later.",
@@ -147,13 +162,13 @@ const AnimatedLogin = () => {
     // and assigning all parameters as object and passing to POST api
     const content = {
       //Constant declared in HTTP method
-      caller: urlConsts.caller,
+      caller: process.env.REACT_APP_CALLER,
       userName: loginValues.email,
       userPassword: loginValues.password,
       emailOrPhoneFlag: "1",
       loginRole: "Player",
       paymentValid: "yes",
-      associationId: urlConsts.filterData,
+      associationId: process.env.REACT_APP_ASSOCIATION_ID,
     };
     //Calling POST api for getting Player data
     await RequestData("POST", "playerUserLoginUnderAssoc", content)
@@ -165,16 +180,20 @@ const AnimatedLogin = () => {
           // checking state of Link from Home component
           // Setting tournament id of upcoming tournament to local storage -
           //on Give Entry button click
+
           if (location.state) {
             //setting tournament id to local storage is defined in Login context api
             handleTournamentId.setTournId(location.state.tournamentId);
-            // return <Redirect to="/subscribeTournament" />;
           }
-          history.push("/");
+          if (response.result._id) {
+            history.push("/");
+            document.getElementById("home").click();
+          }
         } else {
           setLoginValue({
             errorMessage: "Something went wrong! Please try again later.",
           });
+          setWaiting(false);
         }
       })
       .catch((er) => {
@@ -183,6 +202,7 @@ const AnimatedLogin = () => {
             (er.result && er.result.message) ||
             "Something went wrong! Please try again later.",
         });
+        setWaiting(false);
       });
   };
 
@@ -194,7 +214,8 @@ const AnimatedLogin = () => {
   // Calling submit event on form submit with email address and password
   const submitLogin = (event) => {
     event.preventDefault(); // denaid for not assigning the default values
-    // isnan in case of phone number
+    setWaiting(true);
+    // is nan in case of phone number
     const pattern =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-z]+)+(?:\.[a-zA-Z0-9-]+)*$/;
     //pattern check for Email ID
@@ -202,6 +223,7 @@ const AnimatedLogin = () => {
     // if pattern mismatch then button animation and error message is displayed to user.
     !pattern.test(loginValues.email)
       ? setLoginValue({
+          ...loginValues,
           error: "emailError",
           errorMessage: "Invalid Email Address!",
         })
@@ -209,11 +231,14 @@ const AnimatedLogin = () => {
       // then button animation and error message is displayed to user.
       String(loginValues.password).length <= 5
       ? setLoginValue({
+          ...loginValues,
           error: "pwdError",
           errorMessage: "Password should contain atleast 6 charecters!",
         })
       : // if both email id and password are valid entries then calling the api method
         playerLogin(); // calling Api
+
+    setWaiting(false);
   };
 
   // on click of forgot password changing the state
@@ -232,158 +257,179 @@ const AnimatedLogin = () => {
   };
 
   return (
-    <Box className='loginroot'>
-      <Box className='loginbody' sx={{ padding: { xs: "2rem 0", md: "2rem" } }}>
-        <Box className={activeClass} id='container'>
-          <Box className='form-container sign-up-container'>
-            <Box className='login-form'>
-              <Register />
-            </Box>
-          </Box>
+    <Box>
+      <Box className='loginroot pt-16'>
+        <Dialog open={waiting}>
+          <LoadingComponent />
+        </Dialog>
+        <Box className='loginbody py-2'>
           <Box
-            className='form-container sign-in-container'
+            className={activeClass}
+            id='container'
             sx={{
-              "@media screen and (max-width: 301px)": {
-                overflow: "auto",
-                width: "120%",
-                padding: "-1rem 0",
-                paddingRight: "1rem",
-              },
+              maxWidth: { xs: "450px", md: "100%" },
+              minWidth: { md: "850px" },
             }}
           >
-            {/* 
+            <Box className='form-container sign-up-container'>
+              <Box
+                className='login-form'
+                sx={{
+                  padding: {
+                    xs: "0 1rem !important",
+                    md: "0 2rem !important",
+                    height: "100%",
+                  },
+                }}
+              >
+                <Register />
+              </Box>
+            </Box>
+            <Box
+              className='form-container sign-in-container'
+              sx={{
+                "@media screen and (max-width: 301px)": {
+                  overflow: "auto",
+                  width: "120%",
+                  padding: "-1rem 0",
+                  paddingRight: "1rem",
+                },
+              }}
+            >
+              {/* 
             checking weather forgot password is clicked - true / false
             if clicked forgot password component is rendered
              */}
-            {loginValues.forgotPwdFlag === true ? (
-              <ForgotPassword onChange={cancelFgtPwd} />
-            ) : (
-              <form className='login-form' onSubmit={submitLogin}>
-                <h1 className='login-h1'>Sign in</h1>
-                <TextField
-                  id='emailLogin'
-                  required
-                  value={loginValues.email}
-                  type='email'
-                  variant='filled'
-                  className={
-                    loginValues.error === "emailError" ? "error" : "textWidth"
-                  }
-                  sx={{
-                    paddingTop: "1rem",
-                  }}
-                  placeholder='Email Address'
-                  name='email'
-                  onChange={handleInputChange}
-                />
-                <TextField
-                  id='password'
-                  required
-                  type='password'
-                  variant='filled'
-                  value={loginValues.password}
-                  placeholder='Password'
-                  name='password'
-                  className={
-                    loginValues.error === "pwdError" ? "error" : "textWidth"
-                  }
-                  sx={{
-                    paddingTop: "1rem",
-                  }}
-                  onChange={handleInputChange}
-                />
-
-                {/* showing the error message in case of error */}
-                {loginValues.errorMessage ? (
-                  <p
-                    style={{
-                      color: "orangered",
-                      fontSize: "16px",
-                    }}
-                  >
-                    {loginValues.errorMessage}
-                  </p>
-                ) : (
-                  ""
-                )}
-                <button
-                  className='signin login-button'
-                  style={{
-                    marginTop: "1rem",
-                  }}
-                  id='signIn'
-                >
-                  Sign In
-                </button>
-                <Box sx={{ margin: "1rem" }}>
-                  <Button
-                    variant='text'
-                    onClick={handleForgotPassword}
+              {loginValues.forgotPwdFlag === true ? (
+                <ForgotPassword onChange={cancelFgtPwd} />
+              ) : (
+                <form className='login-form' onSubmit={submitLogin}>
+                  <h1 className='login-h1'>Sign in</h1>
+                  <TextField
+                    id='emailLogin'
+                    required
+                    value={loginValues.email}
+                    type='email'
+                    variant='filled'
+                    className={
+                      loginValues.error === "emailError" ? "error" : "textWidth"
+                    }
                     sx={{
-                      border: "none",
-                      background: "white",
-                      margin: "-0.5rem 0.5rem",
-                      "@media screen and (max-width: 931px)": {
-                        padding: "0 0",
-                        overflow: "auto",
-                        paddingLeft: "-2rem",
-                        margin: "0 0",
-                      },
-                      "@media screen and (max-width: 301px)": {
-                        overflow: "hidden",
-                        marginLeft: "-1.5rem",
-                      },
+                      paddingTop: "1rem",
                     }}
+                    placeholder='Email Address'
+                    name='email'
+                    onChange={handleInputChange}
+                  />
+                  <TextField
+                    id='password'
+                    required
+                    type='password'
+                    variant='filled'
+                    value={loginValues.password}
+                    placeholder='Password'
+                    name='password'
+                    className={
+                      loginValues.error === "pwdError" ? "error" : "textWidth"
+                    }
+                    sx={{
+                      paddingTop: "1rem",
+                    }}
+                    onChange={handleInputChange}
+                  />
+
+                  {/* showing the error message in case of error */}
+                  {loginValues.errorMessage ? (
+                    <p
+                      style={{
+                        color: "orangered",
+                        fontSize: "16px",
+                      }}
+                    >
+                      {loginValues.errorMessage}
+                    </p>
+                  ) : (
+                    ""
+                  )}
+                  <button
+                    className='signin login-button'
+                    style={{
+                      marginTop: "1rem",
+                    }}
+                    id='signIn'
                   >
-                    <Typography
-                      variant='body2'
+                    Sign In
+                  </button>
+                  <Box sx={{ margin: "1rem" }}>
+                    <Button
+                      variant='text'
+                      onClick={handleForgotPassword}
                       sx={{
-                        fontWeight: "bold",
-                        color: "#616161",
-                        textDecoration: "none",
-                        transition: "0.3s all ease",
-                        "&:hover": {
-                          color: "#333",
-                          transform: "scale(1.01)",
-                          textDecoration: "underLine",
+                        border: "none",
+                        background: "white",
+                        margin: "-0.5rem 0.5rem",
+                        "@media screen and (max-width: 931px)": {
+                          padding: "0 0",
+                          overflow: "auto",
+                          paddingLeft: "-2rem",
+                          margin: "0 0",
+                        },
+                        "@media screen and (max-width: 301px)": {
+                          overflow: "hidden",
+                          marginLeft: "-1.5rem",
                         },
                       }}
                     >
-                      Forgot password?
-                    </Typography>
-                  </Button>
+                      <Typography
+                        variant='body2'
+                        sx={{
+                          fontWeight: "bold",
+                          color: "#616161",
+                          textDecoration: "none",
+                          transition: "0.3s all ease",
+                          "&:hover": {
+                            color: "#333",
+                            transform: "scale(1.01)",
+                            textDecoration: "underLine",
+                          },
+                        }}
+                      >
+                        Forgot password?
+                      </Typography>
+                    </Button>
+                  </Box>
+                </form>
+              )}
+            </Box>
+            <Box className='overlay-container'>
+              <Box className='overlay'>
+                <Box className='overlay-panel overlay-left'>
+                  <h1 className='login-h1'>Welcome Back Player!</h1>
+                  <p className='login-p'>Please login to give entries.</p>
+                  <button
+                    className='ghost signin login-button'
+                    id='signIn1'
+                    onClick={() => setActiveClass("login_container")}
+                  >
+                    Sign In
+                  </button>
                 </Box>
-              </form>
-            )}
-          </Box>
-          <Box className='overlay-container'>
-            <Box className='overlay'>
-              <Box className='overlay-panel overlay-left'>
-                <h1 className='login-h1'>Welcome Back Player!</h1>
-                <p className='login-p'>Please login to give entries.</p>
-                <button
-                  className='ghost signin login-button'
-                  id='signIn1'
-                  onClick={() => setActiveClass("login_container")}
-                >
-                  Sign In
-                </button>
-              </Box>
-              <Box className='overlay-panel overlay-right'>
-                <h1 className='login-h1'>Hello, Player!</h1>
-                <p className='login-p'>
-                  Enter your personal details and start journey in the
-                  competitive world of Table Tennis!
-                </p>
-                <button
-                  className='ghost signup login-button'
-                  id='signUp'
-                  onClick={() =>
-                    setActiveClass("login_container right-panel-active")
-                  }
-                >
-                  Sign Up
-                </button>
+                <Box className='overlay-panel overlay-right'>
+                  <h1 className='login-h1'>Hello, Player!</h1>
+                  <p className='login-p'>
+                    Enter your personal details and start journey in the
+                    competitive world of Table Tennis!
+                  </p>
+                  <button
+                    className='ghost signup login-button'
+                    id='signUp'
+                    onClick={() =>
+                      setActiveClass("login_container right-panel-active")
+                    }
+                  >
+                    Sign Up
+                  </button>
+                </Box>
               </Box>
             </Box>
           </Box>

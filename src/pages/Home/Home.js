@@ -1,47 +1,375 @@
-import { Box } from "@mui/material";
-import React from "react";
+import { Box, Grid } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import CarouselContainer from "../../components/carousel/container/CarouselContainer";
 import ChartContainer from "../../components/chart/container/ChartContainer";
 import { ChartContainerModel } from "../../components/chart/model/ChartContainerModel";
-import SocialContainer from "../../components/social/container/SocialContainer";
+// import SocialContainer from "../../components/social/container/SocialContainer";
 import TournamentUpdatesContainer from "./components/TournamentUpdates/container/TournamentUpdatesContainer";
 import UpcomingTournamentsContainer from "./components/UpcomingTournaments/container/UpcomingTournamentsContainer";
+import backgroundImage from "../../assets/img/home_bg.jpg";
+import { RequestData } from "../../assets/utils/RequestData";
 
 const Home = () => {
+  const [registeredPlayers, setRegisteredPlayers] = useState(null);
+  const [matchesPlayed, setMatchesPlayed] = useState(null);
+
+  let matchesPlayedSoFar = [];
+
+  const getChartData = async () => {
+    await RequestData("POST", "fetchPlayerCount", {
+      caller: process.env.REACT_APP_CALLER,
+      apiKey: process.env.REACT_APP_API_KEY,
+      data: {
+        associationId: process.env.REACT_APP_ASSOCIATION_ID,
+        groupBy: "year",
+      },
+    })
+      .then((response) => {
+        if (response?.result) {
+          let matchesPlayedArrayFemale = [],
+            matchesPlayedArrayMale = [],
+            matchesPlayedArrayTotal = [];
+
+          response.result.result
+            .sort((a, b) => parseInt(a.year) - parseInt(b.year))
+            .forEach((year) => {
+              matchesPlayedArrayFemale.push(year.female);
+              matchesPlayedArrayMale.push(year.male);
+              matchesPlayedArrayTotal.push(year.all);
+            });
+
+          setMatchesPlayed({
+            id: "played-chart",
+            container: "w-full xl:w-4/12 px-4",
+            classes: [
+              "relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded",
+              "rounded-t mb-0 px-4 py-3 bg-transparent",
+              "flex flex-wrap items-center",
+              "relative w-full max-w-full flex-grow flex-1",
+              "p-4 flex-auto",
+              "relative h-350-px",
+            ],
+            heading: "# of total male, female",
+            subHeading: "Newly registered players",
+            headingClasses: [
+              "uppercase text-blueGray-400 mb-1 text-xs font-semibold",
+              "text-white text-xl font-semibold",
+            ],
+            config: {
+              type: "bar",
+              data: {
+                labels: ["2019", "2020", "2021", "2022"],
+                datasets: [
+                  // female
+                  {
+                    label: "Female",
+                    backgroundColor: "#ed64a6",
+                    borderColor: "#ed64a6",
+                    data: matchesPlayedArrayFemale,
+                    fill: false,
+                    barThickness: 8,
+                  },
+                  {
+                    label: "Male",
+                    fill: false,
+                    backgroundColor: "#4c51bf",
+                    borderColor: "#4c51bf",
+                    data: matchesPlayedArrayMale,
+                    barThickness: 8,
+                  },
+                ],
+              },
+              options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                title: {
+                  display: false,
+                  text: "Orders Chart",
+                },
+                tooltips: {
+                  mode: "index",
+                  intersect: false,
+                },
+                hover: {
+                  mode: "nearest",
+                  intersect: true,
+                },
+                legend: {
+                  labels: {
+                    fontColor: "rgba(0,0,0,.4)",
+                  },
+                  align: "end",
+                  position: "bottom",
+                },
+                scales: {
+                  xAxes: [
+                    {
+                      display: true,
+                      scaleLabel: {
+                        display: false,
+                        labelString: "Year",
+                      },
+                      gridLines: {
+                        borderDash: [2],
+                        borderDashOffset: [2],
+                        color: "rgba(33, 37, 41, 0.3)",
+                        zeroLineColor: "rgba(33, 37, 41, 0.3)",
+                        zeroLineBorderDash: [2],
+                        zeroLineBorderDashOffset: [2],
+                      },
+                    },
+                  ],
+                  yAxes: [
+                    {
+                      display: true,
+                      scaleLabel: {
+                        display: false,
+                        labelString: "Value",
+                      },
+                      gridLines: {
+                        borderDash: [2],
+                        drawBorder: false,
+                        borderDashOffset: [2],
+                        color: "rgba(33, 37, 41, 0.2)",
+                        zeroLineColor: "rgba(33, 37, 41, 0.15)",
+                        zeroLineBorderDash: [2],
+                        zeroLineBorderDashOffset: [2],
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        localStorage.setItem(
+          "erMsg",
+          "Something went wrong! Please try again later."
+        );
+      });
+
+    // [2019, 2020, 2021, 2022].forEach(async (year) => {
+    //   matchesPlayedSoFar.push(
+    //     await RequestData("POST", "totalFMMatchByYear", {
+    //       caller: process.env.REACT_APP_CALLER,
+    //       apiKey: process.env.REACT_APP_API_KEY,
+    //       associationId: process.env.REACT_APP_ASSOCIATION_ID,
+    //       year: year,
+    //     })
+    //       .then((response) => {
+    //         if (response?.result) {
+    //           let matchesPlayedCountFemale = 0,
+    //             matchesPlayedCountMale = 0;
+
+    //           response.result.data.forEach((month) => {
+    //             matchesPlayedCountFemale += month.gender[2].count;
+    //             matchesPlayedCountMale += month.gender[2].count;
+    //           });
+
+    //           return {
+    //             female: matchesPlayedCountFemale,
+    //             male: matchesPlayedCountMale,
+    //           };
+
+    //           // response.result.result
+    //           //   .sort((a, b) => parseInt(a.year) - parseInt(b.year))
+    //           //   .forEach((year) => {
+    //           //     matchesPlayedArrayFemale.push(year.female);
+    //           //     matchesPlayedArrayMale.push(year.male);
+    //           //     matchesPlayedArrayTotal.push(year.all);
+    //           //   });
+
+    //           // setMatchesPlayed({
+    //           //   id: "played-chart",
+    //           //   container: "w-full xl:w-4/12 px-4",
+    //           //   classes: [
+    //           //     "relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded",
+    //           //     "rounded-t mb-0 px-4 py-3 bg-transparent",
+    //           //     "flex flex-wrap items-center",
+    //           //     "relative w-full max-w-full flex-grow flex-1",
+    //           //     "p-4 flex-auto",
+    //           //     "relative h-350-px",
+    //           //   ],
+    //           //   heading: "# of total male, female",
+    //           //   subHeading: "Matches played yearly",
+    //           //   headingClasses: [
+    //           //     "uppercase text-blueGray-400 mb-1 text-xs font-semibold",
+    //           //     "text-white text-xl font-semibold",
+    //           //   ],
+    //           //   config: {
+    //           //     type: "bar",
+    //           //     data: {
+    //           //       labels: ["2019", "2020", "2021", "2022"],
+    //           //       datasets: [
+    //           //         // female
+    //           //         {
+    //           //           label: "Female",
+    //           //           backgroundColor: "#ed64a6",
+    //           //           borderColor: "#ed64a6",
+    //           //           data: matchesPlayedArrayFemale,
+    //           //           fill: false,
+    //           //           barThickness: 8,
+    //           //         },
+    //           //         {
+    //           //           label: "Male",
+    //           //           fill: false,
+    //           //           backgroundColor: "#4c51bf",
+    //           //           borderColor: "#4c51bf",
+    //           //           data: matchesPlayedArrayMale,
+    //           //           barThickness: 8,
+    //           //         },
+    //           //       ],
+    //           //     },
+    //           //     options: {
+    //           //       maintainAspectRatio: false,
+    //           //       responsive: true,
+    //           //       title: {
+    //           //         display: false,
+    //           //         text: "Orders Chart",
+    //           //       },
+    //           //       tooltips: {
+    //           //         mode: "index",
+    //           //         intersect: false,
+    //           //       },
+    //           //       hover: {
+    //           //         mode: "nearest",
+    //           //         intersect: true,
+    //           //       },
+    //           //       legend: {
+    //           //         labels: {
+    //           //           fontColor: "rgba(0,0,0,.4)",
+    //           //         },
+    //           //         align: "end",
+    //           //         position: "bottom",
+    //           //       },
+    //           //       scales: {
+    //           //         xAxes: [
+    //           //           {
+    //           //             display: true,
+    //           //             scaleLabel: {
+    //           //               display: false,
+    //           //               labelString: "Year",
+    //           //             },
+    //           //             gridLines: {
+    //           //               borderDash: [2],
+    //           //               borderDashOffset: [2],
+    //           //               color: "rgba(33, 37, 41, 0.3)",
+    //           //               zeroLineColor: "rgba(33, 37, 41, 0.3)",
+    //           //               zeroLineBorderDash: [2],
+    //           //               zeroLineBorderDashOffset: [2],
+    //           //             },
+    //           //           },
+    //           //         ],
+    //           //         yAxes: [
+    //           //           {
+    //           //             display: true,
+    //           //             scaleLabel: {
+    //           //               display: false,
+    //           //               labelString: "Value",
+    //           //             },
+    //           //             gridLines: {
+    //           //               borderDash: [2],
+    //           //               drawBorder: false,
+    //           //               borderDashOffset: [2],
+    //           //               color: "rgba(33, 37, 41, 0.2)",
+    //           //               zeroLineColor: "rgba(33, 37, 41, 0.15)",
+    //           //               zeroLineBorderDash: [2],
+    //           //               zeroLineBorderDashOffset: [2],
+    //           //             },
+    //           //           },
+    //           //         ],
+    //           //       },
+    //           //     },
+    //           //   },
+    //           // });
+    //         }
+    //       })
+    //       .catch((error) => {
+    //         localStorage.setItem(
+    //           "erMsg",
+    //           "Something went wrong! Please try again later."
+    //         );
+    //       })
+    //   );
+    // });
+  };
+
+  useEffect(() => {
+    getChartData();
+  }, []);
+
   return (
     <>
+      {/* add snackbar to display error message if not logged in before giving entry */}
       <Box
-        className='relative md:pt-12 pb-32 pt-12'
+        className='relative md:pt-32'
         sx={{
-          backgroundImage: `url(
-            "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='1440' height='300' preserveAspectRatio='none' viewBox='0 0 1440 300'%3e%3cg clip-path='url(%26quot%3b%23SvgjsClipPath1128%26quot%3b)' fill='none'%3e%3crect width='1440' height='300' x='0' y='0' fill='%2332325d'%3e%3c/rect%3e%3ccircle r='22.805' cx='374.36' cy='128.04' fill='url(%23SvgjsLinearGradient1129)'%3e%3c/circle%3e%3ccircle r='17.28' cx='286.27' cy='42.58' fill='url(%23SvgjsLinearGradient1130)'%3e%3c/circle%3e%3ccircle r='19.17' cx='438.9' cy='243.04' fill='url(%23SvgjsLinearGradient1131)'%3e%3c/circle%3e%3ccircle r='13.485' cx='443.18' cy='218.95' fill='url(%23SvgjsLinearGradient1132)'%3e%3c/circle%3e%3ccircle r='23.705' cx='1363.84' cy='158.72' fill='url(%23SvgjsLinearGradient1133)'%3e%3c/circle%3e%3ccircle r='14.05' cx='333.64' cy='280.51' fill='url(%23SvgjsLinearGradient1134)'%3e%3c/circle%3e%3ccircle r='10.85' cx='273.87' cy='174.34' fill='url(%23SvgjsLinearGradient1135)'%3e%3c/circle%3e%3ccircle r='16.6' cx='112.87' cy='135.51' fill='url(%23SvgjsLinearGradient1136)'%3e%3c/circle%3e%3c/g%3e%3cdefs%3e%3cclipPath id='SvgjsClipPath1128'%3e%3crect width='1440' height='300' x='0' y='0'%3e%3c/rect%3e%3c/clipPath%3e%3clinearGradient x1='328.75' y1='128.04' x2='419.97' y2='128.04' gradientUnits='userSpaceOnUse' id='SvgjsLinearGradient1129'%3e%3cstop stop-color='%23e298de' offset='0.1'%3e%3c/stop%3e%3cstop stop-color='%23484687' offset='0.9'%3e%3c/stop%3e%3c/linearGradient%3e%3clinearGradient x1='251.70999999999998' y1='42.58' x2='320.83' y2='42.58' gradientUnits='userSpaceOnUse' id='SvgjsLinearGradient1130'%3e%3cstop stop-color='%2384b6e0' offset='0.1'%3e%3c/stop%3e%3cstop stop-color='%23464a8f' offset='0.9'%3e%3c/stop%3e%3c/linearGradient%3e%3clinearGradient x1='400.55999999999995' y1='243.04' x2='477.23999999999995' y2='243.04' gradientUnits='userSpaceOnUse' id='SvgjsLinearGradient1131'%3e%3cstop stop-color='%23e298de' offset='0.1'%3e%3c/stop%3e%3cstop stop-color='%23484687' offset='0.9'%3e%3c/stop%3e%3c/linearGradient%3e%3clinearGradient x1='416.21000000000004' y1='218.95' x2='470.15000000000003' y2='218.95' gradientUnits='userSpaceOnUse' id='SvgjsLinearGradient1132'%3e%3cstop stop-color='%2332325d' offset='0.1'%3e%3c/stop%3e%3cstop stop-color='%23424488' offset='0.9'%3e%3c/stop%3e%3c/linearGradient%3e%3clinearGradient x1='1316.4299999999998' y1='158.72' x2='1411.2499999999998' y2='158.72' gradientUnits='userSpaceOnUse' id='SvgjsLinearGradient1133'%3e%3cstop stop-color='%2332325d' offset='0.1'%3e%3c/stop%3e%3cstop stop-color='%23424488' offset='0.9'%3e%3c/stop%3e%3c/linearGradient%3e%3clinearGradient x1='305.53999999999996' y1='280.51' x2='361.73999999999995' y2='280.51' gradientUnits='userSpaceOnUse' id='SvgjsLinearGradient1134'%3e%3cstop stop-color='%23e298de' offset='0.1'%3e%3c/stop%3e%3cstop stop-color='%23484687' offset='0.9'%3e%3c/stop%3e%3c/linearGradient%3e%3clinearGradient x1='252.17000000000002' y1='174.34' x2='295.57' y2='174.34' gradientUnits='userSpaceOnUse' id='SvgjsLinearGradient1135'%3e%3cstop stop-color='%2332325d' offset='0.1'%3e%3c/stop%3e%3cstop stop-color='%23424488' offset='0.9'%3e%3c/stop%3e%3c/linearGradient%3e%3clinearGradient x1='79.67' y1='135.51' x2='146.07' y2='135.51' gradientUnits='userSpaceOnUse' id='SvgjsLinearGradient1136'%3e%3cstop stop-color='%2332325d' offset='0.1'%3e%3c/stop%3e%3cstop stop-color='%23424488' offset='0.9'%3e%3c/stop%3e%3c/linearGradient%3e%3c/defs%3e%3c/svg%3e"
-          )`,
+          backgroundImage: `url(${backgroundImage})`,
+          top: "-6rem",
+          boxShadow: "0 0 10px rgb(0 0 0 / 80%) inset",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center top",
         }}
       >
-        <Box className='px-4 md:px-10 mx-auto w-full'>
+        <Box
+          className='md:px-4 md:px-10 pb-32 mx-auto w-full'
+          sx={{ paddingTop: { xs: "12rem", md: "18rem" } }}
+        >
           <TournamentUpdatesContainer />
         </Box>
       </Box>
-      <Box className='px-4 md:px-10 mx-auto w-full'>
+
+      {/* <Box
+        className='md:px-10 pt-16 mx-auto w-full'
+        sx={{ marginTop: "-10rem" }}
+      >
         <Box>
           <Box className='flex flex-wrap -mt-24'>
-            <div className='w-full xl:w-4/12 mb-12 xl:mb-0 px-4'>
+            <div className='w-full xl:w-4/12 mb-4 xl:mb-0 px-4'>
               <UpcomingTournamentsContainer />
             </div>
-            {ChartContainerModel.map((chart, index) => (
-              <Box className={chart.container} key={index}>
-                <ChartContainer {...chart} />
+            <Box className={ChartContainerModel[0]?.container}>
+              <ChartContainer {...ChartContainerModel[0]} />
+            </Box>
+            {matchesPlayed && (
+              <Box className={matchesPlayed?.container}>
+                <ChartContainer {...matchesPlayed} />
               </Box>
-            ))}
+            )}
           </Box>
         </Box>
-      </Box>
-      <Box className='px-4 md:px-10 mx-auto w-full'>
-        <Box className='flex flex-wrap mt-4'>
+      </Box> */}
+
+      <Grid
+        container
+        spacing={3}
+        sx={{
+          marginTop: { xs: "-14rem", md: "-12rem" },
+          paddingInline: { xs: "16px", sm: "32px", md: "56px" },
+        }}
+      >
+        <Grid item xs={12} sm={12} md={12} lg={4}>
+          <UpcomingTournamentsContainer />
+        </Grid>
+        <Grid item xs={12} sm={6} lg={4}>
+          <ChartContainer {...ChartContainerModel[0]} />
+        </Grid>
+        {matchesPlayed && (
+          <Grid item xs={12} sm={6} lg={4}>
+            <ChartContainer {...matchesPlayed} />
+          </Grid>
+        )}
+      </Grid>
+      {/* <Box className='px-4 md:px-10 mx-auto w-full'>
+        <Box className='flex flex-wrap mt-2 mb-4'>
           <Box className='w-full xl:w-12 mb-0 xl:mb-0 px-4'>
-            <SocialContainer />
+            <CarouselContainer />
           </Box>
         </Box>
-      </Box>
+      </Box> */}
     </>
   );
 };

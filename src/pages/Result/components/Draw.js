@@ -3,15 +3,12 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-// import WinnerCard from "./WinnerCard";
-import Avatar from "@mui/material/Avatar";
 import DrawResult from "./DrawResult";
-import { RequestData, urlConsts } from "../../../assets/utils/RequestData";
+import { RequestData } from "../../../assets/utils/RequestData";
 import { Card, CardContent, Divider, Typography } from "@mui/material";
-import winIcon from "../../../assets/img/loading.gif";
-import { useParams } from "react-router-dom";
-import FetchData from "../../../assets/utils/FetchData";
 import WinnerCard from "./WinnerCard";
+import notFound from "../../../assets/img/notFound.jpg";
+import LoadingComponent from "../../../assets/utils/LoadingComponent";
 
 // constants variables for tab names and api response data
 //- its rendered only once so not using state
@@ -31,8 +28,6 @@ const Draw = ({ eventName, tournamentId }) => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const params = useParams();
-
   //This is on change of tabs.
   // Filtering round data based on tab index and setting tab value to state
   const handleTabChange = (event, newValue) => {
@@ -50,7 +45,6 @@ const Draw = ({ eventName, tournamentId }) => {
           filteredResult(drawResult[0], roundNames[0][newValue + 1].roundNumber)
         )
       : setNextRoundResult("");
-    //: setNextRoundResult("");
   };
 
   const filteredResult = (matchRecords, roundNumber) => {
@@ -64,7 +58,7 @@ const Draw = ({ eventName, tournamentId }) => {
     setLoading(true);
 
     let content = {
-      caller: urlConsts.caller,
+      caller: process.env.REACT_APP_CALLER,
       data: {
         tournamentId,
         eventName,
@@ -109,14 +103,16 @@ const Draw = ({ eventName, tournamentId }) => {
           }
           setLoading(false);
         } else {
-          setMessage("Error! Please try again later");
+          setLoading(false);
+          setMessage("Records not found. Please contact APTTA.");
         }
       })
       .catch((er) => {
+        setLoading(false);
         setMessage(
           er && er.result && er.result.message
             ? er.result.message
-            : "Failed. Please try again later!"
+            : "Records not found. Please contact APTTA."
         );
       });
   };
@@ -128,7 +124,7 @@ const Draw = ({ eventName, tournamentId }) => {
       setRoundResult([]);
       setNextRoundResult([]);
     };
-  }, [eventName]);
+  }, [eventName]); // eslint-disable-line
 
   return (
     <Box
@@ -145,31 +141,30 @@ const Draw = ({ eventName, tournamentId }) => {
         }}
       >
         {loading ? (
-          <Box
-            sx={{
-              background: "transparent",
-              marginBottom: "10rem",
-            }}
-          >
-            <Avatar
-              src={winIcon}
-              variant='rounded'
-              sx={{
-                position: "relative",
-                left: "50%",
-                top: "50%",
-                transform: "translate(-50%)",
-                height: "16rem",
-                width: "20rem",
-              }}
-            />
-          </Box>
+          <LoadingComponent />
         ) : message && roundResult.length === 0 ? (
-          <Box sx={{ textAlign: "center" }}>
-            <Typography variant='body1'>
-              <b className='b'>{message}</b>
-            </Typography>
-          </Box>
+          <Grid item xs={12} sm={12} md={6}>
+            <Grid
+              container
+              direction='column'
+              alignItems='center'
+              justifyContent='center'
+            >
+              <Grid item>
+                <Box>
+                  <img
+                    src={notFound}
+                    alt='...'
+                    width='100%'
+                    style={{ maxWidth: "500px" }}
+                  />
+                </Box>
+              </Grid>
+              <Grid item>
+                <Typography variant='h6'>{message}</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
         ) : (
           <CardContent sx={{ padding: 0 }}>
             <Box sx={{ display: "flex" }}>

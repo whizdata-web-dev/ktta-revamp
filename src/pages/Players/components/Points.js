@@ -24,7 +24,7 @@ function CircularProgressWithLabel(props) {
           justifyContent: "center",
         }}
       >
-        <Typography variant='caption' component='div' sx={{ color: "#fafafa" }}>
+        <Typography variant='caption' component='div' sx={{ color: "#777" }}>
           {props.points}
         </Typography>
       </Box>
@@ -37,7 +37,7 @@ CircularProgressWithLabel.propTypes = {
 };
 
 export default function Points({ points, total }) {
-  const [progress, setProgress] = React.useState((points * 100) / total);
+  const progress = (points * 100) / total;
 
   return <CircularProgressWithLabel value={progress} points={points} />;
 }

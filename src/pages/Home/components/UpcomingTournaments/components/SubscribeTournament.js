@@ -27,7 +27,6 @@ import {
 } from "@mui/material";
 import {
   RequestData,
-  urlConsts,
 } from "../../../../../assets/utils/RequestData";
 import useRazorpay from "react-razorpay";
 // import "../../Register/login/LoginStyles.css";
@@ -56,13 +55,12 @@ function getStyles(name, eventName, theme) {
 
 const SubscribeTournament = ({ open, handleClose, getUser }) => {
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
-  // constant states declared for api response
-  const [subscribeTournamentData, setSubscribeTournamentData] = useState({
-    events: [],
-    eventFees: [],
-  });
+  const [events, setEvents] = useState([]);
+  const [eventFees, setEventFees] = useState([]);
+  const [subscribedEvents, setSubscribedEvents] = useState([]);
+
   // constant state for error / success message
   const [message, setMessage] = useState("");
   // Constant state used to get total amount based on check uncheck
@@ -71,94 +69,103 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
   const [eventName, setEventName] = useState([]);
 
   const history = useHistory();
+  const [disableFlag, setDisableFlag] = useState(false);
   const [checked, setChecked] = useState([]);
-  const tournamentId = handleTournamentId.getTournId()
-    ? handleTournamentId.getTournId()
-    : "";
+  let subData = [],
+    unSubData = [];
+  const tournamentId = handleTournamentId.getTournId();
   const Razorpay = useRazorpay();
 
   //razor pay for payment
   // api response for testing
-  const events = [
-    "HBU11",
-    "HGU11",
-    "BU13",
-    "GU13",
-    "BU15",
-    "GU15",
-    "BU17",
-    "GU17",
-    "BU19",
-    "GU19",
-    "Men",
-    "Women",
-    "NMS",
-  ];
-  const eventFees = [
-    "200",
-    "200",
-    "200",
-    "200",
-    "200",
-    "200",
-    "300",
-    "300",
-    "300",
-    "300",
-    "300",
-    "300",
-    "300",
-  ];
-  const subscribedEvents = [
-    "0",
-    "200",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-    "300",
-    "0",
-    "0",
-    "0",
-    "0",
-    "0",
-  ];
+  // const events = [
+  //   "HBU11",
+  //   "HGU11",
+  //   "BU13",
+  //   "GU13",
+  //   "BU15",
+  //   "GU15",
+  //   "BU17",
+  //   "GU17",
+  //   "BU19",
+  //   "GU19",
+  //   "Men",
+  //   "Women",
+  //   "NMS",
+  // ];
+  // const eventFees = [
+  //   "200",
+  //   "200",
+  //   "200",
+  //   "200",
+  //   "200",
+  //   "200",
+  //   "300",
+  //   "300",
+  //   "300",
+  //   "300",
+  //   "300",
+  //   "300",
+  //   "300",
+  // ];
+  // const subscribedEvents = [
+  //   "0",
+  //   "200",
+  //   "0",
+  //   "0",
+  //   "0",
+  //   "0",
+  //   "0",
+  //   "300",
+  //   "0",
+  //   "0",
+  //   "0",
+  //   "0",
+  //   "0",
+  // ];
 
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setEventName(typeof value === "string" ? value.split(",") : value);
-    let amountList = 0;
-    value.forEach((val, index) => {
-      amountList += parseInt(eventFees[events.indexOf(val)]);
-    });
-    setTotalAmount(amountList);
+    setMessage("");
+    setDisableFlag(value.length === 3);
+    if (value && value.length <= 3) {
+      setEventName(typeof value === "string" ? value.split(",") : value);
+      let amountList = 0;
+      value.forEach((val, index) => {
+        amountList += parseInt(eventFees[events.indexOf(val)]);
+      });
+      setTotalAmount(amountList);
+    } else {
+      setMessage("Cannot select more than 3 events!");
+    }
+    setDisableFlag(eventName.includes(event) ? false : disableFlag);
   };
 
   // This is to call renewal player api if player payment is expired
   //Transaction id with amount is passed from payment gateway after payment is successfull
   const paySubscribtion = async (transactionId) => {
     // variables to pass subscribed and unsubscribed data to api
-    let subData = [],
-      unSubData = [];
+
+    setMessage("");
     events &&
-      events.map((eventName, index) => {
+      events.forEach((eventName, index) => {
         checked[index] === true
           ? (subData[index] = eventName)
           : (unSubData[index] = eventName);
       });
     //parameters passed as object to HTTP method POST
     let content = {
-      caller: urlConsts.caller,
+      caller: process.env.REACT_APP_CALLER,
       data: {
-        userId: getUser,
+        userId: getUser.userId,
         tournamentId: tournamentId,
         subscribeID: subData,
         unSubscribeID: unSubData,
         transactionID: transactionId,
-        transactionAmount: totalAmount,
+        transactionAmount: 100,
+        // transactionAmount: totalAmount,
         transactionType: "none",
         oldSubscribeID: [],
       },
@@ -172,6 +179,7 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
           // Setting success message
           alert("Subscription Sucessfull");
           //redirection to home component
+          history.push("/");
         } else {
           response.result.message
             ? setMessage(response.result.message)
@@ -191,59 +199,86 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
   const getSubscribeTournamentList = async () => {
     await RequestData(
       "GET",
-      `eventListUnderTourn?caller=KTTA1&apiKey=dd5e611bf286042db7257ee998e5112b&tournamentId=WeLEm5QACmyGCwLHS&userId=qoJ7c8Mr27ZnGZH5a`
+      `eventListUnderTourn?caller=${process.env.REACT_APP_CALLER}&apiKey=${process.env.REACT_APP_API_KEY}&tournamentId=${tournamentId}&userId=${getUser.userId}`
     )
-      // `eventListUnderTourn?caller=${urlConsts.caller}&apiKey=${urlConsts.apiKey}&tournamentId=${tournamentId}&userId=${urlConsts.filterData}`
+      // `eventListUnderTourn?caller=${process.env.REACT_APP_CALLER}&apiKey=${process.env.REACT_APP_API_KEY}&tournamentId=${tournamentId}&userId=${process.env.filterData}`
       .then((response) => {
         // Checking the response before changing the state
         if (response && response.result) {
-          // setSubscribeTournamentData(response.result.eventFeeSettings);
-          // setEventName(response.result.eventFeeSettings.events);
+          setEventFees(response.result.eventFeeSettings.eventFees);
+          setEvents(response.result.eventFeeSettings.events);
         } else {
           // error message in case of no response
-          setMessage("Something went wrong! Please try again later.");
+          setMessage("Failed to retrieve data. Please try again later");
         }
       })
       .catch((error) => {
         // error in api call
         error.result && error.result.message
           ? setMessage(error.result.message)
-          : setMessage("Failed.Please try again later");
+          : setMessage("Something went wrong! Please try again later.");
       });
   };
 
   // This is for the integration of payment gateway using Rasor pay
   const handlePayment = async () => {
     let options = {};
-    if (totalAmount > 0) {
-      options = {
-        key: urlConsts.paymentKeyId, // ID from razor pay account
-        amount: totalAmount * 100, // total amount to pay
-        currency: "INR",
-        name: urlConsts.caller,
-        description: "Test Transaction",
-        image: ``,
-        handler: (response) => {
-          // On razor pay response setting transaction id using usestate
-          paySubscribtion(response.razorpay_payment_id);
-          // need to send transaction id to subscribe api
-        },
-        prefill: {
-          // name and email id passed as props from registration component
-          name: getUser.userName,
-          email: getUser.userId,
-          contact: getUser.phoneNumber,
-        },
-        notes: {
-          address: "Razorpay Corporate Office",
-        },
-        theme: {
-          color: "#332861",
-        },
-      };
-    } else {
-      setMessage("Select atleast one event to subscribe!");
-    }
+    options = {
+      key: process.env.REACT_APP_RAZORPAY_PAYMENT_KEY_ID, // ID from razor pay account
+      amount: 100, // total amount to pay
+      // amount: totalAmount * 100, // total amount to pay
+      currency: "INR",
+      name: process.env.REACT_APP_CALLER,
+      description: "Test Transaction",
+      image: ``,
+      handler: (response) => {
+        // On razor pay response setting transaction id using usestate
+        paySubscribtion(response.razorpay_payment_id);
+        // need to send transaction id to subscribe api
+      },
+      prefill: {
+        // name and email id passed as props from registration component
+        name: getUser.userName,
+        email: getUser.userId,
+        contact: getUser.phoneNumber,
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#332861",
+      },
+    };
+    // if (totalAmount > 0) {
+    //   options = {
+    //     key: process.env.REACT_APP_RAZORPAY_PAYMENT_KEY_ID, // ID from razor pay account
+    //     amount: totalAmount * 100, // total amount to pay
+    //     // amount: totalAmount * 100, // total amount to pay
+    //     currency: "INR",
+    //     name: process.env.REACT_APP_CALLER,
+    //     description: "Test Transaction",
+    //     image: ``,
+    //     handler: (response) => {
+    //       // On razor pay response setting transaction id using usestate
+    //       paySubscribtion(response.razorpay_payment_id);
+    //       // need to send transaction id to subscribe api
+    //     },
+    //     prefill: {
+    //       // name and email id passed as props from registration component
+    //       name: getUser.userName,
+    //       email: getUser.userId,
+    //       contact: getUser.phoneNumber,
+    //     },
+    //     notes: {
+    //       address: "Razorpay Corporate Office",
+    //     },
+    //     theme: {
+    //       color: "#332861",
+    //     },
+    //   };
+    // } else {
+    //   setMessage("Select atleast one event to subscribe!");
+    // }
     const rzp1 = new Razorpay(options);
     // On payment failure showing the issue to the user
     rzp1.on("Payment Failed", function (response) {
@@ -254,10 +289,15 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
   };
 
   useEffect(() => {
+    let checks = [];
     const eventsSubscribed = subscribedEvents
-      .map((d, index) => {
+      .forEach((d, index) => {
         if (d != 0) {
+          // eslint-disable-line
+          checks[index] = true;
           return events[index];
+        } else {
+          checks[index] = false;
         }
       })
       .filter((doc) => doc !== undefined);
@@ -268,7 +308,9 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
         0
       )
     );
-  }, [getUser && getUser._id]);
+    setChecked(checks);
+    if (tournamentId && getUser._id) getSubscribeTournamentList();
+  }, [getUser && getUser._id && tournamentId]); // eslint-disable-line
 
   return (
     <Box>
@@ -279,7 +321,15 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
       >
         <DialogTitle id='responsive-dialog-title'>
           Choose your events
+          <Typography
+            sx={{
+              color: "orangeRed",
+            }}
+          >
+            {message}
+          </Typography>
         </DialogTitle>
+
         <DialogContent>
           <DialogContentText>
             <FormControl sx={{ m: 1, width: 300 }}>
@@ -308,16 +358,20 @@ const SubscribeTournament = ({ open, handleClose, getUser }) => {
                 MenuProps={MenuProps}
               >
                 {events.map((event, index) => (
-                  <MenuItem 
+                  <MenuItem
                     key={event}
                     value={event}
-                    disabled={subscribedEvents[index]!="0" ? true : false}
+                    // disabled={
+                    //   //subscribedEvents[index] != "0" &&
+                    //   disableFlag === false ? true : false
+                    // }
+
                     style={getStyles(event, eventName, theme)}
                   >
                     <Grid container>
                       <Box sx={{ float: "left" }}>{event}</Box>
                       <Box sx={{ flexGrow: 1 }}></Box>
-                      <Box sx={{ float: "right" }}>{eventFees[index]}</Box>
+                      <Box sx={{ float: "right" }}>₹{eventFees[index]}</Box>
                     </Grid>
                   </MenuItem>
                 ))}

@@ -2,8 +2,8 @@ import { data } from "jquery";
 import { result } from "./graphData";
 export const ChartContainerModel = [
   {
-    id: "line-chart",
-    container: "w-full xl:w-4/12 mb-12 xl:mb-0 px-4",
+    id: "registered-chart",
+    container: "w-full xl:w-4/12 mb-4 xl:mb-0 px-4",
     classes: [
       "relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-700",
       "rounded-t mb-0 px-4 py-3 bg-transparent",
@@ -12,6 +12,8 @@ export const ChartContainerModel = [
       "p-4 flex-auto",
       "relative h-350-px",
     ],
+    heading: "# of total male, female",
+    subHeading: "Matches played every year",
     headingClasses: [
       "uppercase text-blueGray-400 mb-1 text-xs font-semibold",
       "text-blueGray-700 text-xl font-semibold",
@@ -19,35 +21,21 @@ export const ChartContainerModel = [
     config: {
       type: "line",
       data: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
+        labels: ["2019", "2020", "2021", "2022"],
         datasets: [
           {
-            label: new Date().getFullYear(),
+            label: "Male",
             backgroundColor: "#4c51bf",
             borderColor: "#4c51bf",
-            //  data: [65, 78, 66, 44, 56, 67, 75],
-            data: result.map((data) => {
-              return data.male;
-            }),
             fill: false,
+            data: [4821, 515, 1925, 2082],
           },
           {
-            label: new Date().getFullYear() - 1,
+            label: "Female",
             fill: false,
             backgroundColor: "#fff",
             borderColor: "#fff",
-            //data: [40, 68, 86, 74, 56, 60, 87],
-            data: result.map((data) => {
-              return data.female;
-            }),
+            data: [2541, 275, 1028, 1204],
           },
         ],
       },
@@ -56,7 +44,7 @@ export const ChartContainerModel = [
         responsive: true,
         title: {
           display: false,
-          text: "Sales Charts",
+          text: "Registered Chart",
           fontColor: "white",
         },
         legend: {
@@ -83,7 +71,7 @@ export const ChartContainerModel = [
               display: true,
               scaleLabel: {
                 display: false,
-                labelString: "Month",
+                labelString: "Year",
                 fontColor: "white",
               },
               gridLines: {
@@ -124,7 +112,7 @@ export const ChartContainerModel = [
     },
   },
   {
-    id: "bar-chart",
+    id: "played-chart",
     container: "w-full xl:w-4/12 px-4",
     classes: [
       "relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded",
@@ -134,6 +122,8 @@ export const ChartContainerModel = [
       "p-4 flex-auto",
       "relative h-350-px",
     ],
+    heading: "# of total male, female",
+    subHeading: "Matches played so far",
     headingClasses: [
       "uppercase text-blueGray-400 mb-1 text-xs font-semibold",
       "text-white text-xl font-semibold",
@@ -141,24 +131,13 @@ export const ChartContainerModel = [
     config: {
       type: "bar",
       data: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
+        labels: ["2019", "2020", "2021", "2022"],
         datasets: [
           {
             label: new Date().getFullYear(),
             backgroundColor: "#ed64a6",
             borderColor: "#ed64a6",
-            // data: [30, 78, 56, 34, 100, 45, 13],
-            data: result.map((data) => {
-              return data.male;
-            }),
+            data: [],
             fill: false,
             barThickness: 8,
           },
@@ -167,10 +146,7 @@ export const ChartContainerModel = [
             fill: false,
             backgroundColor: "#4c51bf",
             borderColor: "#4c51bf",
-            // data: [27, 68, 86, 74, 10, 4, 87],
-            data: result.map((data) => {
-              return data.female;
-            }),
+            data: [],
             barThickness: 8,
           },
         ],

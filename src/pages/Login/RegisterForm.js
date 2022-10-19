@@ -1,16 +1,19 @@
-import React, { useRef, useState } from "react";
-import { RequestData, urlConsts } from "../../assets/utils/RequestData";
+import React, { useState } from "react";
+import { RequestData } from "../../assets/utils/RequestData";
 // import "./login/LoginStyles.css";
 import Password from "./Password";
 import {
   Box,
+  Button,
   CardContent,
   CardHeader,
   Grid,
+  InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
 import { useEffect } from "react";
+import DropdownSelect from "../../assets/utils/DropdownSelect";
 
 const RegisterForm = ({
   firstName,
@@ -21,18 +24,16 @@ const RegisterForm = ({
   setDOB,
   email,
   setEmail,
+  gender,
+  setGender,
   phoneNumber,
   setPhoneNumber,
   errorClass,
   setErrorClass,
   errorMessage,
   setErrorMessage,
+  disable = false,
 }) => {
-  const [state, setState] = useState({
-    open: false,
-    vertical: "top",
-    horizontal: "center",
-  });
   // State for OTP code response
   const [verifyCode, setverifyCode] = useState("");
   // this is to send props as object to password component
@@ -43,20 +44,27 @@ const RegisterForm = ({
     lastName,
     dob,
     phoneNumber,
+    gender,
   };
-  const { vertical, horizontal, open } = state;
 
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(!disable);
 
   useEffect(() => {
-    return () => {
-      setDisabled(false);
-    };
-  }, []);
+    setDisabled(!disable);
+  }, [disable]);
 
-  const ref = useRef();
-  const handleClick = (newState) => () => {
-    setState({ open: true, ...newState });
+  const handlePhone = (event) => {
+    if (
+      event.target.value.charCodeAt(event.target.value.length - 1) > 47 &&
+      event.target.value.charCodeAt(event.target.value.length - 1) < 58
+    )
+      setPhoneNumber(event.target.value);
+
+    if (
+      event.target.value.length === 0
+    ) {
+      setPhoneNumber("");
+    }
   };
 
   // checking for DOB validation
@@ -76,7 +84,7 @@ const RegisterForm = ({
     // Calling HTTP method by passing Api Type and Api URL
     await RequestData(
       "GET",
-      `registerOtp?caller=${urlConsts.caller}&apiKey=${urlConsts.apiKey}&emailId=${email}`
+      `registerOtp?caller=${process.env.REACT_APP_CALLER}&apiKey=${process.env.REACT_APP_API_KEY}&emailId=${email}`
     )
       // Getting the Response object which holds the data of registration
       .then((response) => {
@@ -85,7 +93,11 @@ const RegisterForm = ({
           //checking email is valid
           if (response.result.status === "failure") {
             setErrorClass("errorButton"); // setting error state if user is invalid
-            setErrorMessage("Invalid User");
+            setErrorMessage(
+              response.result.registerStatus
+                ? response.result.registerStatus
+                : "Invalid User"
+            );
           } else {
             // setting verificationcode to state
             setverifyCode(response.result.verificationCode);
@@ -110,8 +122,10 @@ const RegisterForm = ({
   // on submit click validationg email address and age and calling api
   const validateUser = (event) => {
     event.preventDefault();
+
     setDisabled(true);
-    const pattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+    const pattern =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-z]+)+(?:\.[a-zA-Z0-9-]+)*$/;
     if (!pattern.test(email)) {
       // checking valid email address - if fails setting error state
       setErrorClass("emailError");
@@ -130,15 +144,11 @@ const RegisterForm = ({
     }
   };
 
-  // for dob input field
-  const onFocusDOB = (e) => {
-    e.currentTarget.type = "date";
-    e.currentTarget.format = "dd/MM/yyyy";
-  };
   // This is to handle back click from pwd component
   const handleBackButton = () => {
     setverifyCode("");
   };
+
   return (
     <Grid
       container
@@ -150,27 +160,32 @@ const RegisterForm = ({
     >
       <CardContent
         sx={{
-          maxWidth: { sm: "40vw", md: "25vw", lg: "30vw" },
+          // maxWidth: { sm: "40vw", md: "25vw", lg: "40vw" },
+          width: "100%",
         }}
       >
         {/* checking OTP code is null */}
         {!verifyCode ? (
-          <Grid container spacing={{ xs: 0, md: 0 }}>
-            {/* On form submit calling submit method */}
-            <form onSubmit={validateUser} autoComplete='off'>
+          <form onSubmit={validateUser} autoComplete='off'>
+            <Grid
+              container
+              spacing={{ xs: 0, md: 0 }}
+              sx={{ justifyContent: "center", alignItems: "center" }}
+            >
+              {/* On form submit calling submit method */}
               <Grid item xs={12} sm={12} md={12}>
                 <CardHeader
                   sx={{
-                    textAlign: "left",
+                    textAlign: "center",
                     padding: "0 0",
                   }}
                   title={
                     <Typography
-                      variant='h4'
+                      variant='h2'
                       sx={{
-                        fontSize: "2rem",
+                        fontSize: "1.5rem",
                         margin: "0.5rem",
-                        // textTransform: "uppercase",
+                        textTransform: "uppercase",
                         fontWeight: 600,
                       }}
                     >
@@ -193,6 +208,7 @@ const RegisterForm = ({
                   label='Email Address'
                   sx={{
                     margin: "0.5rem 0",
+                    width: "100%",
                   }}
                   onChange={(event) => setEmail(event.target.value)}
                 />
@@ -226,13 +242,10 @@ const RegisterForm = ({
                   className='textWidth'
                 />
               </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                sx={{ display: { xs: "none", md: "block" } }}
-              >
+              <Grid item xs={12} sm={12} md={12}>
+                <DropdownSelect gender={gender} setGender={setGender} />
+              </Grid>
+              <Grid item xs={12} sm={12} md={12}>
                 <TextField
                   required
                   id='dob'
@@ -253,15 +266,19 @@ const RegisterForm = ({
                   id='phone'
                   maxLength='10'
                   pattern='^\d{10}$'
+                  InputProps={{
+                    inputProps: { maxLength: "10" },
+                    startAdornment: (
+                      <InputAdornment position='start'>+91</InputAdornment>
+                    ),
+                  }}
                   type='tel'
                   value={phoneNumber}
                   variant='outlined'
                   label='Mobile Number'
                   sx={{ margin: "0.5rem 0" }}
                   className='textWidth'
-                  onChange={(event) => {
-                    setPhoneNumber(event.target.value);
-                  }}
+                  onChange={handlePhone}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={12}>
@@ -285,9 +302,9 @@ const RegisterForm = ({
                   }}
                 >
                   <Box sx={{ flex: "1" }} />
-                  <button
+                  <Button
                     disabled={disabled}
-                    style={{
+                    sx={{
                       borderRadius: "20px",
                       margin: "1.5rem 0",
                       fontWeight: "bolder",
@@ -300,11 +317,11 @@ const RegisterForm = ({
                     type='submit'
                   >
                     Next
-                  </button>
+                  </Button>
                 </Box>
               </Grid>
-            </form>
-          </Grid>
+            </Grid>
+          </form>
         ) : (
           // if response for api for OTP is success then Payment component is rendered
           //here otp userid name and dob is sent as props

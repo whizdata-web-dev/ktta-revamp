@@ -16,15 +16,15 @@ export const useLoginContext = () => React.useContext(LoginContext);
 
 export const AuthContext = (props) => {
   const [userLoginState, setuserLoginState] = useState([]);
-  // setLoginUser is to set api response from Login component using localstorage
+  // setLoginUser is to set api response from Login component using localStorage
   const setLoginUser = (data) => {
     if (data) {
       localStorage.setItem("loginDetails", JSON.stringify(data));
       setuserLoginState(data);
     }
   };
-  //getLoginUser is to fetch the data stored in localstorage memory
-  // response object of Login is stored in localstorage
+  //getLoginUser is to fetch the data stored in localStorage memory
+  // response object of Login is stored in localStorage
   const getLoginUser = () => {
     let loginUserData = localStorage.getItem("loginDetails");
     if (loginUserData) {
@@ -34,7 +34,7 @@ export const AuthContext = (props) => {
     }
   };
 
-  // logOut to clear the localstorage data
+  // logOut to clear the localStorage data
   const logOut = () => {
     localStorage.removeItem("loginDetails");
     setLoginUser(null);

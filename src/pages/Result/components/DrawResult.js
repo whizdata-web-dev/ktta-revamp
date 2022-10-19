@@ -6,7 +6,6 @@ import {
   Typography,
   Grid,
   Divider,
-  CardHeader,
 } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import TrophyLogo from "../../../assets/img/trophy.png";
@@ -124,15 +123,15 @@ const DrawResult = (props) => {
                   }}
                 >
                   {/* Checking prps data for Player - 1 Name */}
-                  <Link
+                  {/* <Link
                     to={`/player/${
                       drawResponse.playersID
                         ? drawResponse.playersID.playerAId
                         : "playerId"
                     }`}
-                  >
-                    {playerA != "()" ? playerA : <>&nbsp;</>}
-                  </Link>
+                  > */}
+                    {playerA !== "()" ? playerA : <>&nbsp;</>}
+                  {/* </Link> */}
                 </Typography>
               </Grid>
               {/* Checking prps data for scores , displaying empty in 
@@ -146,9 +145,7 @@ const DrawResult = (props) => {
                           sx={{
                             fontSize: "0.8rem",
                             textAlign: "center",
-                            border: "0.1px solid #999",
                           }}
-                          color='text.secondary'
                         >
                           <b className='b'>
                             {(String(setScoresA[index]) === "0" &&
@@ -168,7 +165,7 @@ const DrawResult = (props) => {
               {/* Showing Number of sets from api response - 7 rounds */}
               <Grid
                 item
-                xs={12 - numberOfSets - 1}
+                xs={12 - numberOfSets - 2}
                 sm={12 - numberOfSets - 1}
                 md={12 - numberOfSets - 1}
                 sx={{ margin: "0.5rem 0 -1rem 0" }}
@@ -177,10 +174,13 @@ const DrawResult = (props) => {
               </Grid>
               <Grid
                 item
-                xs={1}
+                xs={2}
                 sm={1}
                 md={1}
-                sx={{ padding: "0rem 0 0.2rem 0", margin: "-0.25rem 0 0 0" }}
+                sx={{
+                  padding: "0rem 0 0.2rem 0",
+                  margin: "-0.25rem 0 0 0",
+                }}
               >
                 <b className='b'>SET</b>
               </Grid>
@@ -232,15 +232,15 @@ const DrawResult = (props) => {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  <Link
+                  {/* <Link
                     to={`/player/${
                       drawResponse.playersID
                         ? drawResponse.playersID.playerBId
                         : "playerId"
                     }`}
-                  >
-                    {playerB != "()" ? playerB : <>&nbsp;</>}
-                  </Link>
+                  > */}
+                    {playerB !== "()" ? playerB : <>&nbsp;</>}
+                  {/* </Link> */}
                 </Typography>
               </Grid>
               {/* Checking prps data for scores , displaying empty in 
@@ -254,9 +254,7 @@ const DrawResult = (props) => {
                           sx={{
                             fontSize: "0.8rem",
                             textAlign: "center",
-                            border: "0.1px solid #999",
                           }}
-                          color='text.secondary'
                         >
                           <b className='b'>
                             {(String(setScoresA[index]) === "0" &&

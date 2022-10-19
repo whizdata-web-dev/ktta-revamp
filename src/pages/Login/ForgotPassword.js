@@ -4,9 +4,8 @@ The user is validated with email address - OTP is sent to email
 On validation player is allowed to create new Password
 */
 import React, { useState } from "react";
-import { RequestData, urlConsts } from "../../assets/utils/RequestData";
+import { RequestData } from "../../assets/utils/RequestData";
 import OtpInput from "react-otp-input";
-import { useHistory } from "react-router";
 import { Box, Button, CardHeader, TextField, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import pwdLogo from "../../assets/img/pwd.gif";
@@ -25,7 +24,11 @@ export default function ResetPassword(props) {
   ]);
   const [OTP, setOTP] = useState("");
 
-  const history = useHistory();
+  const isSectionsValid = {
+    sendOtp: false,
+    passwordReset: false,
+  };
+
   // This method is for sending the OTP for email address
   const sendOTPClick = (event) => {
     event.preventDefault();
@@ -45,9 +48,17 @@ export default function ResetPassword(props) {
 
   const confirmClick = (event) => {
     event.preventDefault();
-    if (OTP === resetPwdValues.verificationCode) {
-      resetPwdValues.password === resetPwdValues.confirmPassword
+
+    if (OTP === String(resetPwdValues.verificationCode)) {
+      resetPwdValues.password === resetPwdValues.confirmPassword &&
+      resetPwdValues.password.length >= 6
         ? getPasswordResetValidation()
+        : resetPwdValues.password.length < 6
+        ? setresetPwdValues({
+            ...resetPwdValues,
+            errorClass: "passwordError",
+            errorMessage: "Password should contain at least 6 characters",
+          })
         : setresetPwdValues({
             ...resetPwdValues,
             errorClass: "passwordError",
@@ -60,10 +71,16 @@ export default function ResetPassword(props) {
             errorClass: "OTPLengthError",
             errorMessage: "4 digit OTP required!",
           })
-        : setresetPwdValues({
+        : OTP != resetPwdValues.verificationCode // eslint-disable-line
+        ? setresetPwdValues({
             ...resetPwdValues,
             errorClass: "OTPError",
             errorMessage: "OTP mismatch!",
+          })
+        : setresetPwdValues({
+            ...resetPwdValues,
+            errorClass: "",
+            errorMessage: "",
           });
     }
   };
@@ -74,7 +91,7 @@ export default function ResetPassword(props) {
     // Calling HTTP method by passing Api Type and Api URL
     await RequestData(
       "GET",
-      `otpForgotPassword?caller=${urlConsts.caller}&apiKey=${urlConsts.apiKey}&emailId=${resetPwdValues.email}`
+      `otpForgotPassword?caller=${process.env.REACT_APP_CALLER}&apiKey=${process.env.REACT_APP_API_KEY}&emailId=${resetPwdValues.email}`
     )
       // Getting the Response object which holds the data of Previous tournaments
       .then((response) => {
@@ -89,6 +106,7 @@ export default function ResetPassword(props) {
           } else {
             //Setting verification code to state
             setresetPwdValues({
+              ...resetPwdValues,
               verificationCode: response.result.verificationCode,
               message: response.result.message,
             });
@@ -106,7 +124,7 @@ export default function ResetPassword(props) {
   const getPasswordResetValidation = async () => {
     let content = {
       //Constant declared in HTTP method
-      caller: urlConsts.caller,
+      caller: process.env.REACT_APP_CALLER,
       // parameters sent as object to HTTP method.
       // email address password and verification code is taken from state
       userId: resetPwdValues.email,
@@ -118,12 +136,24 @@ export default function ResetPassword(props) {
       // Getting the Response object which holds the data of Previous tournaments
       .then((response) => {
         //Checking weather response data is null
-        if (response.result) {
-          history.push("/login");
+
+        if (response.result && response.result.status === "success") {
+          setresetPwdValues({
+            ...resetPwdValues,
+            message: (
+              <Box component={"span"} sx={{ display: "flex", flexDirection: 'column' }}>
+                <Box component={"span"}>Password Reset successful! </Box>
+                <Box component={"span"}>Login to proceed.</Box>
+              </Box>
+            ),
+            errorClass: "success",
+          });
         } else {
           setresetPwdValues({
             error: "errorButton",
-            errorMessage: response.result,
+            errorMessage: response.result.message
+              ? response.result.message
+              : "Something went wrong! Please try again later.",
           });
         }
       })
@@ -146,6 +176,7 @@ export default function ResetPassword(props) {
       errorMessage: "",
     });
   };
+
   // This is for sending OTP to email by taking email address from player
   const renderResetForm = () => {
     return (
@@ -153,6 +184,7 @@ export default function ResetPassword(props) {
         className='login-form'
         style={{
           marginTop: "40%",
+          width: "100%",
         }}
         onSubmit={sendOTPClick}
       >
@@ -165,7 +197,7 @@ export default function ResetPassword(props) {
           variant='filled'
           inputProps={{
             maxLength: 30,
-            style: { backgroundColor: "#fff" },
+            style: { width: "100%", backgroundColor: "#fff" },
           }}
           sx={{
             width: "100%",
@@ -243,6 +275,7 @@ export default function ResetPassword(props) {
       </form>
     );
   };
+
   // This is to validate OTP and allow player to set New Password
   const renderOTPConfirmationForm = () => {
     return (
@@ -251,7 +284,12 @@ export default function ResetPassword(props) {
         onSubmit={confirmClick}
         style={{
           textAlign: "center",
-          marginTop: "15%",
+          // marginTop: "15%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <CardHeader
@@ -307,6 +345,7 @@ export default function ResetPassword(props) {
           type='password'
           label='New Password'
           variant='filled'
+          value={resetPwdValues.password}
           onChange={(event) =>
             setresetPwdValues({
               ...resetPwdValues,
@@ -318,13 +357,13 @@ export default function ResetPassword(props) {
             margin: "0.5rem 0",
           }}
         />
-
         <TextField
           required
           id='cPassword'
           type='password'
           variant='filled'
           label='Confirm Password'
+          value={resetPwdValues.confirmPassword}
           onChange={(event) =>
             setresetPwdValues({
               ...resetPwdValues,
@@ -351,11 +390,11 @@ export default function ResetPassword(props) {
         <Button
           block
           type='submit'
-          style={{
+          sx={{
             borderRadius: "20px",
             color: "white",
             margin: "1rem 0.5rem",
-            padding: "10px 55px",
+            padding: "8px 48px",
             marginBottom: "2px",
             fontweight: "bold",
             letterspacing: "1px",
@@ -366,7 +405,17 @@ export default function ResetPassword(props) {
         >
           Submit
         </Button>
-        <Button
+        <button
+          onClick={cancelFgtPwd}
+          className='signin login-button'
+          style={{
+            marginTop: "1rem",
+          }}
+          id='signIn'
+        >
+          Sign In
+        </button>
+        {/* <Button
           onClick={cancelFgtPwd}
           style={{
             border: "none",
@@ -386,23 +435,72 @@ export default function ResetPassword(props) {
           >
             Sign In
           </Typography>
-        </Button>
+        </Button> */}
+      </form>
+    );
+  };
+
+  // ON RESET SUCCESS
+  const renderPasswordReset = () => {
+    return (
+      <form
+        className='login-form'
+        style={{
+          textAlign: "center",
+        }}
+      >
+        <CardHeader
+          style={{
+            color: "orangeRed",
+            textAlign: "left",
+          }}
+          // /broken-image.jpg
+        />
+
+        <p
+          style={{
+            color: "green",
+            fontSize: "26px",
+            fontweight: "700",
+            marginBottom: "1px",
+          }}
+        >
+          {resetPwdValues.message}
+        </p>
+
+        <button
+          onClick={cancelFgtPwd}
+          className='signin login-button'
+          style={{
+            marginTop: "1rem",
+          }}
+          id='signIn'
+        >
+          Sign In
+        </button>
       </form>
     );
   };
 
   return (
     <Box
-      style={{
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
         textAlign: "center",
         overflow: "hidden",
+        height: "100%",
       }}
     >
       {!resetPwdValues.verificationCode
         ? // renderResetForm is returned in case of OTP is not sent
           renderResetForm()
-        : // renderOTPConfirmationForm is returned in case of OTP is not Confirmed
-          renderOTPConfirmationForm()}
+        : resetPwdValues.errorClass != "success" // eslint-disable-line
+        ? // renderOTPConfirmationForm is returned in case of OTP is not Confirmed
+          renderOTPConfirmationForm()
+        : renderPasswordReset()}
     </Box>
   );
 }
