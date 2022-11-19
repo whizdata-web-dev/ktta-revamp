@@ -1,8 +1,8 @@
 {
   "hosting": [
     {
-      "target": "build_site_development",
-      "public": "build_site_development",
+      "target": "build_development",
+      "public": "build_development",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
@@ -12,8 +12,8 @@
       ]
     },
     {
-      "target": "build_site_production",
-      "public": "build_site_production",
+      "target": "build_production",
+      "public": "build_production",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {

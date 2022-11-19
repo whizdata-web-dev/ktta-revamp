@@ -1,5 +1,5 @@
 {
-  "name": "ktta-revamp",
+  "name": "karnatatta",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -20,12 +20,12 @@
     "axios": "^0.26.0",
     "chart.js": "2.9.4",
     "crypto-js": "^4.1.1",
+    "env-cmd": "^10.1.0",
     "firebase": "^9.1.1",
     "google-maps-react": "^2.0.6",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
     "jquery": "^3.5.1",
-    "postcss": "8.2.8",
     "postcss-preset-env": "^7.4.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -40,13 +40,19 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start_production": "env-cmd -f .env.production react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "clean_build": "node clean_build.js && npm run build",
     "clean_packages": "node clean_packages.js && npm install --legacy-peer-deps",
     "clean_start": "npm install --legacy-peer-deps && npm start",
-    "clean_deploy": "npm run clean_build && firebase deploy"
+    "build_development": "env-cmd -f .env.development react-scripts build && move build ./build_development",
+    "build_production": "env-cmd -f .env.production react-scripts build && move build ./build_production",
+    "clean_deploy": "npm run clean_build && firebase deploy",
+    "target_development": "firebase target:apply hosting build_development ktta-test",
+    "deploy_development": "node clean_build.js && npm run build_development && firebase deploy --only hosting:build_development",
+    "deploy_production": "node clean_build.js && npm run build_production && firebase deploy --only hosting:build_production"
   },
   "eslintConfig": {
     "extends": "react-app"

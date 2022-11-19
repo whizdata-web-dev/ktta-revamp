@@ -4,6 +4,7 @@ import FetchData from "../../../../../assets/utils/FetchData";
 import UpcomingTournamentsComponent from "../components/UpcomingTournamentsComponent";
 import { useLoginContext } from "../../../../../assets/utils/UserLoginContext";
 import { handleTournamentId } from "../../../../../assets/utils/UserLoginContext";
+import { removeTestData } from "../../../../../assets/utils/functions";
 
 export default function UpcomingTournamentsContainer() {
   const { getLoginUser } = useLoginContext();
@@ -29,7 +30,8 @@ export default function UpcomingTournamentsContainer() {
     // window.addEventListener("resize", handleResize);
 
     if (Object.keys(data).length !== 0) {
-      setTournamentData(data.resultID);
+      let tournamentList = removeTestData(data.resultID);
+      setTournamentData(tournamentList);
       localStorage.setItem("Ul", JSON.stringify(data));
     }
   }, [data]);

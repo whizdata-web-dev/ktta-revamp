@@ -24,6 +24,7 @@ const UpcomingTournamentsComponent = ({
   mapWidth,
   handleGiveEntry,
 }) => {
+  console.log({ data });
   return (
     <Box className={`block w-full px-4 overflow-y-auto pb-6`}>
       {Object.keys(data).length !== 0 ? (
@@ -121,13 +122,13 @@ const UpcomingTournamentsComponent = ({
             </AccordionSummary>
             <AccordionDetails>
               <Box sx={{ margin: "0 0 0 -1rem" }}>
-                {/* <Map
+                <Map
                   mapWidth={mapWidth}
                   location={{
-                    lat: "12.9708136",
-                    lng: "77.5937793",
+                    lat: tournamentDetails.venueLatitude,
+                    lng: tournamentDetails.venueLongitude,
                   }}
-                /> */}
+                />
               </Box>
               <Typography
                 variant='body2'
@@ -192,7 +193,8 @@ const UpcomingTournamentsComponent = ({
                       }}
                       onClick={() => {
                         handleTournamentId.setTournId(tournamentDetails._id);
-                        document.getElementById("login").click();
+                        window.innerWidth > 1000 &&
+                          document.getElementById("login").click();
                         handleGiveEntry("Please login to give entry.");
                       }}
                     >

@@ -24,4 +24,3 @@ export const removeTestData = (data) => {
     (event) => !event.eventName.toLowerCase().includes("test")
   );
 };
-

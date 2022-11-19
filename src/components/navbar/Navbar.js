@@ -68,8 +68,9 @@ const Navbar = () => {
         </Box>
 
         <button
+          id='navbarToggler'
           className='navbar-toggler'
-          onClick={function () {
+          onClick={(event) => {
             setTimeout(function () {
               animation();
             });
@@ -100,9 +101,10 @@ const Navbar = () => {
                   ? "nav-item active"
                   : "nav-item"
               }
-              onClick={(event) =>
-                localStorage.setItem("active", event.target.innerText)
-              }
+              onClick={(event) => {
+                localStorage.setItem("active", event.target.innerText);
+                window.innerWidth < 1000 && $("#navbarToggler").click();
+              }}
             >
               <Link
                 className='nav-link'
@@ -128,9 +130,10 @@ const Navbar = () => {
               className={
                 curLocation === "about" ? "nav-item active" : "nav-item"
               }
-              onClick={(event) =>
-                localStorage.setItem("active", event.target.innerText)
-              }
+              onClick={(event) => {
+                localStorage.setItem("active", event.target.innerText);
+                window.innerWidth < 1000 && $("#navbarToggler").click();
+              }}
             >
               <Link
                 className='nav-link'
@@ -149,9 +152,10 @@ const Navbar = () => {
               className={
                 curLocation === "players" ? "nav-item active" : "nav-item"
               }
-              onClick={(event) =>
-                localStorage.setItem("active", event.target.innerText)
-              }
+              onClick={(event) => {
+                localStorage.setItem("active", event.target.innerText);
+                window.innerWidth < 1000 && $("#navbarToggler").click();
+              }}
             >
               <Link
                 className='nav-link'
@@ -178,9 +182,10 @@ const Navbar = () => {
                   ? "nav-item active"
                   : "nav-item"
               }
-              onClick={(event) =>
-                localStorage.setItem("active", event.target.innerText)
-              }
+              onClick={(event) => {
+                localStorage.setItem("active", event.target.innerText);
+                window.innerWidth < 1000 && $("#navbarToggler").click();
+              }}
             >
               <Link
                 className='nav-link'
@@ -198,9 +203,10 @@ const Navbar = () => {
               className={
                 curLocation === "contact" ? "nav-item active" : "nav-item"
               }
-              onClick={(event) =>
-                localStorage.setItem("active", event.target.innerText)
-              }
+              onClick={(event) => {
+                localStorage.setItem("active", event.target.innerText);
+                window.innerWidth < 1000 && $("#navbarToggler").click();
+              }}
             >
               <Link
                 className='nav-link'
@@ -219,9 +225,10 @@ const Navbar = () => {
               className={
                 curLocation === "login" ? "nav-item active" : "nav-item"
               }
-              onClick={(event) =>
-                localStorage.setItem("active", event.target.innerText)
-              }
+              onClick={(event) => {
+                localStorage.setItem("active", event.target.innerText);
+                window.innerWidth < 1000 && $("#navbarToggler").click();
+              }}
             >
               {!getLoginUser() ? (
                 <Link

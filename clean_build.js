@@ -22,5 +22,7 @@ function deleteFolderRecursive(path) {
 console.log("Cleaning working tree...");
 
 deleteFolderRecursive("./build");
+deleteFolderRecursive("./build_development");
+deleteFolderRecursive("./build_production");
 
 console.log("Successfully cleaned working tree!");

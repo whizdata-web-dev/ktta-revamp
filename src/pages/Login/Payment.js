@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import useRazorpay from "react-razorpay";
 import { useHistory } from "react-router";
 import { RequestData } from "../../assets/utils/RequestData";
+import Logo from "../../assets/img/logo.png";
 
 const Payment = (props) => {
   const [message, setMessage] = useState("");
@@ -79,11 +80,11 @@ const Payment = (props) => {
   const handleRegPayment = async () => {
     const options = {
       key: process.env.REACT_APP_RAZORPAY_PAYMENT_KEY_ID, // ID from razor pay account
-      amount: process.env.REACT_APP_DEFAULT_AMOUNT, //Constant amount declared in HTTP method
+      amount: process.env.REACT_APP_DEFAULT_AMOUNT * 100, //Constant amount declared in HTTP method
       currency: "INR",
       name: process.env.REACT_APP_CALLER,
-      description: "Test Transaction",
-      image: "https://example.com/your_logo",
+      description: "Payment to Karnataka Table Tennis Association",
+      image: { Logo },
       handler: (response) => {
         if (response && response.razorpay_payment_id) {
           // On razor pay response setting transaction id using usestate

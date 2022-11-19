@@ -70,6 +70,7 @@ function EnhancedTableHead(props) {
     numSelected,
     rowCount,
     onRequestSort,
+    availableNumberOfEvents,
   } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -81,8 +82,10 @@ function EnhancedTableHead(props) {
         <TableCell padding='checkbox'>
           <Checkbox
             color='primary'
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
+            indeterminate={
+              numSelected > 0 && numSelected < availableNumberOfEvents
+            }
+            checked={rowCount > 0 && numSelected === availableNumberOfEvents}
             onChange={onSelectAllClick}
             inputProps={{
               "aria-label": "select all desserts",
@@ -122,9 +125,16 @@ EnhancedTableHead.propTypes = {
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
+  availableNumberOfEvents: PropTypes.number.isRequired,
 };
 
-const EntriesTable = ({ rows, selected, setSelected, payment }) => {
+const EntriesTable = ({
+  rows,
+  selected,
+  setSelected,
+  payment,
+  availableNumberOfEvents,
+}) => {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("fee");
 
@@ -137,12 +147,15 @@ const EntriesTable = ({ rows, selected, setSelected, payment }) => {
   };
 
   const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
+    const newSelecteds = event.target.checked
+      ? rows.map((n) => n.name).slice(0, availableNumberOfEvents)
+      : [];
+    // if (event.target.checked) {
+    //   setSelected(newSelecteds);
+    //   return;
+    // }
+    // setSelected([]);
+    setSelected(newSelecteds);
   };
 
   const handleClick = (event, name) => {
@@ -161,8 +174,7 @@ const EntriesTable = ({ rows, selected, setSelected, payment }) => {
         selected.slice(selectedIndex + 1)
       );
     }
-
-    setSelected(newSelected);
+    setSelected(newSelected.slice(0, availableNumberOfEvents));
   };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -200,6 +212,7 @@ const EntriesTable = ({ rows, selected, setSelected, payment }) => {
                   onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
                   rowCount={rows.length}
+                  availableNumberOfEvents={availableNumberOfEvents}
                 />
                 <TableBody>
                   {stableSort(rows, getComparator(order, orderBy)).map(
@@ -242,22 +255,20 @@ const EntriesTable = ({ rows, selected, setSelected, payment }) => {
                   )}
                   <TableRow>
                     <TableCell rowSpan={3} />
-                    <TableCell colSpan={2}>Subtotal</TableCell>
-                    <TableCell align='right'>
-                      ₹&nbsp;{invoiceSubtotal}
-                    </TableCell>
+                    <TableCell colSpan={2}>Total</TableCell>
+                    <TableCell align='right'>₹&nbsp;{invoiceTotal}</TableCell>
                   </TableRow>
-                  <TableRow>
+                  {/* <TableRow>
                     <TableCell colSpan={2}>
                       District Capitation Fee (Non-Refundable) <br /> will be
                       added during payment
                     </TableCell>
                     <TableCell align='right'>₹&nbsp;{dcf}</TableCell>
-                  </TableRow>
-                  <TableRow>
+                  </TableRow> */}
+                  {/* <TableRow>
                     <TableCell colSpan={2}>Total</TableCell>
                     <TableCell align='right'>₹&nbsp;{invoiceTotal}</TableCell>
-                  </TableRow>
+                  </TableRow> */}
                 </TableBody>
               </Table>
             </TableContainer>

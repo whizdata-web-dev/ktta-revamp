@@ -18,7 +18,14 @@ export default function CardStats({ subtitle, title, link, buttonName }) {
               </h5>
               <Box
                 className='font-semibold text-xl text-blueGray-700'
-                sx={{ minHeight: { md: "4rem", lg: "4rem" } }}
+                sx={{
+                  minHeight: { md: "4rem", lg: "4rem" },
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                }}
               >
                 {title}
               </Box>

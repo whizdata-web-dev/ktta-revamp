@@ -14,7 +14,6 @@ import { useHistory } from "react-router";
 function subtotal(list) {
   return list.map(({ fee }) => parseInt(fee)).reduce((sum, i) => sum + i, 0);
 }
-
 const GiveEntriesComponent = ({ tournamentData }) => {
   const { getLoginUser } = useLoginContext();
   const getUser = getLoginUser();
@@ -24,9 +23,12 @@ const GiveEntriesComponent = ({ tournamentData }) => {
   const [selected, setSelected] = useState([]);
   const [isSubscribedToAllEvents, setIsSubscribedToAllEvents] = useState(false);
   const [invoiceSubtotal, setInvoiceSubtotal] = useState(0);
+  const [availableNumberOfEvents, setAvailableNumberOfEvents] = useState(3);
   const Razorpay = useRazorpay();
 
-  const dcf = 100;
+  const history = useHistory();
+
+  const dcf = 0;
   const invoiceTotal = invoiceSubtotal + dcf;
 
   const getSubscribeTournamentList = async () => {
@@ -37,22 +39,31 @@ const GiveEntriesComponent = ({ tournamentData }) => {
       .then((response) => {
         if (response && response.result) {
           let feeList = [];
-          response.result.data.forEach((event) => {
-            if (
-              event.eventParticipants &&
-              !event.eventParticipants.includes(getUser.userId)
-            )
-              feeList.push({
-                id: event._id,
-                name: event.abbName,
-                fullName: event.eventName,
-                fee: event.prize,
-              });
+          const registeredEvents = response.result.data.filter((eventData) => {
+            if (eventData.eventParticipants)
+              return eventData.eventParticipants.includes(getUser.userId);
           });
-          if (feeList.length === 0) {
+          setAvailableNumberOfEvents(3 - registeredEvents.length);
+          if (registeredEvents.length < 3) {
+            response.result.data.forEach((event) => {
+              if (
+                !event.eventParticipants ||
+                !event.eventParticipants.includes(getUser.userId)
+              )
+                feeList.push({
+                  id: event._id,
+                  name: event.abbName,
+                  fullName: event.eventName,
+                  fee: event.prize,
+                });
+            });
+            if (feeList.length === 0) {
+              setIsSubscribedToAllEvents(true);
+            }
+            setEventFees(feeList);
+          } else {
             setIsSubscribedToAllEvents(true);
           }
-          setEventFees(feeList);
         } else {
           localStorage.setItem(
             "erMsg",
@@ -71,6 +82,7 @@ const GiveEntriesComponent = ({ tournamentData }) => {
 
   useEffect(() => {
     if (Object.keys(tournamentData).length > 0) {
+      if (!tournamentData.tournamentList) history.push("/");
       setTournamentName(tournamentData.tournamentList[0].tournamentName);
       getSubscribeTournamentList();
     }
@@ -132,10 +144,10 @@ const GiveEntriesComponent = ({ tournamentData }) => {
     let options = {};
     options = {
       key: process.env.REACT_APP_RAZORPAY_PAYMENT_KEY_ID, // ID from razor pay account
-      amount: 100, // total amount to pay
-      // amount: invoiceTotal * 100, // total amount to pay
+      // amount: 100, // total amount to pay
+      amount: invoiceTotal * 100, // total amount to pay
       currency: "INR",
-      name: "Andhra Pradesh Table Tennis Association",
+      name: "Karnataka Table Tennis Association",
       description: tournamentName,
       image: ``,
       handler: (response) => {
@@ -230,6 +242,7 @@ const GiveEntriesComponent = ({ tournamentData }) => {
               rows={eventFees}
               selected={selected}
               setSelected={setSelected}
+              availableNumberOfEvents={availableNumberOfEvents}
               payment={{
                 invoiceSubtotal,
                 invoiceTotal,

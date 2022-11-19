@@ -3,12 +3,9 @@
     "default": "karnatakatta"
   },
   "targets": {
-    "andhrapradeshtta": {
+    "karnatakatta": {
       "hosting": {
-        "build_site_development": [
-          "ktta-test"
-        ],
-        "build_site_production": [
+        "build_production": [
           "karnatakatta"
         ],
         "build_admin_development": [
@@ -16,8 +13,12 @@
         ],
         "build_admin_production": [
           "karnatakatta-admin"
+        ],
+        "build_development": [
+          "ktta-test"
         ]
       }
     }
-  }
+  },
+  "etags": {}
 }

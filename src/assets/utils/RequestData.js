@@ -16,7 +16,8 @@ export const urlConsts = {
   filterData: "z37CQ3th8i73SQogk", // association Id
   associationId: "z37CQ3th8i73SQogk", // association Id
   // Payment Constants used for Razor Pay in registration
-  paymentKeyId: "rzp_test_GPJxCbdU6QPDOf",
+  paymentKeyId: "rzp_live_kApuBzXGZuYXGG",
+  // paymentKeyId_test: "rzp_test_GPJxCbdU6QPDOf",
   amount: "50000",
   amountLabel: "500",
 };
