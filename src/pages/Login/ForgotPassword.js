@@ -33,10 +33,13 @@ export default function ResetPassword(props) {
   const sendOTPClick = (event) => {
     event.preventDefault();
     if (isNaN(resetPwdValues.email)) {
-      const pattern = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+      const pattern =
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      // const pattern = /\*+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
       //pattern check for Email ID
       //check is based on ternary operator
       // if pattern mismatch then button animation and error message is displayed to user.
+
       !pattern.test(resetPwdValues.email)
         ? setresetPwdValues({
             errorClass: "emailError",
@@ -141,7 +144,10 @@ export default function ResetPassword(props) {
           setresetPwdValues({
             ...resetPwdValues,
             message: (
-              <Box component={"span"} sx={{ display: "flex", flexDirection: 'column' }}>
+              <Box
+                component={"span"}
+                sx={{ display: "flex", flexDirection: "column" }}
+              >
                 <Box component={"span"}>Password Reset successful! </Box>
                 <Box component={"span"}>Login to proceed.</Box>
               </Box>
