@@ -191,30 +191,30 @@ const UpcomingTournamentsComponent = ({
                       View Entries
                     </Button>
                   </Link>
-                  {new Date(tournamentDetails.eventStartDate) > new Date() && (
-                    <Link to='/entries/giveEntries'>
-                      <Button
-                        sx={{
+                  {/* {new Date(tournamentDetails.eventStartDate) > new Date() && ( */}
+                  <Link to='/entries/giveEntries'>
+                    <Button
+                      sx={{
+                        background: "#DD482D",
+                        color: "#F1F1F1",
+                        transition: "0.1s all ease",
+                        "&:hover": {
                           background: "#DD482D",
                           color: "#F1F1F1",
-                          transition: "0.1s all ease",
-                          "&:hover": {
-                            background: "#DD482D",
-                            color: "#F1F1F1",
-                            transform: "scale(1.01)",
-                          },
-                        }}
-                        onClick={() => {
-                          handleTournamentId.setTournId(tournamentDetails._id);
-                          window.innerWidth > 1000 &&
-                            document.getElementById("login").click();
-                          handleGiveEntry("Please login to give entry.");
-                        }}
-                      >
-                        Give Entry
-                      </Button>
-                    </Link>
-                  )}
+                          transform: "scale(1.01)",
+                        },
+                      }}
+                      onClick={() => {
+                        handleTournamentId.setTournId(tournamentDetails._id);
+                        window.innerWidth > 1000 &&
+                          document.getElementById("login").click();
+                        handleGiveEntry("Please login to give entry.");
+                      }}
+                    >
+                      Give Entry
+                    </Button>
+                  </Link>
+                  {/* )} */}
                 </Box>
               </AccordionDetails>
             </Accordion>

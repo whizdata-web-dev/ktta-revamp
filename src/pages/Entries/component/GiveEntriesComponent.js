@@ -34,7 +34,7 @@ const GiveEntriesComponent = ({ tournamentData }) => {
   const getSubscribeTournamentList = async () => {
     await RequestData(
       "GET",
-      `eventListUnderTourn?caller=${process.env.REACT_APP_CALLER}&apiKey=${process.env.REACT_APP_API_KEY}&tournamentId=${tournamentData.tournamentList[0].tournamentId}&userId=${getUser.userId}`
+      `eventListUnderTourn?caller=${process.env.REACT_APP_CALLER}&apiKey=${process.env.REACT_APP_API_KEY}&tournamentId=${tournamentData.tournamentList.tournamentId}&userId=${getUser.userId}`
     )
       .then((response) => {
         if (response && response.result) {
@@ -83,7 +83,7 @@ const GiveEntriesComponent = ({ tournamentData }) => {
   useEffect(() => {
     if (Object.keys(tournamentData).length > 0) {
       if (!tournamentData.tournamentList) history.push("/");
-      setTournamentName(tournamentData.tournamentList[0].tournamentName);
+      setTournamentName(tournamentData.tournamentList.tournamentName);
       getSubscribeTournamentList();
     }
   }, [tournamentData]); // eslint-disable-line

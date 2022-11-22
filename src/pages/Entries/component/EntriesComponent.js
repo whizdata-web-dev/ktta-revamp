@@ -42,7 +42,7 @@ const EntriesComponent = ({ logOut, data, user }) => {
               marginTop: { xs: "-1rem", md: "0" },
             }}
           >
-            {new Date(data?.resultID[0]?.eventStartDate) > new Date() && (
+            {new Date(data?.resultID?.eventStartDate) > new Date() && (
               <Box
                 sx={{ margin: "1rem", width: "100%", paddingInline: "2rem" }}
               >
