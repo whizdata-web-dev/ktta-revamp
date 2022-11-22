@@ -183,6 +183,7 @@ const UpcomingTournamentsComponent = ({
                         color: "#64748b",
                       }}
                       onClick={() => {
+                        handleTournamentId.setTournId(tournamentDetails._id);
                         document.getElementById("home").click();
                         handleGiveEntry("Please login to view entry.");
                       }}
