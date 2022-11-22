@@ -5,13 +5,13 @@ import GiveEntriesContainer from "../container/GiveEntriesContainer";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 
-const EntriesComponent = ({ logOut, data }) => {
+const EntriesComponent = ({ logOut, data, user }) => {
   const location = useLocation();
 
   const getActiveTab = () => {
     switch (location.pathname) {
       case "/entries/giveEntries":
-        return <GiveEntriesContainer data={data} />;
+        return <GiveEntriesContainer data={data} isLoggedIn={user} />;
       case "/entries/viewEntries":
         return <ViewEntriesContainer data={data} />;
       case "/entries/schedule":
@@ -132,33 +132,37 @@ const EntriesComponent = ({ logOut, data }) => {
                 Schedule
               </Button>
             </Box> */}
-            <Box sx={{ margin: "1rem", width: "100%", paddingInline: "2rem" }}>
-              <Link
-                to='/login'
-                onClick={() => {
-                  logOut();
-                }}
+            {user && (
+              <Box
+                sx={{ margin: "1rem", width: "100%", paddingInline: "2rem" }}
               >
-                <Button
-                  variant='contained'
-                  sx={{
-                    width: "100%",
-                    background: "#d32f2f",
-                    "&:hover": {
-                      background: "#c62828",
-                    },
+                <Link
+                  to='/login'
+                  onClick={() => {
+                    logOut();
                   }}
                 >
-                  <span
-                    className='material-icons'
-                    style={{ fontSize: "1rem", margin: "0.5vh" }}
+                  <Button
+                    variant='contained'
+                    sx={{
+                      width: "100%",
+                      background: "#d32f2f",
+                      "&:hover": {
+                        background: "#c62828",
+                      },
+                    }}
                   >
-                    logout
-                  </span>
-                  Logout
-                </Button>
-              </Link>
-            </Box>
+                    <span
+                      className='material-icons'
+                      style={{ fontSize: "1rem", margin: "0.5vh" }}
+                    >
+                      logout
+                    </span>
+                    Logout
+                  </Button>
+                </Link>
+              </Box>
+            )}
           </Card>
         </Grid>
         <Grid item xs={12} md={9} lg={9}>

@@ -3,9 +3,16 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import GiveEntriesComponent from "../component/GiveEntriesComponent";
 
-const GiveEntriesContainer = ({ data }) => {
+const GiveEntriesContainer = ({ data, isLoggedIn }) => {
   const [tournamentData, setTournamentData] = useState([]);
   const history = useHistory();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      localStorage.setItem("erMsg", "Please login to give entry.");
+      history.push("/login");
+    }
+  }, []); // eslint-disable-line
 
   if (new Date(data?.resultID[0]?.eventStartDate) < new Date())
     history.push("/home");

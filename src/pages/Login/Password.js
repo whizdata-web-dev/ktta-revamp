@@ -54,12 +54,10 @@ const Password = (props) => {
       otp: false,
     };
 
-    console.log("password type: ", checkValues);
     if (
       String(passwordReg.password).length > 5 &&
       passwordReg.password.localeCompare(passwordReg.cPassword) === 0
     ) {
-      console.log("true");
       checkValues.password = true;
     } else if (String(passwordReg.password).length < 6) {
       setPasswordReg({

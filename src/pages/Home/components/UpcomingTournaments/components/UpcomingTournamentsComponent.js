@@ -24,188 +24,200 @@ const UpcomingTournamentsComponent = ({
   mapWidth,
   handleGiveEntry,
 }) => {
-  console.log({ data });
   return (
     <Box className={`block w-full px-4 overflow-y-auto pb-6`}>
       {Object.keys(data).length !== 0 ? (
-        data.map((tournamentDetails, index) => (
-          <Accordion
-            sx={{
-              background: "#f8fafc",
-              overflow: "hidden",
-              marginTop:
-                index === 0 && expanded === `panel${index}` ? "-1rem" : "0rem",
-              width: "100%",
-            }}
-            expanded={expanded === `panel${index}`}
-            onChange={handleChange(`panel${index}`)}
-            key={index}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls='panel1bh-content'
-              id='panel1bh-header'
-              sx={{ width: "100%" }}
+        data
+          .sort((a, b) =>
+            new Date(a.eventStartDate) > new Date(b.eventStartDate)
+              ? 1
+              : new Date(b.eventStartDate) > new Date(a.eventStartDate)
+              ? -1
+              : 0
+          )
+          .map((tournamentDetails, index) => (
+            <Accordion
+              sx={{
+                background: "#f8fafc",
+                overflow: "hidden",
+                marginTop:
+                  index === 0 && expanded === `panel${index}`
+                    ? "-1rem"
+                    : "0rem",
+                width: "100%",
+              }}
+              expanded={expanded === `panel${index}`}
+              onChange={handleChange(`panel${index}`)}
+              key={index}
             >
-              <Box sx={{ display: "block", width: "100%", height: "100%" }}>
-                <Box sx={{ display: "flex", height: "100%" }}>
-                  <Typography
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls='panel1bh-content'
+                id='panel1bh-header'
+                sx={{ width: "100%" }}
+              >
+                <Box sx={{ display: "block", width: "100%", height: "100%" }}>
+                  <Box sx={{ display: "flex", height: "100%" }}>
+                    <Typography
+                      sx={{
+                        width: { xs: "90%", sm: "100%" },
+                        flexShrink: 0,
+                        // fontSize: "0.8rem",
+                        // whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        paddingInline: "0 1rem",
+                        paddingBlock: "0",
+                        marginBlock: "0",
+                        height: "100%",
+                      }}
+                      className='text-blueGray-500 align-middle text-sm uppercase font-semibold text-left'
+                    >
+                      {tournamentDetails.eventName}
+                    </Typography>
+                  </Box>
+                  <Box
+                    className='py-8'
                     sx={{
-                      width: { xs: "90%", sm: "100%" },
-                      flexShrink: 0,
-                      // fontSize: "0.8rem",
-                      // whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      paddingInline: "0 1rem",
-                      paddingBlock: "0",
-                      marginBlock: "0",
-                      height: "100%",
+                      marginBlock:
+                        expanded === `panel${index}`
+                          ? "1rem 0rem"
+                          : "1rem 2rem",
+                      display:
+                        new Date(tournamentDetails.eventEndDate) < new Date()
+                          ? "block"
+                          : "none",
                     }}
-                    className='text-blueGray-500 align-middle text-sm uppercase font-semibold text-left'
                   >
-                    {tournamentDetails.eventName}
-                  </Typography>
+                    <Timer
+                      date={
+                        new Date(tournamentDetails.eventStartDate) < new Date()
+                          ? tournamentDetails.eventEndDate
+                          : tournamentDetails.eventStartDate
+                      }
+                      color={
+                        new Date(tournamentDetails.eventStartDate) <
+                          new Date() &&
+                        new Date(tournamentDetails.eventEndDate) > new Date()
+                          ? "red"
+                          : "blue"
+                      }
+                    />
+                  </Box>
+                  <Box
+                    sx={{
+                      marginBlock: "0.5rem 0",
+                      justifyContent: "space-between",
+                      display: expanded === `panel${index}` ? "none" : "flex",
+                    }}
+                  >
+                    <Box>
+                      <Typography
+                        variant='body2'
+                        className='text-blueGray-400'
+                        style={{ textAlign: "left" }}
+                      >
+                        {tournamentDetails.eventStartDate}
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Typography
+                        variant='body2'
+                        className='text-blueGray-400'
+                        style={{ textAlign: "right" }}
+                      >
+                        {tournamentDetails.eventEndDate}
+                      </Typography>
+                    </Box>
+                  </Box>
                 </Box>
-                <Box
-                  className='py-8'
-                  sx={{
-                    marginBlock:
-                      expanded === `panel${index}` ? "1rem 0rem" : "1rem 2rem",
-                    display:
-                      new Date(tournamentDetails.eventEndDate) < new Date()
-                        ? "block"
-                        : "none",
-                  }}
-                >
-                  <Timer
-                    date={
-                      new Date(tournamentDetails.eventStartDate) < new Date()
-                        ? tournamentDetails.eventEndDate
-                        : tournamentDetails.eventStartDate
-                    }
-                    color={
-                      new Date(tournamentDetails.eventStartDate) < new Date() &&
-                      new Date(tournamentDetails.eventEndDate) > new Date()
-                        ? "red"
-                        : "blue"
-                    }
+              </AccordionSummary>
+              <AccordionDetails>
+                <Box sx={{ margin: "0 0 0 -1rem" }}>
+                  <Map
+                    mapWidth={mapWidth}
+                    location={{
+                      lat: tournamentDetails.venueLatitude,
+                      lng: tournamentDetails.venueLongitude,
+                    }}
                   />
                 </Box>
-                <Box
-                  sx={{
-                    marginBlock: "0.5rem 0",
-                    justifyContent: "space-between",
-                    display: expanded === `panel${index}` ? "none" : "flex",
-                  }}
+                <Typography
+                  variant='body2'
+                  color='text.secondary'
+                  style={{ textAlign: "justify", margin: "22vh 0 1rem 0" }}
                 >
-                  <Box>
+                  {tournamentDetails.venueAddress}
+                </Typography>
+                <Grid container>
+                  <Grid xs={6} item>
                     <Typography
                       variant='body2'
-                      className='text-blueGray-400'
+                      color='text.secondary'
                       style={{ textAlign: "left" }}
                     >
                       {tournamentDetails.eventStartDate}
                     </Typography>
-                  </Box>
-                  <Box>
+                  </Grid>
+                  <Grid xs={6} item>
                     <Typography
                       variant='body2'
-                      className='text-blueGray-400'
+                      color='text.secondary'
                       style={{ textAlign: "right" }}
                     >
                       {tournamentDetails.eventEndDate}
                     </Typography>
-                  </Box>
-                </Box>
-              </Box>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Box sx={{ margin: "0 0 0 -1rem" }}>
-                <Map
-                  mapWidth={mapWidth}
-                  location={{
-                    lat: tournamentDetails.venueLatitude,
-                    lng: tournamentDetails.venueLongitude,
+                  </Grid>
+                </Grid>
+                <Divider variant='middle' sx={{ margin: "0.5rem 0" }} />
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    margin: "0 0 -0.5rem 0",
                   }}
-                />
-              </Box>
-              <Typography
-                variant='body2'
-                color='text.secondary'
-                style={{ textAlign: "justify", margin: "22vh 0 1rem 0" }}
-              >
-                {tournamentDetails.venueAddress}
-              </Typography>
-              <Grid container>
-                <Grid xs={6} item>
-                  <Typography
-                    variant='body2'
-                    color='text.secondary'
-                    style={{ textAlign: "left" }}
-                  >
-                    {tournamentDetails.eventStartDate}
-                  </Typography>
-                </Grid>
-                <Grid xs={6} item>
-                  <Typography
-                    variant='body2'
-                    color='text.secondary'
-                    style={{ textAlign: "right" }}
-                  >
-                    {tournamentDetails.eventEndDate}
-                  </Typography>
-                </Grid>
-              </Grid>
-              <Divider variant='middle' sx={{ margin: "0.5rem 0" }} />
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  margin: "0 0 -0.5rem 0",
-                }}
-              >
-                <Link to='entries/viewEntries'>
-                  <Button
-                    sx={{
-                      color: "#64748b",
-                    }}
-                    onClick={() => {
-                      document.getElementById("login").click();
-                      handleGiveEntry("Please login to view entry.");
-                    }}
-                  >
-                    View Entries
-                  </Button>
-                </Link>
-                {new Date(tournamentDetails.eventStartDate) > new Date() && (
-                  <Link to='/entries/giveEntries'>
+                >
+                  <Link to='entries/viewEntries'>
                     <Button
                       sx={{
-                        background: "#DD482D",
-                        color: "#F1F1F1",
-                        transition: "0.1s all ease",
-                        "&:hover": {
-                          background: "#DD482D",
-                          color: "#F1F1F1",
-                          transform: "scale(1.01)",
-                        },
+                        color: "#64748b",
                       }}
                       onClick={() => {
-                        handleTournamentId.setTournId(tournamentDetails._id);
-                        window.innerWidth > 1000 &&
-                          document.getElementById("login").click();
-                        handleGiveEntry("Please login to give entry.");
+                        document.getElementById("home").click();
+                        handleGiveEntry("Please login to view entry.");
                       }}
                     >
-                      Give Entry
+                      View Entries
                     </Button>
                   </Link>
-                )}
-              </Box>
-            </AccordionDetails>
-          </Accordion>
-        ))
+                  {new Date(tournamentDetails.eventStartDate) > new Date() && (
+                    <Link to='/entries/giveEntries'>
+                      <Button
+                        sx={{
+                          background: "#DD482D",
+                          color: "#F1F1F1",
+                          transition: "0.1s all ease",
+                          "&:hover": {
+                            background: "#DD482D",
+                            color: "#F1F1F1",
+                            transform: "scale(1.01)",
+                          },
+                        }}
+                        onClick={() => {
+                          handleTournamentId.setTournId(tournamentDetails._id);
+                          window.innerWidth > 1000 &&
+                            document.getElementById("login").click();
+                          handleGiveEntry("Please login to give entry.");
+                        }}
+                      >
+                        Give Entry
+                      </Button>
+                    </Link>
+                  )}
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+          ))
       ) : loading ? (
         <LoadingComponent />
       ) : (

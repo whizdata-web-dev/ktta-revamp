@@ -171,6 +171,12 @@ const ViewEntriesTable = ({ rows }) => {
             rowGetter={({ index }) => rows[index]}
             columns={[
               {
+                width: 100,
+                label: "Sl No",
+                dataKey: "slNo",
+                numeric: true,
+              },
+              {
                 width: 300,
                 label: "Player Name",
                 dataKey: "playerName",
@@ -179,12 +185,6 @@ const ViewEntriesTable = ({ rows }) => {
                 width: 350,
                 label: "Academy",
                 dataKey: "Academy",
-              },
-              {
-                width: 100,
-                label: "Ranking",
-                dataKey: "rank",
-                numeric: true,
               },
             ]}
             sx={{ border: "1px solid #332861" }}

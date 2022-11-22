@@ -16,12 +16,12 @@ const EntriesContainer = () => {
     url: `UpcomingTournamentsOnApiKey?caller=${process.env.REACT_APP_CALLER}&apiKey=${process.env.REACT_APP_API_KEY}&userId=${process.env.REACT_APP_USER_ID}`,
   });
 
-  useEffect(() => {
-    if (!getUser) {
-      localStorage.setItem("erMsg", "Please login to give entry.");
-      history.push("/login");
-    }
-  }, []); // eslint-disable-line
+  // useEffect(() => {
+  //   if (!getUser) {
+  //     localStorage.setItem("erMsg", "Please login to give entry.");
+  //     history.push("/login");
+  //   }
+  // }, []); // eslint-disable-line
 
   return (
     <Box
@@ -34,7 +34,7 @@ const EntriesContainer = () => {
       }}
     >
       {Object.keys(data).length > 0 ? (
-        <EntriesComponent logOut={logOut} data={data} />
+        <EntriesComponent logOut={logOut} data={data} user={getUser} />
       ) : (
         <LoadingComponent />
       )}
