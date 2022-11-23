@@ -41,7 +41,7 @@ const AnimatedLogin = () => {
     // if (getUser) window.location.href = "https://www.aptabletennis.org/home";
     if (getUser) {
       history.push("/");
-      document.getElementById("home").click();
+      window.innerWidth > 1000 && document.getElementById("home").click();
     }
   }, []); // eslint-disable-line
 
@@ -138,7 +138,7 @@ const AnimatedLogin = () => {
           }
           if (response.result._id) {
             history.push("/");
-            document.getElementById("home").click();
+            window.innerWidth > 1000 && document.getElementById("home").click();
           }
         } else {
           setLoginValue({
@@ -187,7 +187,7 @@ const AnimatedLogin = () => {
           }
           if (response.result._id) {
             history.push("/");
-            document.getElementById("home").click();
+            window.innerWidth > 1000 && document.getElementById("home").click();
           }
         } else {
           setLoginValue({

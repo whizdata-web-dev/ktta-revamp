@@ -24,6 +24,7 @@ const UpcomingTournamentsComponent = ({
   mapWidth,
   handleGiveEntry,
 }) => {
+  console.log({ data });
   return (
     <Box className={`block w-full px-4 overflow-y-auto pb-6`}>
       {Object.keys(data).length !== 0 ? (
@@ -184,7 +185,8 @@ const UpcomingTournamentsComponent = ({
                       }}
                       onClick={() => {
                         handleTournamentId.setTournId(tournamentDetails._id);
-                        document.getElementById("home").click();
+                        window.innerWidth > 1000 &&
+                          document.getElementById("home").click();
                         handleGiveEntry("Please login to view entry.");
                       }}
                     >
@@ -192,28 +194,30 @@ const UpcomingTournamentsComponent = ({
                     </Button>
                   </Link>
                   {/* {new Date(tournamentDetails.eventStartDate) > new Date() && ( */}
-                  <Link to='/entries/giveEntries'>
-                    <Button
-                      sx={{
-                        background: "#DD482D",
-                        color: "#F1F1F1",
-                        transition: "0.1s all ease",
-                        "&:hover": {
+                  {tournamentDetails._id !== "LcRXR8w5QazqE3r4t" && (
+                    <Link to='/entries/giveEntries'>
+                      <Button
+                        sx={{
                           background: "#DD482D",
                           color: "#F1F1F1",
-                          transform: "scale(1.01)",
-                        },
-                      }}
-                      onClick={() => {
-                        handleTournamentId.setTournId(tournamentDetails._id);
-                        window.innerWidth > 1000 &&
-                          document.getElementById("login").click();
-                        handleGiveEntry("Please login to give entry.");
-                      }}
-                    >
-                      Give Entry
-                    </Button>
-                  </Link>
+                          transition: "0.1s all ease",
+                          "&:hover": {
+                            background: "#DD482D",
+                            color: "#F1F1F1",
+                            transform: "scale(1.01)",
+                          },
+                        }}
+                        onClick={() => {
+                          handleTournamentId.setTournId(tournamentDetails._id);
+                          window.innerWidth > 1000 &&
+                            document.getElementById("login").click();
+                          handleGiveEntry("Please login to give entry.");
+                        }}
+                      >
+                        Give Entry
+                      </Button>
+                    </Link>
+                  )}
                   {/* )} */}
                 </Box>
               </AccordionDetails>

@@ -7,6 +7,7 @@ import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 
 const EntriesComponent = ({ logOut, data, user }) => {
   const location = useLocation();
+  console.log({ data });
 
   const getActiveTab = () => {
     switch (location.pathname) {
@@ -42,7 +43,8 @@ const EntriesComponent = ({ logOut, data, user }) => {
               marginTop: { xs: "-1rem", md: "0" },
             }}
           >
-            {new Date(data?.resultID?.eventStartDate) > new Date() && (
+            {/* {new Date(data?.resultID?.eventStartDate) > new Date() && ( */}
+            {data?.resultID._id !== "LcRXR8w5QazqE3r4t" && (
               <Box
                 sx={{ margin: "1rem", width: "100%", paddingInline: "2rem" }}
               >
@@ -83,6 +85,7 @@ const EntriesComponent = ({ logOut, data, user }) => {
                 </Link>
               </Box>
             )}
+            {/* )} */}
             <Box sx={{ margin: "1rem", width: "100%", paddingInline: "2rem" }}>
               <Link to='/entries/viewEntries'>
                 <Button
