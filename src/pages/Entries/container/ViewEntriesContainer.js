@@ -54,15 +54,7 @@ const ViewEntriesContainer = ({ data }) => {
   }, [eventId]); // eslint-disable-line
 
   return (
-    <Box
-      sx={{
-        // display: "flex",
-        // flexDirection: "column",
-        // justifyContent: "center",
-        // alignItems: "center",
-        width: "100%",
-      }}
-    >
+    <Box sx={{ width: "100%" }}>
       <ViewEntriesComponent
         tournamentName={tournamentName}
         eventId={eventId}

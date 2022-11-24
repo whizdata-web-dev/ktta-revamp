@@ -133,8 +133,7 @@ const About = () => {
                     >
                       KTTA is now making good progress in promoting the game
                       with renewed vigour, largely due to the committed members.
-                      The Association is headed by Sri Dinesh Gundurao, Member
-                      of the Legislative Assembly of Karnataka as President. The
+                      The Association is headed by Shri Pralhad Joshi, Central Minister for Parliamentary Affairs and Coal & Mines, Govt. of India as President. The
                       Association believes it has much to contribute to the game
                       of Table Tennis in the years to come.
                     </Typography>
