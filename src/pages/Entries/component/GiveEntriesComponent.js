@@ -98,12 +98,6 @@ const GiveEntriesComponent = ({ tournamentData }) => {
   }, [selected]); // eslint-disable-line
 
   const paymentTransaction = async (transactionId) => {
-    // let subscribedTournamentId = selected.map(
-    //   (eventName) =>
-    //     eventFees.filter((eventDetails) => eventName === eventDetails.name)[0]
-    //       .id
-    // );
-
     let content = {
       caller: process.env.REACT_APP_CALLER,
       data: {

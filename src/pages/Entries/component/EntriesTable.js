@@ -135,6 +135,7 @@ const EntriesTable = ({
   payment,
   availableNumberOfEvents,
 }) => {
+
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("fee");
 

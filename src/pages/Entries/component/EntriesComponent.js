@@ -7,7 +7,6 @@ import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
 
 const EntriesComponent = ({ logOut, data, user }) => {
   const location = useLocation();
-  console.log({ data });
 
   const getActiveTab = () => {
     switch (location.pathname) {
